@@ -36,6 +36,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+        <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.5net/npm/@supabase/supabase-js@2"></script>
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1205,6 +1207,41 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   $('rkEnterSite').addEventListener('click',revealSite);$('rkPreviewSite').addEventListener('click',()=>{revealSite();console.warn('RK Foodie preview mode: customer login is not enforced because Supabase is not configured.');});
   $('rkSignOut').addEventListener('click',async()=>{try{if(client)await client.auth.signOut();}catch(e){showAlert(e.message||'Sign out failed.');return;}currentUser=null;profile=null;address=null;$('rkOtpField').hidden=true;showPhoneMode();showGate();});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+// ================= Supabase Client & OTP Setup =================
+const SUPABASE_URL = 'https://zdqbtkmgzetqqspgjkmc.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_XssDVFfTWCvrldBanbsYWg_gL90tpRB';
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+// ১. ওটিপি পাঠানোর ফাংশন
+async function sendOTP(phoneNumber) {
+  const { data, error } = await supabase.auth.signInWithOtp({
+    phone: phoneNumber // উদাহরণ: '+919907406500'
+  });
+
+  if (error) {
+    alert('OTP পাঠাতে সমস্যা হয়েছে: ' + error.message);
+  } else {
+    alert('আপনার মোবাইলে OTP পাঠানো হয়েছে!');
+  }
+}
+
+// ২. ওটিপি ভেরিফাই করার ফাংশন
+async function verifyOTP(phoneNumber, otpCode) {
+  const { data: { session }, error } = await supabase.auth.verifyOtp({
+    phone: phoneNumber,
+    token: otpCode,
+    type: 'sms'
+  });
+
+  if (error) {
+    alert('ভুল OTP দিয়েছেন!');
+  } else {
+    alert('সফলভাবে লগইন হয়ে গেছে!');
+  }
+}
+// ===============================================================
+
 })();
 </script>
 
