@@ -1207,42 +1207,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   $('rkEditProfile').addEventListener('click',()=>{if(!profile||!address)return;setFormMode();$('rkFullName').value=profile.full_name||'';$('rkEmail').value=profile.email||'';$('rkAvatarPreview').src=profile.avatar_url||$('rkAvatarPreview').src;$('rkAddressTitle').value=address.title||'Home';$('rkRecipient').value=address.receiver_name||'';$('rkAddressPhone').value=address.phone||currentUser?.phone||'';$('rkAddressLine').value=address.address_line||'';$('rkLandmark').value=address.landmark||'';$('rkCity').value=address.city||'';$('rkState').value=address.state||'West Bengal';$('rkPincode').value=address.pincode||'';});
   $('rkEnterSite').addEventListener('click',revealSite);$('rkPreviewSite').addEventListener('click',()=>{revealSite();console.warn('RK Foodie preview mode: customer login is not enforced because Supabase is not configured.');});
   $('rkSignOut').addEventListener('click',async()=>{try{if(client)await client.auth.signOut();}catch(e){showAlert(e.message||'Sign out failed.');return;}currentUser=null;profile=null;address=null;$('rkOtpField').hidden=true;showPhoneMode();showGate();});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-// ================= Supabase Client & OTP Setup =================
-const SUPABASE_URL = 'https://zdqbtkmgzetqqspgjkmc.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_XssDVFfTWCvrldBanbsYWg_gL90tpRB';
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
-// ১. ওটিপি পাঠানোর ফাংশন
-async function sendOTP(phoneNumber) {
-  const { data, error } = await supabase.auth.signInWithOtp({
-    phone: phoneNumber // উদাহরণ: '+919907406500'
-  });
-
-  if (error) {
-    alert('OTP পাঠাতে সমস্যা হয়েছে: ' + error.message);
-  } else {
-    alert('আপনার মোবাইলে OTP পাঠানো হয়েছে!');
-  }
-}
-
-// ২. ওটিপি ভেরিফাই করার ফাংশন
-async function verifyOTP(phoneNumber, otpCode) {
-  const { data: { session }, error } = await supabase.auth.verifyOtp({
-    phone: phoneNumber,
-    token: otpCode,
-    type: 'sms'
-  });
-
-  if (error) {
-    alert('ভুল OTP দিয়েছেন!');
-  } else {
-    alert('সফলভাবে লগইন হয়ে গেছে!');
-  }
-}
-// ===============================================================
-
+  
 })();
 </script>
 
