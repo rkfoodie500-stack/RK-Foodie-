@@ -1025,25 +1025,20 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
          Add your Supabase Project URL and PUBLIC anon/publishable key below.
          Never place a service_role/secret key in a browser file. -->
     <script>
-    (() => {
-        const RK_SUPABASE_URL = 'https://zdqbtkmgzetqqspgjkmc.supabase.co';
+(() => {
+  const RK_SUPABASE_URL = 'https://zdqbtkmgzetqqspgjkmc.supabase.co';
   const RK_SUPABASE_ANON_KEY = 'sb_publishable_XssDVffTWCvrlDanbsYwG_gl90tpRB';
-  const RK_SUPABASE_CONFIG = { url: RK_SUPABASE_URL, anonKey: RK_SUPABASE_ANON_KEY };
+  const RK_TABLES = { foods: 'foods', banners: 'banners', categories: 'categories' };
 
-      const RK_TABLES = { foods: 'foods', banners: 'banners', categories: 'categories' };
-      const isConfigured = RK_SUPABASE_URL.startsWith('https://') &&
-        !RK_SUPABASE_URL.includes('YOUR_SUPABASE') &&
-        RK_SUPABASE_ANON_KEY && !RK_SUPABASE_ANON_KEY.includes('YOUR_SUPABASE');
-      if (!isConfigured) {
-        console.info('RK Foodie: Supabase is not configured; showing the built-in menu.');
-        return;
-      }
-      if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-        console.warn('RK Foodie: Supabase client did not load; showing the built-in menu.');
-        return;
-      }
-      const client = window.supabase.createClient(RK_SUPABASE_URL, RK_SUPABASE_ANON_KEY);
-      window.RKFoodieSupabase = client;
+  if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+    console.warn('RK Foodie Supabase client did not load; showing the built-in menu.');
+    return;
+  }
+
+  const client = window.supabase.createClient(RK_SUPABASE_URL, RK_SUPABASE_ANON_KEY);
+  window.RKFoodiesupabase = client;
+  window.RKFoodiesupabaseConfigured = true;
+
       window.RKFoodieSupabaseConfigured = true;
       const text = value => String(value ?? '').trim();
       const safe = value => text(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
