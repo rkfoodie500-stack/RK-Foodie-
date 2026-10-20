@@ -262,43 +262,44 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
 
     <style id="rk-desktop-fullscreen-menu-patch">
-      /* Desktop: use the full viewport width while keeping the existing mobile layout unchanged. */
+      /* Balanced desktop layout: medium banners and compact, professional food cards. Mobile remains unchanged. */
       @media (min-width: 768px) {
         body { overflow-x: hidden; }
-        header > div,
-        #rkBannerSlider,
-        main,
-        footer > div {
-          width: 100%;
-          max-width: none !important;
+        header > div, #rkBannerSlider, main, footer > div {
+          width: 100%; max-width: none !important;
         }
-        header > div { padding-left: clamp(18px, 2.2vw, 40px); padding-right: clamp(18px, 2.2vw, 40px); }
-        #rkBannerSlider { border-radius: 0 0 18px 18px; }
+        header > div { padding-left: clamp(18px, 2vw, 32px); padding-right: clamp(18px, 2vw, 32px); }
         body > section[aria-label="RK Foodie featured banners"] {
-          max-width: none !important;
-          width: 100%;
-          padding-left: clamp(18px, 2.2vw, 40px);
-          padding-right: clamp(18px, 2.2vw, 40px);
+          max-width: none !important; width: 100%;
+          padding: 12px clamp(18px, 2vw, 32px) 0;
         }
+        #rkBannerSlider {
+          height: clamp(190px, 20vw, 300px) !important;
+          aspect-ratio: auto !important;
+          border-radius: 16px;
+        }
+        #rkBannerSlider .rk-banner-slide img { object-fit: contain; }
         main {
-          padding-left: clamp(18px, 2.2vw, 40px) !important;
-          padding-right: clamp(18px, 2.2vw, 40px) !important;
+          padding: 12px clamp(18px, 2vw, 32px) 0 !important;
+          max-width: none !important;
+          gap: 1rem !important;
         }
-        footer > div {
-          padding-left: clamp(18px, 2.2vw, 40px);
-          padding-right: clamp(18px, 2.2vw, 40px);
-        }
-        #foodGrid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 16px !important; }
-        #foodGrid > * { min-width: 0; }
+        main > section { border-radius: 16px; }
+        footer > div { padding-left: clamp(18px, 2vw, 32px); padding-right: clamp(18px, 2vw, 32px); }
+        #foodGrid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 14px !important; }
+        #foodGrid > * { min-width: 0; border-radius: 14px !important; }
+        #foodGrid > * > div:first-child > div.relative { height: 145px !important; }
+        #foodGrid > * .p-4 { padding: 12px !important; }
+        #foodGrid > * .pt-0 { padding-top: 0 !important; }
+        #foodGrid > * .mt-2 { margin-top: .35rem !important; }
+        #foodGrid > * .text-base { font-size: .95rem !important; }
       }
       @media (min-width: 1280px) {
-        #foodGrid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 18px !important; }
+        #foodGrid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 16px !important; }
+        #foodGrid > * > div:first-child > div.relative { height: 155px !important; }
       }
       @media (min-width: 768px) and (max-width: 1023px) {
         #foodGrid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 12px !important; }
-      }
-      @media (min-width: 768px) {
-        #rkBannerSlider { aspect-ratio: 21 / 7 !important; }
       }
     </style>
 
@@ -1374,10 +1375,19 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       const {data:{session},error}=await client.auth.getSession();if(error)throw error;
       if(session?.user){
         currentUser=session.user;
-        await loadAccount();
-        // Returning users with a complete saved profile go straight to the menu.
-        if(profile && profile.full_name && address) revealSite();
-        else showGate();
+        // Show the menu immediately for an authenticated customer; do not make the
+        // customer wait for profile/address database queries before seeing products.
+        revealSite();
+        try {
+          await loadAccount();
+          if(profile && profile.full_name && address) revealSite();
+          else showGate();
+        } catch (accountError) {
+          // A profile-table/network hiccup should not send a signed-in customer
+          // back to the login screen or interrupt browsing the menu.
+          console.warn('RK Foodie: account details could not be refreshed yet.', accountError);
+          revealSite();
+        }
       }else{
         showLoginMode();
         showGate();
