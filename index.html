@@ -1815,7 +1815,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
  const KEY='rkFoodieLikedFoodsV1';
  const getLikes=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]').map(String)}catch(e){return []}};
  const saveLikes=ids=>{try{localStorage.setItem(KEY,JSON.stringify([...new Set(ids.map(String))]))}catch(e){}};
- const findFood=id=>(Array.isArray(window.foodItems)?window.foodItems:[]).find(f=>String(f.id)===String(id));
+ const findFood=id=>{const list=(typeof foodItems!=='undefined'&&Array.isArray(foodItems))?foodItems:(Array.isArray(window.foodItems)?window.foodItems:[]);return list.find(f=>String(f.id)===String(id));};
  window.toggleFoodLike=function(id){
    const ids=getLikes(),key=String(id),exists=ids.includes(key);
    saveLikes(exists?ids.filter(x=>x!==key):[...ids,key]);
@@ -1837,7 +1837,10 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
  window.openLikedFoods=function(){renderLiked();const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.add('is-open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
  window.closeLikedFoods=function(){const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.remove('is-open');panel.setAttribute('aria-hidden','true');document.body.style.overflow=''};
  document.addEventListener('DOMContentLoaded',()=>{renderLiked();syncHeartButtons()});
- const observer=new MutationObserver(()=>syncHeartButtons());observer.observe(document.body,{childList:true,subtree:true});
+ // Avoid observing every DOM mutation: heart updates themselves mutate the DOM and can freeze slower phones.
+ window.rkSyncHeartButtons=syncHeartButtons;
+ const originalRenderFoodGrid=window.renderFoodGrid;
+ if(typeof originalRenderFoodGrid==='function'){window.renderFoodGrid=function(items){originalRenderFoodGrid(items);syncHeartButtons();};}
  document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeLikedFoods()});
 })();
 </script>
