@@ -384,6 +384,13 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   @media(max-width:390px){.rk-sheet-item-img{width:52px;height:52px}.rk-sheet-item{gap:8px}.rk-sheet-quantity{gap:5px}.rk-sheet-quantity button{width:25px;height:25px}.rk-sheet-item-name{font-size:11px}}
 </style>
 
+
+<!-- RK Foodie: guest access mode (Google sign-in temporarily disabled). -->
+<style id="rk-guest-access-mode">
+  #rkCustomerGate { display: none !important; }
+  #rkSettingsProfileAction, #rkSettingsSignOut, #rkOrderEditProfile { display: none !important; }
+</style>
+
 </head>
 <body class="bg-gray-50 text-slate-800 antialiased pb-20 md:pb-6">
 
@@ -488,18 +495,33 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                 </div>
             </div>
 
-            <!-- Cart Trigger Button -->
-            <button onclick="toggleCart(true)" class="relative bg-navy hover:bg-navy-900 text-white p-2.5 px-4 rounded-xl flex items-center gap-2 transition shadow-md active:scale-95">
-                <i class="fa-solid fa-bag-shopping text-lg text-brandOrange"></i>
-                <span class="font-semibold text-sm hidden sm:inline">Your Order</span>
+            <!-- Your Ordered, Cart and liked foods controls -->
+            <div class="rk-header-actions flex items-center gap-2 shrink-0">
+              <button type="button" onclick="toggleCart(true)" class="rk-header-action rk-your-ordered relative bg-slate-100 hover:bg-slate-200 text-slate-800 p-2.5 px-3 sm:px-4 rounded-xl flex items-center gap-2 transition shadow-sm active:scale-95" aria-label="Your Ordered">
+                <i class="fa-solid fa-receipt text-lg text-navy"></i><span class="font-semibold text-xs sm:text-sm">Your Ordered</span>
+              </button>
+              <button type="button" onclick="toggleCart(true)" class="rk-header-action relative bg-navy hover:bg-navy-900 text-white p-2.5 px-3 sm:px-4 rounded-xl flex items-center gap-2 transition shadow-md active:scale-95" aria-label="Cart">
+                <i class="fa-solid fa-bag-shopping text-lg text-brandOrange"></i><span class="font-semibold text-xs sm:text-sm">Cart 🛍️</span>
                 <span id="cartBadge" class="absolute -top-2 -right-2 bg-brandOrange text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
-            </button>
+              </button>
+              <button type="button" onclick="openLikedFoods()" class="rk-header-action relative bg-rose-50 hover:bg-rose-100 text-rose-600 p-2.5 px-3 sm:px-4 rounded-xl flex items-center gap-2 transition shadow-sm border border-rose-100 active:scale-95" aria-label="Liked foods">
+                <i class="fa-solid fa-heart text-lg"></i><span class="font-extrabold text-xs sm:text-sm">Like</span>
+                <span id="likedBadge" class="absolute -top-2 -right-2 bg-rose-600 text-white text-xs font-bold min-w-5 h-5 px-1 rounded-full flex items-center justify-center border-2 border-white">0</span>
+              </button>
+            </div>
         </div>
 
     </header>
 
 
-    <!-- RK Foodie Automatic Banner Slider -->
+    <style id="rk-header-actions-responsive-fix">
+.rk-header-actions{max-width:100%;}
+.rk-header-action{white-space:nowrap;min-height:42px;}
+@media(min-width:1024px){.rk-header-actions{gap:8px!important}.rk-header-action{padding-left:13px!important;padding-right:13px!important}}
+@media(max-width:700px){.rk-header-actions{gap:5px!important}.rk-header-action{min-width:40px;justify-content:center}}
+</style>
+
+<!-- RK Foodie Automatic Banner Slider -->
     <section class="max-w-5xl mx-auto px-4 pt-4" aria-label="RK Foodie featured banners">
         <div id="rkBannerSlider" class="rk-banner-frame shadow-xl" style="aspect-ratio: 16 / 9;">
             <div class="rk-banner-slide is-active" aria-hidden="false">
@@ -657,7 +679,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
  function renderFinal(){
   const items=getCart();const featured=items[0];
   $('rkFinalFeaturedFood').innerHTML=featured?`<img src="${esc(featured.image||'https://placehold.co/200x200/fff0e2/9a4d16?text=Food')}" alt="${esc(featured.title)}" onerror="this.src='https://placehold.co/200x200/fff0e2/9a4d16?text=Food'"><div class="min-w-0"><h3 class="text-lg font-black text-slate-900">${esc(featured.title||'খাবার')}</h3><p class="text-xs text-slate-500 mt-1">${esc(featured.restaurant||'RK Foodie')}</p><p class="text-xs text-slate-500 mt-1">পরিমাণ: ${Number(featured.quantity)||1} টি</p><p class="text-lg font-black text-orange-600 mt-2">${money((Number(featured.price)||0)*(Number(featured.quantity)||1))}</p></div>`:'<p class="text-sm text-slate-500">কোনো খাবার নির্বাচন করা হয়নি।</p>';
-  $('rkFinalOrderItems').innerHTML=items.map(i=>`<div class="rk-final-item"><img src="${esc(i.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food')}" alt="${esc(i.title)}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="flex-1 min-w-0"><p class="text-sm font-extrabold text-slate-800">${esc(i.title||'খাবার')}</p><p class="text-[11px] text-slate-500 mt-1">${Number(i.quantity)||1} × ${money(i.price)}</p></div><strong class="text-sm font-black text-slate-900">${money((Number(i.price)||0)*(Number(i.quantity)||1))}</strong></div>`).join('');
+  $('rkFinalOrderItems').innerHTML=items.slice(1).map(i=>`<div class="rk-final-item"><img src="${esc(i.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food')}" alt="${esc(i.title)}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="flex-1 min-w-0"><p class="text-sm font-extrabold text-slate-800">${esc(i.title||'খাবার')}</p><p class="text-[11px] text-slate-500 mt-1">${Number(i.quantity)||1} × ${money(i.price)}</p></div><strong class="text-sm font-black text-slate-900">${money((Number(i.price)||0)*(Number(i.quantity)||1))}</strong></div>`).join('');
   const name=$('custName')?.value.trim()||$('rkOrderProfileName')?.textContent||'প্রোফাইলে নাম পাওয়া যায়নি';
   const phone=$('custPhone')?.value.trim()||$('rkOrderProfilePhone')?.textContent||'মোবাইল নম্বর পাওয়া যায়নি';
   const address=$('custAddress')?.value.trim()||$('rkOrderProfileAddress')?.textContent||'ঠিকানা পাওয়া যায়নি';
@@ -1068,6 +1090,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                 image: "https://images.unsplash.com/photo-1545247181-516773cae754?auto=format&fit=crop&w=500&q=80"
             }
         ];
+        // Expose the same dataset for the independent liked-food panel; the original array remains unchanged.
+        window.foodItems = foodItems;
 
         // Categories Configuration
         const categories = [
@@ -1130,14 +1154,15 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             }
             noResults.classList.add("hidden");
             grid.innerHTML = items.map(item => `
-                <button type="button" onclick='openFoodDetails(${JSON.stringify(String(item.id))})' aria-label="${item.title} - বিস্তারিত দেখুন" class="w-full text-left bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-orange-400">
+                <article role="button" tabindex="0" onclick='openFoodDetails(${JSON.stringify(String(item.id))})' onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFoodDetails(this.dataset.foodId)}" data-food-id="${String(item.id)}" aria-label="${item.title} - বিস্তারিত দেখুন" class="w-full text-left bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-orange-400">
                     <div class="w-full">
                         <div class="relative h-44 w-full overflow-hidden bg-gray-100">
                             <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover transition duration-300" onerror="this.src='https://placehold.co/500x300/1B2B48/FFFFFF?text=RK+Foodie'">
+                            <button type="button" class="rk-heart-button absolute top-3 right-3" aria-label="Like food" onclick="event.stopPropagation();toggleFoodLike('${String(item.id).replace(/'/g, "\\'")}')"><i class="fa-regular fa-heart"></i></button>
                         </div>
                         <div class="p-4 space-y-1"><p class="text-[11px] text-gray-400 font-medium">${item.restaurant}</p><h3 class="font-bold text-slate-800 text-sm leading-snug">${item.title}</h3><p class="pt-1 text-base font-extrabold text-navy">₹${item.price}</p><p class="text-xs font-bold text-orange-600 pt-1"><i class="fa-solid fa-circle-info mr-1"></i> বিস্তারিত দেখুন</p></div>
                     </div>
-                </button>
+                </article>
             `).join("");
             setSiteLanguage(rkCurrentLanguage);
         }
@@ -1158,16 +1183,17 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                   <p class="text-sm text-gray-500"><i class="fa-solid fa-store mr-1 text-orange-500"></i>${item.restaurant}</p>
                   <p class="text-3xl font-extrabold text-orange-600">₹${item.price}</p>
                   <p class="text-sm leading-6 text-gray-600"></p>
-                  <div class="rk-food-action-row"><button type="button" class="rk-food-order-button" onclick='orderFromFoodDetails(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-bag-shopping"></i> Order now</button><button type="button" class="rk-add-cart-button" onclick='addFoodToSavedCart(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-cart-plus"></i> Add to Cart</button></div>
+                  <div class="rk-food-action-row"><button type="button" class="rk-food-order-button" onclick='orderFromFoodDetails(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-bag-shopping"></i> Order now</button><button type="button" class="rk-add-cart-button" onclick='addFoodToSavedCart(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-cart-plus"></i> Add to Cart</button><button type="button" class="rk-detail-like-button" onclick='toggleFoodLike(${JSON.stringify(String(item.id))})'><i class="fa-regular fa-heart"></i> Like</button></div>
                   <p id="foodDetailOrderNotice" class="hidden text-sm font-semibold text-emerald-700" role="status"></p>
                 </div>
               </article>`;
             const related = foodItems.filter(food => String(food.id) !== String(item.id));
             document.getElementById('foodDetailsRelated').innerHTML = related.map(food => `
-              <button type="button" class="rk-related-card hover:shadow-md transition" onclick='openFoodDetails(${JSON.stringify(String(food.id))}, false)'>
-                <img src="${food.image}" alt="${food.title}" onerror="this.src='https://placehold.co/180x160/1B2B48/FFFFFF?text=Food'">
-                <span class="min-w-0"><span class="block text-sm font-bold text-slate-800">${food.title}</span><span class="block text-xs text-gray-500 mt-1">${food.restaurant}</span><span class="block text-sm font-extrabold text-orange-600 mt-2">₹${food.price}</span></span>
-              </button>`).join('');
+              <article class="rk-related-card hover:shadow-md transition">
+                <img role="button" tabindex="0" onclick='openFoodDetails(${JSON.stringify(String(food.id))}, false)' src="${food.image}" alt="${food.title}" onerror="this.src='https://placehold.co/180x160/1B2B48/FFFFFF?text=Food'">
+                <span class="min-w-0 flex-1" role="button" tabindex="0" onclick='openFoodDetails(${JSON.stringify(String(food.id))}, false)'><span class="block text-sm font-bold text-slate-800">${food.title}</span><span class="block text-xs text-gray-500 mt-1">${food.restaurant}</span><span class="block text-sm font-extrabold text-orange-600 mt-2">₹${food.price}</span></span>
+                <button type="button" class="rk-heart-button" aria-label="Like food" onclick="toggleFoodLike('${String(food.id).replace(/'/g, "\\'")}')"><i class="fa-regular fa-heart"></i></button>
+              </article>`).join('');
             view.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             document.getElementById('detailsCartBadge').textContent = cart.reduce((sum, food) => sum + food.quantity, 0);
@@ -1539,20 +1565,20 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   const fullSavedAddress = () => address ? [address.address_line,address.landmark ? 'Landmark: '+address.landmark : '',address.city,address.state,address.pincode].filter(Boolean).join(', ') : '';
   const updateProfileCards = () => {
     const avatar=profile?.avatar_url||currentUser?.user_metadata?.avatar_url||currentUser?.user_metadata?.picture||'https://placehold.co/96x96/fff0e2/9a4d16?text=Photo';
-    const name=profile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'Sign in to create your profile';
-    const email=profile?.email||currentUser?.email||'Save your delivery details for faster ordering.';
+    const name=profile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'Guest checkout';
+    const email=profile?.email||currentUser?.email||'You can order without signing in.';
     const phone=address?.phone||currentUser?.phone||'No phone number saved yet';
-    const savedAddress=fullSavedAddress()||'Your saved delivery address will appear here.';
+    const savedAddress=fullSavedAddress()||'Enter your delivery address at checkout.';
     const setText=(id,text)=>{const el=$(id);if(el)el.textContent=text;};
     ['rkSettingsAvatar','rkOrderProfileAvatar'].forEach(id=>{const el=$(id);if(el)el.src=avatar;});
     setText('rkSettingsProfileName',name);setText('rkSettingsProfileEmail',email);setText('rkSettingsProfilePhone',phone);setText('rkSettingsProfileAddress',address?savedAddress:'Add your delivery address in your profile.');
-    setText('rkSettingsProfileStatus',profile&&address?'Profile saved':'Not signed in');
-    setText('rkOrderProfileName',profile?.full_name||name);setText('rkOrderProfilePhone',phone);setText('rkOrderProfileAddress',address?savedAddress:'Sign in and save your address to use it for orders.');
+    setText('rkSettingsProfileStatus',profile&&address?'Profile saved':'Guest mode');
+    setText('rkOrderProfileName',profile?.full_name||name);setText('rkOrderProfilePhone',phone);setText('rkOrderProfileAddress',address?savedAddress:'Add your name, phone number and address at checkout.');
     const signOut=$('rkSettingsSignOut');if(signOut)signOut.hidden=!(currentUser&&profile);
-    const action=$('rkSettingsProfileAction');if(action)action.textContent=currentUser?'Edit profile':'Sign in / Profile';
+    const action=$('rkSettingsProfileAction');if(action)action.textContent=currentUser?'Edit profile':'Profile login paused';
   };
   const revealSite = () => { syncCheckoutDetails(); updateProfileCards(); gate.hidden=true; document.body.style.overflow=''; };
-  const showGate = () => { gate.hidden=false; document.body.style.overflow='hidden'; };
+  const showGate = () => { gate.hidden=true; document.body.style.overflow=''; };
   const setFormMode = () => { loginPane.hidden=true; profileForm.hidden=false; accountPane.hidden=true; goStep(3,'Create your profile','Save your delivery details for a smoother checkout.','Almost there'); $('rkFullName').focus(); };
   const showLoginMode = () => { loginPane.hidden=false; profileForm.hidden=true; accountPane.hidden=true; goStep(1,'Login with Google','Use your Google account to save your profile and delivery address.'); };
   function formatAddress(a){return `<div style="color:#ff6b00;font-size:18px;padding-top:2px"><i class="fa-solid fa-location-dot"></i></div><div><strong>${safe(a.title||'Home')} · ${safe(a.receiver_name||'')}</strong><p style="font-size:12px;color:#738096;line-height:1.65;margin:5px 0 0">${safe(a.address_line||'')}${a.landmark?' · Near '+safe(a.landmark):''}<br/>${safe(a.city||'')}, ${safe(a.state||'')} ${safe(a.pincode||'')}<br/>${safe(a.phone||'')}</p></div>`;}
@@ -1572,23 +1598,63 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   async function init(){
     updateProfileCards();
     const configured=window.RKFoodieSupabaseConfigured===true;
-    if(!configured||!window.supabase||!window.RKFoodieSupabase){setupNote.hidden=false;$('rkPreviewSite').hidden=false;showGate();showLoginMode();goStep(1,'Welcome to RK Foodie','Sign in with Google after Supabase Google OAuth is configured.');return;}
+    if(!configured||!window.supabase||!window.RKFoodieSupabase){
+      setupNote.hidden=false;
+      $('rkPreviewSite').hidden=false;
+      showGate();
+      showLoginMode();
+      goStep(1,'Welcome to RK Foodie','Google sign-in needs a working Supabase connection and enabled Google provider.');
+      return;
+    }
     client=window.RKFoodieSupabase;
+    // Handle sign-in events as well as the initial page load, so the gate cannot
+    // remain stuck on the login screen if Supabase restores/updates a session.
+    client.auth.onAuthStateChange((event,session)=>{
+      if(session?.user){
+        const changedUser=currentUser?.id!==session.user.id;
+        currentUser=session.user;
+        if(changedUser && event==='SIGNED_IN'){
+          Promise.resolve().then(async()=>{
+            try{await loadAccount();showGate();}
+            catch(e){
+              showGate();
+              setFormMode();
+              $('rkFullName').value=profile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'';
+              $('rkEmail').value=profile?.email||currentUser?.email||'';
+              showAlert('Google sign-in succeeded, but profile/address data could not be loaded. Check the user_profiles and user_addresses table permissions. '+(e.message||''));
+            }
+          });
+        }
+      }else if(event==='SIGNED_OUT'){
+        currentUser=null;profile=null;address=null;
+        updateProfileCards();showLoginMode();showGate();
+      }
+    });
     try{
-      const {data:{session},error}=await client.auth.getSession();if(error)throw error;
-      if(session?.user){currentUser=session.user;await loadAccount();}else showLoginMode();
-    }catch(e){showLoginMode();showAlert(e.message||'Unable to check your account. Please try again.');}
-    showGate();
-    client.auth.onAuthStateChange((_event,session)=>{if(session?.user){currentUser=session.user;}else{currentUser=null;}});
-  }
-  $('rkGoogleSignIn').addEventListener('click',async()=>{
-    clearAlert();
-    if(!client){showAlert('Supabase is not configured yet. Add your project URL and public publishable key first.');return;}
-    busy('rkGoogleSignIn',true,'Connecting to Google…');
-    try{
-      const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
+      const {data,error}=await client.auth.getSession();
       if(error)throw error;
-    }catch(e){showAlert(e.message||'Google sign-in failed. Check the Google provider and redirect URL settings in Supabase.');busy('rkGoogleSignIn',false);}
+      const session=data?.session;
+      if(session?.user){
+        currentUser=session.user;
+        try{await loadAccount();}
+        catch(e){
+          // Keep the verified Google session; don't misleadingly send a signed-in
+          // customer back to the login screen because profile data failed to load.
+          showGate();setFormMode();
+          $('rkFullName').value=profile?.full_name||currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||'';
+          $('rkEmail').value=profile?.email||currentUser.email||'';
+          showAlert('You are signed in with Google, but profile/address data could not be loaded. Check user_profiles and user_addresses table permissions. '+(e.message||''));
+        }
+      }else showLoginMode();
+    }catch(e){
+      showLoginMode();
+      showAlert('Could not restore your login session. '+(e.message||'Please try again.'));
+    }
+    showGate();
+  }
+  $('rkGoogleSignIn').addEventListener('click',()=>{
+    // Google sign-in is intentionally paused; guest checkout remains available.
+    revealSite();
   });
   $('rkAvatarFile').addEventListener('change',()=>{const f=$('rkAvatarFile').files?.[0];if(!f)return;if(!f.type.startsWith('image/')){showAlert('Choose an image file.');return;}if(f.size>5*1024*1024){showAlert('Please choose an image smaller than 5 MB.');return;}avatarFile=f;$('rkAvatarPreview').src=URL.createObjectURL(f);});
   profileForm.addEventListener('submit',async e=>{e.preventDefault();clearAlert();if(!client||!currentUser){showAlert('Please sign in with Google first.');return;}busy('rkSaveProfile',true,'Saving profile…');
@@ -1711,6 +1777,89 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     if (typeof window.toggleCart === 'function') window.toggleCart(false);
     if (typeof window.openFinalCheckout === 'function') window.openFinalCheckout();
   };
+})();
+</script>
+
+
+
+<!-- RK Foodie liked products panel -->
+<style id="rk-liked-foods-styles">
+ .rk-heart-button{position:absolute;z-index:2;right:10px;top:10px;width:40px;height:40px;border-radius:999px;background:rgba(255,255,255,.96);color:#e11d48;display:grid;place-items:center;box-shadow:0 4px 14px rgba(15,23,42,.14);font-size:17px}
+ .rk-heart-button.is-liked,.rk-detail-like-button.is-liked{background:#ffe4e6;color:#e11d48}
+ .rk-detail-like-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:1;min-width:100px;border:1px solid #fecdd3;background:#fff1f2;color:#be123c;font-weight:800;padding:12px 14px;border-radius:13px}
+ .rk-related-card{display:flex;align-items:center;gap:12px;padding:10px;border:1px solid #e5e7eb;border-radius:16px;background:white;position:relative;min-width:0}
+ .rk-related-card>img{width:76px;height:76px;object-fit:cover;border-radius:12px;flex-shrink:0;cursor:pointer}
+ #rkLikedFoodsPanel{position:fixed;inset:0;z-index:130;background:#f8fafc;overflow-y:auto;display:none}
+ #rkLikedFoodsPanel.is-open{display:block}
+ .rk-liked-shell{max-width:1100px;min-height:100%;margin:auto;background:white}
+ .rk-liked-header{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:16px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb}
+ .rk-liked-grid{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:14px;padding:18px}
+ .rk-liked-card{display:flex;gap:13px;border:1px solid #e5e7eb;border-radius:17px;padding:12px;min-width:0}
+ .rk-liked-card img{width:96px;height:96px;object-fit:cover;border-radius:13px;flex-shrink:0}
+ @media(min-width:640px){.rk-liked-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:24px}.rk-liked-card img{width:110px;height:110px}}
+ @media(min-width:1000px){.rk-liked-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.rk-liked-card{flex-direction:column}.rk-liked-card img{width:100%;height:170px}}
+ @media(min-width:700px){#rkFinalCheckout .rk-final-shell{width:min(100%,1240px);max-width:1240px;margin:22px auto;min-height:calc(100% - 44px);border-radius:24px;overflow:hidden}#rkFinalCheckout{padding:1px 22px}#rkFinalCheckout .rk-final-content{grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);align-content:start;align-items:start;gap:22px;padding:28px clamp(24px,3vw,42px)}#rkFinalCheckout .rk-final-card.rk-final-wide:first-child{grid-column:auto;grid-row:span 2}#rkFinalCheckout .rk-final-card:last-child{grid-column:1/-1}#rkFinalCheckout .rk-final-food{align-items:flex-start}#rkFinalCheckout .rk-final-food img{width:clamp(140px,16vw,190px);height:clamp(140px,16vw,190px)}#rkFinalCheckout .rk-final-item img{width:64px;height:64px}#rkFinalCheckout .rk-final-header{padding:18px 28px}#rkFinalCheckout .rk-final-card{min-width:0}}
+ @media(min-width:1200px){#rkFinalCheckout .rk-final-content{grid-template-columns:minmax(0,1.12fr) minmax(360px,.88fr);gap:24px;padding:32px 42px}}
+ @media(max-width:699px){#rkFinalCheckout .rk-final-shell{width:100%;min-height:100%;border-radius:0}#rkFinalCheckout .rk-final-content{grid-template-columns:minmax(0,1fr)}}
+ @media(max-width:900px){.rk-header-actions{gap:5px!important}.rk-header-action{padding-left:9px!important;padding-right:9px!important}.rk-header-action span:not([id]){font-size:11px!important}}
+ @media(max-width:520px){.rk-header-actions{gap:4px!important}.rk-header-action{padding:8px!important}.rk-header-action span:not([id]){display:none}.rk-header-action i{font-size:16px!important}}
+</style>
+<section id="rkLikedFoodsPanel" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="rkLikedFoodsTitle">
+ <div class="rk-liked-shell">
+  <header class="rk-liked-header"><button type="button" onclick="closeLikedFoods()" class="site-menu-button" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button><div class="flex-1"><h2 id="rkLikedFoodsTitle" class="text-xl font-black text-slate-900"><i class="fa-solid fa-heart text-rose-600 mr-2"></i>আপনার পছন্দের খাবার</h2><p class="text-xs text-slate-500 mt-1">লাইক করা খাবারগুলো এখানে জমা থাকবে</p></div></header>
+  <div id="rkLikedFoodsList" class="rk-liked-grid"></div>
+ </div>
+</section>
+<script id="rk-liked-foods-logic">
+(function(){
+ const KEY='rkFoodieLikedFoodsV1';
+ const getLikes=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]').map(String)}catch(e){return []}};
+ const saveLikes=ids=>{try{localStorage.setItem(KEY,JSON.stringify([...new Set(ids.map(String))]))}catch(e){}};
+ const findFood=id=>(Array.isArray(window.foodItems)?window.foodItems:[]).find(f=>String(f.id)===String(id));
+ window.toggleFoodLike=function(id){
+   const ids=getLikes(),key=String(id),exists=ids.includes(key);
+   saveLikes(exists?ids.filter(x=>x!==key):[...ids,key]);
+   renderLiked();syncHeartButtons();
+   if(!exists){const toast=document.createElement('div');toast.textContent='❤️ পছন্দের তালিকায় যোগ হয়েছে';toast.style.cssText='position:fixed;z-index:200;left:50%;bottom:28px;transform:translateX(-50%);background:#881337;color:#fff;padding:11px 17px;border-radius:14px;font-size:13px;font-weight:700;box-shadow:0 8px 24px #0002';document.body.appendChild(toast);setTimeout(()=>toast.remove(),1800)}
+ };
+ function syncHeartButtons(){
+   const liked=new Set(getLikes());
+   document.querySelectorAll('[data-food-id]').forEach(card=>{const id=card.dataset.foodId;const btn=card.querySelector('.rk-heart-button');if(btn){btn.classList.toggle('is-liked',liked.has(String(id)));const html=liked.has(String(id))?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>';if(btn.innerHTML!==html)btn.innerHTML=html}});
+   document.querySelectorAll('.rk-detail-like-button').forEach(btn=>{const m=btn.getAttribute('onclick')||'';const id=(m.match(/toggleFoodLike\(["']([^"']+)/)||[])[1];const yes=id&&liked.has(id);btn.classList.toggle('is-liked',!!yes);const html=yes?'<i class="fa-solid fa-heart"></i> Liked':'<i class="fa-regular fa-heart"></i> Like';if(btn.innerHTML!==html)btn.innerHTML=html});
+   const badge=document.getElementById('likedBadge');if(badge)badge.textContent=liked.size;
+ }
+ function renderLiked(){
+   const box=document.getElementById('rkLikedFoodsList');if(!box)return;
+   const items=getLikes().map(findFood).filter(Boolean);
+   box.innerHTML=items.length?items.map(item=>`<article class="rk-liked-card"><img src="${item.image||''}" alt=""><div class="flex-1 min-w-0"><h3 class="font-extrabold text-slate-900">${item.title||'Food'}</h3><p class="text-xs text-slate-500 mt-1">${item.restaurant||'RK Foodie'}</p><p class="text-lg font-black text-orange-600 mt-2">₹${Number(item.price)||0}</p><div class="flex flex-wrap gap-2 mt-3"><button type="button" class="px-3 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold" onclick='closeLikedFoods();orderFromFoodDetails(${JSON.stringify(String(item.id))})'>Order now</button><button type="button" class="px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold" onclick='addFoodToSavedCart(${JSON.stringify(String(item.id))});closeLikedFoods()'><i class="fa-solid fa-cart-plus"></i> Cart</button><button type="button" class="px-3 py-2 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold" onclick='toggleFoodLike(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-heart"></i> সরান</button></div></div></article>`).join(''):'<div class="col-span-full text-center py-16 text-slate-500"><i class="fa-regular fa-heart text-4xl text-rose-200"></i><p class="font-bold mt-3">এখনও কোনো খাবার লাইক করেননি</p><p class="text-sm mt-1">খাবারের ছবির ❤️ বাটনে চাপ দিন।</p></div>';
+   syncHeartButtons();
+ }
+ window.openLikedFoods=function(){renderLiked();const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.add('is-open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
+ window.closeLikedFoods=function(){const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.remove('is-open');panel.setAttribute('aria-hidden','true');document.body.style.overflow=''};
+ document.addEventListener('DOMContentLoaded',()=>{renderLiked();syncHeartButtons()});
+ const observer=new MutationObserver(()=>syncHeartButtons());observer.observe(document.body,{childList:true,subtree:true});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeLikedFoods()});
+})();
+</script>
+
+
+<script id="rk-guest-access-guard">
+(function(){
+  function enableGuestAccess(){
+    const gate=document.getElementById('rkCustomerGate');
+    if(gate){gate.hidden=true;gate.style.display='none';gate.setAttribute('aria-hidden','true');}
+    document.body.style.overflow='';
+    const status=document.getElementById('rkSettingsProfileStatus');
+    if(status && status.textContent.trim()==='Not signed in') status.textContent='Guest mode';
+    const name=document.getElementById('rkSettingsProfileName');
+    if(name && name.textContent.trim()==='Sign in to create your profile') name.textContent='Guest checkout';
+    const email=document.getElementById('rkSettingsProfileEmail');
+    if(email && email.textContent.trim()==='Save your delivery details for faster ordering.') email.textContent='You can order without signing in.';
+    const addr=document.getElementById('rkSettingsProfileAddress');
+    if(addr && addr.textContent.trim()==='Add your delivery address in your profile.') addr.textContent='Enter your delivery address at checkout.';
+  }
+  enableGuestAccess();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',enableGuestAccess,{once:true});
 })();
 </script>
 
