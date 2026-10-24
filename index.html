@@ -769,7 +769,21 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     </footer>
 
     <!-- Supabase JS client for optional live menu/banner sync -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // CDN fallback: if jsDelivr fails, load the documented UMD bundle from unpkg.
+      (function(){
+        const first = document.currentScript.previousElementSibling;
+        if (!first) return;
+        first.addEventListener('error', function(){
+          if (window.supabase && typeof window.supabase.createClient === 'function') return;
+          const fallback = document.createElement('script');
+          fallback.src = 'https://unpkg.com/@supabase/supabase-js@2';
+          fallback.onerror = function(){ console.error('RK Foodie: both Supabase CDN sources failed to load.'); };
+          document.head.appendChild(fallback);
+        }, { once: true });
+      })();
+    </script>
     <style>
       .rk-banner-caption{position:absolute;left:0;right:0;bottom:0;padding:clamp(14px,3vw,28px);color:#fff;background:linear-gradient(0deg,rgba(8,15,28,.78),rgba(8,15,28,0));text-shadow:0 1px 5px #0008;pointer-events:none}
       .rk-banner-caption h3{font-size:clamp(15px,2.6vw,24px);font-weight:800;line-height:1.2;margin:0 0 4px}
@@ -1393,7 +1407,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         return;
       }
       if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-        console.warn('RK Foodie: Supabase client did not load; showing the built-in menu.');
+        console.error('RK Foodie: Supabase client library is unavailable. Check whether the CDN is blocked and whether window.supabase.createClient exists.');
         return;
       }
       const client = window.supabase.createClient(RK_SUPABASE_URL, RK_SUPABASE_ANON_KEY);
