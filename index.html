@@ -385,7 +385,12 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 </style>
 
 
-<!-- RK Foodie: restore Google sign-in gate and profile editing controls. -->
+<!-- RK Foodie: restore Google login and profile controls. -->
+<style id="rk-auth-gate-restore">
+  #rkCustomerGate { display: flex; }
+  #rkCustomerGate[hidden] { display: none !important; }
+  #rkSettingsProfileAction, #rkSettingsSignOut, #rkOrderEditProfile { display: inline-flex; }
+</style>
 
 </head>
 <body class="bg-gray-50 text-slate-800 antialiased pb-20 md:pb-6">
@@ -676,15 +681,16 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   const items=getCart();const featured=items[0];
   $('rkFinalFeaturedFood').innerHTML=featured?`<img src="${esc(featured.image||'https://placehold.co/200x200/fff0e2/9a4d16?text=Food')}" alt="${esc(featured.title)}" onerror="this.src='https://placehold.co/200x200/fff0e2/9a4d16?text=Food'"><div class="min-w-0"><h3 class="text-lg font-black text-slate-900">${esc(featured.title||'খাবার')}</h3><p class="text-xs text-slate-500 mt-1">${esc(featured.restaurant||'RK Foodie')}</p><p class="text-xs text-slate-500 mt-1">পরিমাণ: ${Number(featured.quantity)||1} টি</p><p class="text-lg font-black text-orange-600 mt-2">${money((Number(featured.price)||0)*(Number(featured.quantity)||1))}</p></div>`:'<p class="text-sm text-slate-500">কোনো খাবার নির্বাচন করা হয়নি।</p>';
   $('rkFinalOrderItems').innerHTML=items.slice(1).map(i=>`<div class="rk-final-item"><img src="${esc(i.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food')}" alt="${esc(i.title)}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="flex-1 min-w-0"><p class="text-sm font-extrabold text-slate-800">${esc(i.title||'খাবার')}</p><p class="text-[11px] text-slate-500 mt-1">${Number(i.quantity)||1} × ${money(i.price)}</p></div><strong class="text-sm font-black text-slate-900">${money((Number(i.price)||0)*(Number(i.quantity)||1))}</strong></div>`).join('');
-  const saved=typeof window.rkGetCustomerDetails==='function'?window.rkGetCustomerDetails():{};
-  const name=$('custName')?.value.trim()||saved.name||$('rkOrderProfileName')?.textContent||'নাম যোগ করা হয়নি';
-  const phone=$('custPhone')?.value.trim()||saved.phone||$('rkOrderProfilePhone')?.textContent||'মোবাইল নম্বর যোগ করা হয়নি';
-  const email=saved.email||$('rkSettingsProfileEmail')?.textContent||'ইমেল পাওয়া যায়নি';
-  const line=$('custAddress')?.value.trim()||[saved.address_line,saved.landmark?'Landmark: '+saved.landmark:'',saved.city,saved.state,saved.pincode].filter(Boolean).join(', ')||$('rkOrderProfileAddress')?.textContent||'ঠিকানা যোগ করা হয়নি';
-  const recipient=saved.recipient_name||name;
-  $('rkFinalCustomerDetails').innerHTML=`<div class="rk-final-customer-row"><i class="fa-solid fa-user"></i><div><p class="text-[10px] text-slate-400">নাম / প্রাপকের নাম</p><strong>${esc(name)}</strong><p class="text-xs text-slate-500 mt-1">${esc(recipient)}</p></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-phone"></i><div><p class="text-[10px] text-slate-400">মোবাইল নম্বর</p><strong>${esc(phone)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-envelope"></i><div><p class="text-[10px] text-slate-400">ইমেল অ্যাড্রেস</p><strong class="break-all">${esc(email)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-location-dot"></i><div><p class="text-[10px] text-slate-400">সম্পূর্ণ ডেলিভারি ঠিকানা</p><strong>${esc(line)}</strong><p class="text-xs text-slate-500 mt-1">ল্যান্ডমার্ক: ${esc(saved.landmark||'—')} · PIN: ${esc(saved.pincode||'—')}</p></div></div>`;
+  const name=$('custName')?.value.trim()||$('rkOrderProfileName')?.textContent||'প্রোফাইলে নাম পাওয়া যায়নি';
+  const phone=$('custPhone')?.value.trim()||$('rkOrderProfilePhone')?.textContent||'মোবাইল নম্বর পাওয়া যায়নি';
+  const address=$('custAddress')?.value.trim()||$('rkOrderProfileAddress')?.textContent||'ঠিকানা পাওয়া যায়নি';
+  const email=$('rkSettingsProfileEmail')?.textContent||'';
+  const landmark=$('rkSettingsProfileAddress')?.textContent||'';
+  const pinMatch=address.match(/(?:^|[, ]|PIN(?:\s*code)?\s*:?)\s*(\d{6})(?:$|[, ])/i);
+  $('rkFinalCustomerDetails').innerHTML=`<div class="rk-final-customer-row"><i class="fa-solid fa-user"></i><div><p class="text-[10px] text-slate-400">নাম</p><strong>${esc(name)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-phone"></i><div><p class="text-[10px] text-slate-400">মোবাইল</p><strong>${esc(phone)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-envelope"></i><div><p class="text-[10px] text-slate-400">ইমেল</p><strong class="break-all">${esc(email||'Google account থেকে ইমেল পাওয়া যায়নি')}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-location-dot"></i><div><p class="text-[10px] text-slate-400">ডেলিভারি ঠিকানা</p><strong>${esc(address)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-map-pin"></i><div><p class="text-[10px] text-slate-400">PIN কোড</p><strong>${esc(pinMatch?pinMatch[1]:'সেভ করা ঠিকানা থেকে পাওয়া যায়নি')}</strong></div></div>`;
   $('rkFinalTotal').textContent=money(currentTotal());const payment=document.querySelector('input[name="payment"]:checked');$('rkFinalPayment').textContent=payment?(payment.value==='Cash on Delivery'?'ক্যাশ অন ডেলিভারি':payment.value):'ক্যাশ অন ডেলিভারি';
  }
+ window.renderRKFinalCheckout=renderFinal;
  window.closeFinalCheckout=function(){const modal=$('rkFinalCheckout');if(!modal)return;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';};
  window.openFinalCheckout=function(){if(!getCart().length){alert('প্রথমে কার্টে খাবার যোগ করুন।');return;}renderFinal();const modal=$('rkFinalCheckout');modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';};
  window.confirmFinalCheckout=function(){const name=$('custName')?.value.trim(),phone=$('custPhone')?.value.trim(),address=$('custAddress')?.value.trim();if(!name||!phone||!address){window.closeFinalCheckout();if(typeof window.toggleCart==='function')window.toggleCart(true);const target=!name?$('custName'):!phone?$('custPhone'):$('custAddress');target?.focus();alert('অর্ডার সম্পূর্ণ করতে নাম, মোবাইল নম্বর এবং সম্পূর্ণ ঠিকানা পূরণ করুন।');return;}window.closeFinalCheckout();if(typeof window.submitOrderViaWhatsApp==='function')window.submitOrderViaWhatsApp();};
@@ -770,20 +776,6 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
     <!-- Supabase JS client for optional live menu/banner sync -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-      // CDN fallback: if jsDelivr fails, load the documented UMD bundle from unpkg.
-      (function(){
-        const first = document.currentScript.previousElementSibling;
-        if (!first) return;
-        first.addEventListener('error', function(){
-          if (window.supabase && typeof window.supabase.createClient === 'function') return;
-          const fallback = document.createElement('script');
-          fallback.src = 'https://unpkg.com/@supabase/supabase-js@2';
-          fallback.onerror = function(){ console.error('RK Foodie: both Supabase CDN sources failed to load.'); };
-          document.head.appendChild(fallback);
-        }, { once: true });
-      })();
-    </script>
     <style>
       .rk-banner-caption{position:absolute;left:0;right:0;bottom:0;padding:clamp(14px,3vw,28px);color:#fff;background:linear-gradient(0deg,rgba(8,15,28,.78),rgba(8,15,28,0));text-shadow:0 1px 5px #0008;pointer-events:none}
       .rk-banner-caption h3{font-size:clamp(15px,2.6vw,24px);font-weight:800;line-height:1.2;margin:0 0 4px}
@@ -1407,7 +1399,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         return;
       }
       if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-        console.error('RK Foodie: Supabase client library is unavailable. Check whether the CDN is blocked and whether window.supabase.createClient exists.');
+        console.warn('RK Foodie: Supabase client did not load; showing the built-in menu.');
         return;
       }
       const client = window.supabase.createClient(RK_SUPABASE_URL, RK_SUPABASE_ANON_KEY);
@@ -1524,12 +1516,14 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   const goStep = (n,title,desc,eyebrow) => { $('rkGateTitle').textContent=title; $('rkGateDescription').textContent=desc; $('rkGateEyebrow').textContent=eyebrow||'Your food journey starts here'; [1,2,3].forEach(i=>$('rkStep'+i).classList.toggle('active',i<=n)); clearAlert(); };
   const syncCheckoutDetails = () => {
     const nameField=$('custName'), phoneField=$('custPhone'), addressField=$('custAddress');
-    if(nameField && !nameField.value.trim()) nameField.value=profile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'';
-    if(phoneField && !phoneField.value.trim()) phoneField.value=address?.phone||currentUser?.phone||'';
-    if(addressField && !addressField.value.trim() && address){
-      addressField.value=[address.address_line,address.landmark ? 'Landmark: '+address.landmark : '',address.city,address.state,address.pincode].filter(Boolean).join(', ');
-    }
+    const savedName=profile?.full_name||address?.receiver_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'';
+    const savedPhone=address?.phone||currentUser?.phone||'';
+    const savedAddress=address?[address.address_line,address.landmark ? 'Landmark: '+address.landmark : '',address.city,address.state,address.pincode].filter(Boolean).join(', '):'';
+    if(nameField && savedName) nameField.value=savedName;
+    if(phoneField && savedPhone) phoneField.value=savedPhone;
+    if(addressField && savedAddress) addressField.value=savedAddress;
     updateProfileCards();
+    if(typeof window.renderRKFinalCheckout==='function') window.renderRKFinalCheckout();
   };
   const fullSavedAddress = () => address ? [address.address_line,address.landmark ? 'Landmark: '+address.landmark : '',address.city,address.state,address.pincode].filter(Boolean).join(', ') : '';
   const updateProfileCards = () => {
@@ -1546,7 +1540,6 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     const signOut=$('rkSettingsSignOut');if(signOut)signOut.hidden=!(currentUser&&profile);
     const action=$('rkSettingsProfileAction');if(action)action.textContent=currentUser?'Edit profile':'Profile login paused';
   };
-  window.rkGetCustomerDetails = () => ({ name: profile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'', email: profile?.email||currentUser?.email||'', phone: address?.phone||currentUser?.phone||'', address_line: address?.address_line||'', landmark: address?.landmark||'', city: address?.city||'', state: address?.state||'', pincode: address?.pincode||'', recipient_name: address?.receiver_name||'', signedIn: !!currentUser });
   const revealSite = () => { syncCheckoutDetails(); updateProfileCards(); gate.hidden=true; document.body.style.overflow=''; };
   const showGate = () => { gate.hidden=!!currentUser; document.body.style.overflow=currentUser?'':'hidden'; };
   const setFormMode = () => { loginPane.hidden=true; profileForm.hidden=false; accountPane.hidden=true; goStep(3,'Create your profile','Save your delivery details for a smoother checkout.','Almost there'); $('rkFullName').focus(); };
@@ -1651,7 +1644,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   $('rkSettingsProfileAction').addEventListener('click',()=>{if(currentUser)openProfileEditor();else{showLoginMode();showGate();}});
   $('rkOrderEditProfile').addEventListener('click',openProfileEditor);
   $('rkSettingsSignOut').addEventListener('click',async()=>{try{if(client)await client.auth.signOut();}catch(e){showAlert(e.message||'Sign out failed.');return;}currentUser=null;profile=null;address=null;updateProfileCards();showLoginMode();showGate();});
-  $('rkEnterSite').addEventListener('click',revealSite);$('rkPreviewSite').addEventListener('click',()=>{revealSite();console.warn('RK Foodie preview mode: customer login is not enforced because Supabase is not configured.');});
+  $('rkEnterSite').addEventListener('click',()=>{if(!currentUser){showLoginMode();showGate();showAlert('ওয়েবসাইটে ঢুকতে Google দিয়ে লগইন করুন।');return;}revealSite();});$('rkPreviewSite').addEventListener('click',()=>{showLoginMode();showGate();showAlert('প্রোফাইল ও অর্ডারের তথ্য সুরক্ষিত রাখতে Google লগইন প্রয়োজন।');});
   $('rkSignOut').addEventListener('click',async()=>{try{if(client)await client.auth.signOut();}catch(e){showAlert(e.message||'Sign out failed.');return;}currentUser=null;profile=null;address=null;updateProfileCards();showLoginMode();showGate();});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
@@ -1774,13 +1767,6 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
  @media(max-width:699px){#rkFinalCheckout .rk-final-shell{width:100%;min-height:100%;border-radius:0}#rkFinalCheckout .rk-final-content{grid-template-columns:minmax(0,1fr)}}
  @media(max-width:900px){.rk-header-actions{gap:5px!important}.rk-header-action{padding-left:9px!important;padding-right:9px!important}.rk-header-action span:not([id]){font-size:11px!important}}
  @media(max-width:520px){.rk-header-actions{gap:4px!important}.rk-header-action{padding:8px!important}.rk-header-action span:not([id]){display:none}.rk-header-action i{font-size:16px!important}}
-
- .rk-heart-button.is-liked,.rk-detail-like-button.is-liked{color:#e11d48!important;background:#fff1f2!important;border-color:#fecdd3!important}
- .rk-heart-button.is-liked i,.rk-detail-like-button.is-liked i{color:#e11d48!important}
- .rk-like-pop{animation:rkLikePop .48s cubic-bezier(.2,.9,.3,1.4)}
- @keyframes rkLikePop{0%{transform:scale(1)}35%{transform:scale(1.35) rotate(-8deg)}65%{transform:scale(.9) rotate(7deg)}100%{transform:scale(1)}}
- .rk-like-confetti{position:fixed;z-index:250;pointer-events:none;font-size:16px;animation:rkLikeBurst .85s ease-out forwards}
- @keyframes rkLikeBurst{0%{opacity:0;transform:translate(0,8px) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-52px) rotate(35deg) scale(1.1)}}
 </style>
 <section id="rkLikedFoodsPanel" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="rkLikedFoodsTitle">
  <div class="rk-liked-shell">
@@ -1799,11 +1785,11 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
    saveLikes(exists?ids.filter(x=>x!==key):[...ids,key]);
    renderLiked();syncHeartButtons();
    if(!exists){
-     document.querySelectorAll('[data-food-id]').forEach(card=>{if(String(card.dataset.foodId)===key){const heart=card.querySelector('.rk-heart-button');if(heart){heart.classList.remove('rk-like-pop');void heart.offsetWidth;heart.classList.add('rk-like-pop');}}});
-     const active=document.activeElement;if(active&&(active.classList?.contains('rk-detail-like-button')||active.classList?.contains('rk-heart-button'))){active.classList.remove('rk-like-pop');void active.offsetWidth;active.classList.add('rk-like-pop');}
-     const anchor=document.querySelector(`[data-food-id="${CSS.escape(key)}"] .rk-heart-button`)||document.querySelector('.rk-detail-like-button.is-liked');
-     if(anchor){const r=anchor.getBoundingClientRect();['🎉','✨','❤️'].forEach((symbol,i)=>{const bit=document.createElement('span');bit.className='rk-like-confetti';bit.textContent=symbol;bit.style.left=(r.left+r.width/2+(i-1)*12)+'px';bit.style.top=(r.top+window.scrollY)+'px';bit.style.setProperty('--dx',((i-1)*24)+'px');document.body.appendChild(bit);setTimeout(()=>bit.remove(),900);});}
-     const toast=document.createElement('div');toast.textContent='❤️ পছন্দের তালিকায় যোগ হয়েছে';toast.style.cssText='position:fixed;z-index:200;left:50%;bottom:28px;transform:translateX(-50%);background:#881337;color:#fff;padding:11px 17px;border-radius:14px;font-size:13px;font-weight:700;box-shadow:0 8px 24px #0002';document.body.appendChild(toast);setTimeout(()=>toast.remove(),1800)}
+     const selector=`[data-food-id="${CSS.escape(key)}"] .rk-heart-button`;
+     const target=document.querySelector(selector)||document.querySelector('.rk-detail-like-button.is-liked');
+     if(target){const burst=document.createElement('span');burst.className='rk-like-burst';burst.innerHTML='♥ <span>✦</span><span>✦</span>';target.appendChild(burst);setTimeout(()=>burst.remove(),900);}
+     const toast=document.createElement('div');toast.textContent='🎉 ❤️ পছন্দের তালিকায় যোগ হয়েছে';toast.style.cssText='position:fixed;z-index:200;left:50%;bottom:28px;transform:translateX(-50%);background:#881337;color:#fff;padding:11px 17px;border-radius:14px;font-size:13px;font-weight:700;box-shadow:0 8px 24px #0002';document.body.appendChild(toast);setTimeout(()=>toast.remove(),1800)
+   }
  };
  function syncHeartButtons(){
    const liked=new Set(getLikes());
@@ -1819,7 +1805,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
  }
  window.openLikedFoods=function(){renderLiked();const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.add('is-open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
  window.closeLikedFoods=function(){const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.remove('is-open');panel.setAttribute('aria-hidden','true');document.body.style.overflow=''};
- document.addEventListener('DOMContentLoaded',()=>{renderLiked();syncHeartButtons();setTimeout(syncHeartButtons,250);setTimeout(syncHeartButtons,900)});
+ document.addEventListener('DOMContentLoaded',()=>{renderLiked();syncHeartButtons()});
  // Avoid observing every DOM mutation: heart updates themselves mutate the DOM and can freeze slower phones.
  window.rkSyncHeartButtons=syncHeartButtons;
  const originalRenderFoodGrid=window.renderFoodGrid;
@@ -1846,7 +1832,16 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 })();
 </script>
-<style>.rk-heart-button.is-liked,.rk-detail-like-button.is-liked{color:#e11d48!important;background:#ffe4e6!important;border-color:#fb7185!important}.rk-heart-button.is-liked i,.rk-detail-like-button.is-liked i{color:#e11d48!important}</style>
+<style>
+.rk-heart-button.is-liked,.rk-detail-like-button.is-liked{color:#e11d48!important;background:#ffe4e6!important;border-color:#fb7185!important}
+.rk-heart-button.is-liked i,.rk-detail-like-button.is-liked i{color:#e11d48!important}
+.rk-heart-button.is-liked{box-shadow:0 0 0 2px #fecdd3 inset}
+.rk-like-burst{position:absolute;pointer-events:none;left:50%;top:50%;transform:translate(-50%,-50%);font-size:18px;color:#e11d48;animation:rkLikePop .85s ease-out forwards;z-index:20}
+.rk-like-burst span{position:absolute;font-size:12px;color:#fb7185;animation:rkLikeSpark .8s ease-out forwards}.rk-like-burst span:first-child{left:-13px;top:-12px}.rk-like-burst span:last-child{right:-13px;top:-9px}
+.rk-heart-button,.rk-detail-like-button{position:relative;overflow:visible}
+@keyframes rkLikePop{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}35%{opacity:1;transform:translate(-50%,-75%) scale(1.35)}100%{opacity:0;transform:translate(-50%,-125%) scale(1)}}
+@keyframes rkLikeSpark{0%{opacity:0;transform:scale(.3)}40%{opacity:1;transform:scale(1.3)}100%{opacity:0;transform:translateY(-18px) scale(.7)}}
+</style>
 
 </body>
 </html>
