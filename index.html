@@ -385,17 +385,17 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 </style>
 
 
-<!-- RK Foodie: restore Google login and profile controls. -->
+<!-- RK Foodie: public access mode; the Google-styled button is only a website entry button. -->
 <style id="rk-auth-gate-restore">
   #rkCustomerGate { display: flex; }
   #rkCustomerGate[hidden] { display: none !important; }
-  #rkSettingsProfileAction, #rkSettingsSignOut, #rkOrderEditProfile { display: inline-flex; }
+  #rkSettingsProfileAction, #rkOrderEditProfile { display: inline-flex; }
 </style>
 
 </head>
 <body class="bg-gray-50 text-slate-800 antialiased pb-20 md:pb-6">
 
-    <!-- RK Foodie Customer Login/Profile Gate. Google OAuth is the only sign-in method. -->
+    <!-- RK Foodie welcome screen. No account login is required to enter the website. -->
     <section id="rkCustomerGate" aria-label="RK Foodie customer account">
       <div class="rk-shell"><div class="rk-panel">
         <div class="rk-brand"><div class="rk-brand-mark"><img src="assets/image-1.webp" alt="RK Foodie chef logo"></div><div><h1>RK Foodie</h1><p>Good food, delivered with care</p></div></div>
@@ -408,11 +408,11 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         <div class="rk-content">
           <div class="rk-eyebrow" id="rkGateEyebrow">Your food journey starts here</div>
           <h2 class="rk-title" id="rkGateTitle">Login to your account</h2>
-          <p class="rk-muted" id="rkGateDescription">Sign in securely with Google to save your profile and delivery address.</p>
+          <p class="rk-muted" id="rkGateDescription">Welcome! Tap the button below to enter the RK Foodie website. No login required.</p>
           <div class="rk-steps" aria-hidden="true"><span class="rk-step active" id="rkStep1"></span><span class="rk-step" id="rkStep2"></span><span class="rk-step" id="rkStep3"></span></div>
           <div id="rkGateAlert" class="rk-alert" role="status" aria-live="polite"></div>
           <div id="rkLoginPane">
-            <button class="rk-btn rk-primary rk-wide" id="rkGoogleSignIn" type="button"><i class="fa-brands fa-google" aria-hidden="true"></i> Continue with Google</button>
+            <button class="rk-btn rk-primary rk-wide" id="rkGoogleSignIn" type="button"><i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie</button>
             <div class="rk-preview" id="rkSetupNote" hidden><strong>Google sign-in setup needed</strong><br/>Add your Supabase Project URL and public publishable key, then enable Google under Supabase Authentication → Sign In / Providers and add your Google OAuth Client ID and Secret. Set the authorized redirect URL in Google Cloud and Supabase. You can preview the website without signing in.</div>
             <button class="rk-btn rk-secondary rk-wide" id="rkPreviewSite" type="button" hidden>Preview website without login</button>
           </div>
@@ -435,7 +435,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             <button class="rk-btn rk-secondary rk-wide" id="rkEditProfile" type="button">Edit profile / address</button>
             <button class="rk-btn rk-secondary rk-wide" id="rkSignOut" type="button">Sign out</button>
           </div>
-          <p class="rk-muted" style="font-size:10px;margin:18px 0 0;text-align:center">Your information is used to manage your account and delivery. Keep your Google account secure.</p>
+          <p class="rk-muted" style="font-size:10px;margin:18px 0 0;text-align:center">Browse the menu and place an order without signing in.</p>
         </div>
       </div></div>
     </section>
@@ -459,19 +459,19 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         <section id="rkSettingsProfileCard" class="mt-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-label="Your profile">
             <div class="flex items-center justify-between gap-2 mb-3">
                 <div class="font-bold text-sm text-slate-800"><i class="fa-regular fa-user mr-2 text-orange-500"></i>My Profile</div>
-                <span id="rkSettingsProfileStatus" class="text-[10px] rounded-full bg-slate-100 px-2 py-1 text-slate-500">Not signed in</span>
+                <span id="rkSettingsProfileStatus" class="text-[10px] rounded-full bg-slate-100 px-2 py-1 text-slate-500">Guest mode</span>
             </div>
             <div class="flex items-center gap-3">
                 <img id="rkSettingsAvatar" src="https://placehold.co/96x96/fff0e2/9a4d16?text=Photo" alt="Profile photo" class="h-14 w-14 rounded-full border border-slate-200 object-cover bg-orange-50 shrink-0" />
                 <div class="min-w-0 flex-1">
-                    <div id="rkSettingsProfileName" class="font-bold text-sm text-slate-800 truncate">Sign in to create your profile</div>
-                    <div id="rkSettingsProfileEmail" class="text-xs text-slate-500 truncate mt-1">Save your delivery details for faster ordering.</div>
+                    <div id="rkSettingsProfileName" class="font-bold text-sm text-slate-800 truncate">Guest checkout</div>
+                    <div id="rkSettingsProfileEmail" class="text-xs text-slate-500 truncate mt-1">You can order without signing in.</div>
                     <div id="rkSettingsProfilePhone" class="text-xs text-slate-500 truncate mt-1">Phone number not saved</div>
                 </div>
             </div>
             <div id="rkSettingsProfileAddress" class="mt-3 rounded-xl bg-slate-50 p-3 text-xs leading-relaxed text-slate-600">Your saved delivery address will appear here.</div>
             <div class="grid grid-cols-2 gap-2 mt-3">
-                <button id="rkSettingsProfileAction" type="button" class="rounded-xl bg-orange-500 px-3 py-2.5 text-xs font-bold text-white hover:bg-orange-600">Sign in / Profile</button>
+                <button id="rkSettingsProfileAction" type="button" class="rounded-xl bg-orange-500 px-3 py-2.5 text-xs font-bold text-white hover:bg-orange-600">Guest mode</button>
                 <button id="rkSettingsSignOut" type="button" hidden class="rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">Sign out</button>
             </div>
         </section>
@@ -1501,152 +1501,53 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   'use strict';
   const $ = id => document.getElementById(id);
   const gate = $('rkCustomerGate');
-  if (!gate) return;
-  const setupNote = $('rkSetupNote');
-  const loginPane = $('rkLoginPane');
-  const profileForm = $('rkProfileForm');
-  const accountPane = $('rkAccountPane');
-  const alertBox = $('rkGateAlert');
-  let client = null, currentUser = null, avatarFile = null, profile = null, address = null;
-  const safe = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const value = id => $(id).value.trim();
-  const showAlert = (message, ok=false) => { alertBox.textContent=message; alertBox.className='rk-alert'+(ok?' ok':''); alertBox.style.display='block'; };
-  const clearAlert = () => { alertBox.style.display='none'; alertBox.textContent=''; alertBox.className='rk-alert'; };
-  const busy = (id,on,label) => { const b=$(id); if(!b)return; b.disabled=on; if(on){b.dataset.oldLabel=b.innerHTML;b.textContent=label||'Please wait…';}else if(b.dataset.oldLabel){b.innerHTML=b.dataset.oldLabel;delete b.dataset.oldLabel;} };
-  const goStep = (n,title,desc,eyebrow) => { $('rkGateTitle').textContent=title; $('rkGateDescription').textContent=desc; $('rkGateEyebrow').textContent=eyebrow||'Your food journey starts here'; [1,2,3].forEach(i=>$('rkStep'+i).classList.toggle('active',i<=n)); clearAlert(); };
-  const syncCheckoutDetails = () => {
-    const nameField=$('custName'), phoneField=$('custPhone'), addressField=$('custAddress');
-    const savedName=profile?.full_name||address?.receiver_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'';
-    const savedPhone=address?.phone||currentUser?.phone||'';
-    const savedAddress=address?[address.address_line,address.landmark ? 'Landmark: '+address.landmark : '',address.city,address.state,address.pincode].filter(Boolean).join(', '):'';
-    if(nameField && savedName) nameField.value=savedName;
-    if(phoneField && savedPhone) phoneField.value=savedPhone;
-    if(addressField && savedAddress) addressField.value=savedAddress;
-    updateProfileCards();
-    if(typeof window.renderRKFinalCheckout==='function') window.renderRKFinalCheckout();
-  };
-  const fullSavedAddress = () => address ? [address.address_line,address.landmark ? 'Landmark: '+address.landmark : '',address.city,address.state,address.pincode].filter(Boolean).join(', ') : '';
-  const updateProfileCards = () => {
-    const avatar=profile?.avatar_url||currentUser?.user_metadata?.avatar_url||currentUser?.user_metadata?.picture||'https://placehold.co/96x96/fff0e2/9a4d16?text=Photo';
-    const name=profile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'Guest checkout';
-    const email=profile?.email||currentUser?.email||'You can order without signing in.';
-    const phone=address?.phone||currentUser?.phone||'No phone number saved yet';
-    const savedAddress=fullSavedAddress()||'Enter your delivery address at checkout.';
-    const setText=(id,text)=>{const el=$(id);if(el)el.textContent=text;};
-    ['rkSettingsAvatar','rkOrderProfileAvatar'].forEach(id=>{const el=$(id);if(el)el.src=avatar;});
-    setText('rkSettingsProfileName',name);setText('rkSettingsProfileEmail',email);setText('rkSettingsProfilePhone',phone);setText('rkSettingsProfileAddress',address?savedAddress:'Add your delivery address in your profile.');
-    setText('rkSettingsProfileStatus',profile&&address?'Profile saved':'Guest mode');
-    setText('rkOrderProfileName',profile?.full_name||name);setText('rkOrderProfilePhone',phone);setText('rkOrderProfileAddress',address?savedAddress:'Add your name, phone number and address at checkout.');
-    const signOut=$('rkSettingsSignOut');if(signOut)signOut.hidden=!(currentUser&&profile);
-    const action=$('rkSettingsProfileAction');if(action)action.textContent=currentUser?'Edit profile':'Profile login paused';
-  };
-  const revealSite = () => { syncCheckoutDetails(); updateProfileCards(); gate.hidden=true; document.body.style.overflow=''; };
-  const showGate = () => { gate.hidden=!!currentUser; document.body.style.overflow=currentUser?'':'hidden'; };
-  const setFormMode = () => { loginPane.hidden=true; profileForm.hidden=false; accountPane.hidden=true; goStep(3,'Create your profile','Save your delivery details for a smoother checkout.','Almost there'); $('rkFullName').focus(); };
-  const showLoginMode = () => { loginPane.hidden=false; profileForm.hidden=true; accountPane.hidden=true; goStep(1,'Login with Google','Use your Google account to save your profile and delivery address.'); };
-  function formatAddress(a){return `<div style="color:#ff6b00;font-size:18px;padding-top:2px"><i class="fa-solid fa-location-dot"></i></div><div><strong>${safe(a.title||'Home')} · ${safe(a.receiver_name||'')}</strong><p style="font-size:12px;color:#738096;line-height:1.65;margin:5px 0 0">${safe(a.address_line||'')}${a.landmark?' · Near '+safe(a.landmark):''}<br/>${safe(a.city||'')}, ${safe(a.state||'')} ${safe(a.pincode||'')}<br/>${safe(a.phone||'')}</p></div>`;}
-  async function loadAccount(){
-    if(!client||!currentUser)return;
-    const {data:pData,error:pErr}=await client.from('user_profiles').select('*').eq('id',currentUser.id).maybeSingle();
-    if(pErr) throw new Error('Could not load profile. Create the user_profiles table and set its RLS policies. '+pErr.message);
-    profile=pData;
-    const {data:aData,error:aErr}=await client.from('user_addresses').select('*').eq('user_id',currentUser.id).order('is_default',{ascending:false}).limit(1).maybeSingle();
-    if(aErr) throw new Error('Could not load address. Create the user_addresses table and set its RLS policies. '+aErr.message);
-    address=aData;
-    syncCheckoutDetails();
-    if(!profile||!profile.full_name||!address){setFormMode(); $('rkFullName').value=profile?.full_name||currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||''; $('rkEmail').value=profile?.email||currentUser.email||''; $('rkAvatarPreview').src=profile?.avatar_url||currentUser.user_metadata?.avatar_url||currentUser.user_metadata?.picture||$('rkAvatarPreview').src; if(profile){$('rkFullName').value=profile.full_name||$('rkFullName').value;$('rkEmail').value=profile.email||$('rkEmail').value;$('rkAvatarPreview').src=profile.avatar_url||$('rkAvatarPreview').src;} if(address){$('rkAddressTitle').value=address.title||'Home';$('rkRecipient').value=address.receiver_name||'';$('rkAddressPhone').value=address.phone||currentUser.phone||'';$('rkAddressLine').value=address.address_line||'';$('rkLandmark').value=address.landmark||'';$('rkCity').value=address.city||'';$('rkState').value=address.state||'West Bengal';$('rkPincode').value=address.pincode||'';}return;}
-    $('rkAccountName').textContent='Welcome, '+profile.full_name+'!'; $('rkAccountPhone').textContent=currentUser.email||''; $('rkAccountAvatar').src=profile.avatar_url||'https://placehold.co/160x160/fff0e2/9a4d16?text=Photo'; $('rkSavedAddress').innerHTML=formatAddress(address);updateProfileCards();
-    loginPane.hidden=true;profileForm.hidden=true;accountPane.hidden=false;goStep(3,'Your account is ready','Your profile and delivery address are saved.');
+
+  function enterWebsite() {
+    if (gate) gate.hidden = true;
+    document.body.style.overflow = '';
+    // Public guest mode: no Google OAuth, profile database, or sign-in session required.
+    const status = $('rkSettingsProfileStatus');
+    if (status) status.textContent = 'Guest mode';
+    const name = $('rkSettingsProfileName');
+    if (name) name.textContent = 'Guest checkout';
+    const email = $('rkSettingsProfileEmail');
+    if (email) email.textContent = 'You can order without signing in.';
+    const phone = $('rkSettingsProfilePhone');
+    if (phone) phone.textContent = 'Phone number not saved';
+    const address = $('rkSettingsProfileAddress');
+    if (address) address.textContent = 'Enter your delivery address at checkout.';
+    const action = $('rkSettingsProfileAction');
+    if (action) action.textContent = 'Guest mode';
+    const signOut = $('rkSettingsSignOut');
+    if (signOut) signOut.hidden = true;
   }
-  async function init(){
-    updateProfileCards();
-    const configured=window.RKFoodieSupabaseConfigured===true;
-    if(!configured||!window.supabase||!window.RKFoodieSupabase){
-      setupNote.hidden=false;
-      $('rkPreviewSite').hidden=false;
-      showGate();
-      showLoginMode();
-      goStep(1,'Welcome to RK Foodie','Google sign-in needs a working Supabase connection and enabled Google provider.');
-      return;
-    }
-    client=window.RKFoodieSupabase;
-    // Handle sign-in events as well as the initial page load, so the gate cannot
-    // remain stuck on the login screen if Supabase restores/updates a session.
-    client.auth.onAuthStateChange((event,session)=>{
-      if(session?.user){
-        const changedUser=currentUser?.id!==session.user.id;
-        currentUser=session.user;
-        if(changedUser && event==='SIGNED_IN'){
-          Promise.resolve().then(async()=>{
-            try{await loadAccount();showGate();}
-            catch(e){
-              showGate();
-              setFormMode();
-              $('rkFullName').value=profile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||'';
-              $('rkEmail').value=profile?.email||currentUser?.email||'';
-              showAlert('Google sign-in succeeded, but profile/address data could not be loaded. Check the user_profiles and user_addresses table permissions. '+(e.message||''));
-            }
-          });
-        }
-      }else if(event==='SIGNED_OUT'){
-        currentUser=null;profile=null;address=null;
-        updateProfileCards();showLoginMode();showGate();
-      }
-    });
-    try{
-      const {data,error}=await client.auth.getSession();
-      if(error)throw error;
-      const session=data?.session;
-      if(session?.user){
-        currentUser=session.user;
-        try{await loadAccount();}
-        catch(e){
-          // Keep the verified Google session; don't misleadingly send a signed-in
-          // customer back to the login screen because profile data failed to load.
-          showGate();setFormMode();
-          $('rkFullName').value=profile?.full_name||currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||'';
-          $('rkEmail').value=profile?.email||currentUser.email||'';
-          showAlert('You are signed in with Google, but profile/address data could not be loaded. Check user_profiles and user_addresses table permissions. '+(e.message||''));
-        }
-      }else showLoginMode();
-    }catch(e){
-      showLoginMode();
-      showAlert('Could not restore your login session. '+(e.message||'Please try again.'));
-    }
-    showGate();
+
+  // Keep the Google icon for visual familiarity, but make the button enter the site directly.
+  const googleButton = $('rkGoogleSignIn');
+  if (googleButton) googleButton.addEventListener('click', enterWebsite);
+  const previewButton = $('rkPreviewSite');
+  if (previewButton) previewButton.addEventListener('click', enterWebsite);
+  const enterButton = $('rkEnterSite');
+  if (enterButton) enterButton.addEventListener('click', enterWebsite);
+
+  // Profile controls no longer open a login gate. Guests can enter delivery details at checkout.
+  const profileAction = $('rkSettingsProfileAction');
+  if (profileAction) profileAction.addEventListener('click', () => {
+    enterWebsite();
+    const checkout = $('custName') || $('custPhone') || $('custAddress');
+    if (checkout) checkout.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  const orderProfile = $('rkOrderEditProfile');
+  if (orderProfile) orderProfile.addEventListener('click', enterWebsite);
+
+  // The landing screen remains visible initially so the Google icon button can be tapped.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.style.overflow = 'hidden';
+    }, {once:true});
+  } else {
+    document.body.style.overflow = 'hidden';
   }
-  $('rkGoogleSignIn').addEventListener('click',async()=>{
-    if(!client){showAlert('Google login is unavailable because Supabase is not configured.');return;}
-    busy('rkGoogleSignIn',true,'Connecting to Google…');
-    try{const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});if(error)throw error;}catch(e){showAlert('Google sign-in failed: '+(e.message||'Please try again.'));busy('rkGoogleSignIn',false);}
-  });
-  $('rkAvatarFile').addEventListener('change',()=>{const f=$('rkAvatarFile').files?.[0];if(!f)return;if(!f.type.startsWith('image/')){showAlert('Choose an image file.');return;}if(f.size>5*1024*1024){showAlert('Please choose an image smaller than 5 MB.');return;}avatarFile=f;$('rkAvatarPreview').src=URL.createObjectURL(f);});
-  profileForm.addEventListener('submit',async e=>{e.preventDefault();clearAlert();if(!client||!currentUser){showAlert('Please sign in with Google first.');return;}busy('rkSaveProfile',true,'Saving profile…');
-    try{
-      let avatarUrl=profile?.avatar_url||currentUser.user_metadata?.avatar_url||currentUser.user_metadata?.picture||null;
-      if(avatarFile){const ext=(avatarFile.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';const path=`${currentUser.id}/avatar-${Date.now()}.${ext}`;const {error:upErr}=await client.storage.from('avatars').upload(path,avatarFile,{upsert:true,contentType:avatarFile.type});if(upErr)throw new Error('Photo upload failed. Create the private avatars bucket and its owner-only policies. '+upErr.message);const {data:urlData}=client.storage.from('avatars').getPublicUrl(path);avatarUrl=urlData.publicUrl;}
-      const profileRow={id:currentUser.id,full_name:value('rkFullName'),email:value('rkEmail')||currentUser.email||null,phone:null,avatar_url:avatarUrl,updated_at:new Date().toISOString()};const {error:pErr}=await client.from('user_profiles').upsert(profileRow,{onConflict:'id'});if(pErr)throw new Error('Profile save failed. Check user_profiles schema/RLS. '+pErr.message);
-      const addressRow={user_id:currentUser.id,title:value('rkAddressTitle'),receiver_name:value('rkRecipient'),phone:value('rkAddressPhone'),address_line:value('rkAddressLine'),landmark:value('rkLandmark')||null,city:value('rkCity'),state:value('rkState'),pincode:value('rkPincode'),is_default:true,updated_at:new Date().toISOString()};
-      if(address?.id){const {error:aErr}=await client.from('user_addresses').update(addressRow).eq('id',address.id).eq('user_id',currentUser.id);if(aErr)throw new Error('Address update failed. Check user_addresses schema/RLS. '+aErr.message);}else{const {error:aErr}=await client.from('user_addresses').insert(addressRow);if(aErr)throw new Error('Address save failed. Check user_addresses schema/RLS. '+aErr.message);}
-      await loadAccount();syncCheckoutDetails();updateProfileCards();showAlert('Profile and delivery address saved successfully.',true);
-    }catch(err){showAlert(err.message||'Could not save profile. Please try again.');}finally{busy('rkSaveProfile',false);}
-  });
-  const openProfileEditor = () => {
-    if(!currentUser){showLoginMode();showGate();return;}
-    setFormMode();
-    $('rkFullName').value=profile?.full_name||currentUser.user_metadata?.full_name||currentUser.user_metadata?.name||'';
-    $('rkEmail').value=profile?.email||currentUser.email||'';
-    $('rkAvatarPreview').src=profile?.avatar_url||currentUser.user_metadata?.avatar_url||currentUser.user_metadata?.picture||$('rkAvatarPreview').src;
-    $('rkAddressTitle').value=address?.title||'Home';$('rkRecipient').value=address?.receiver_name||profile?.full_name||'';$('rkAddressPhone').value=address?.phone||currentUser.phone||'';$('rkAddressLine').value=address?.address_line||'';$('rkLandmark').value=address?.landmark||'';$('rkCity').value=address?.city||'';$('rkState').value=address?.state||'West Bengal';$('rkPincode').value=address?.pincode||'';
-    showGate();
-  };
-  $('rkEditProfile').addEventListener('click',openProfileEditor);
-  $('rkSettingsProfileAction').addEventListener('click',()=>{if(currentUser)openProfileEditor();else{showLoginMode();showGate();}});
-  $('rkOrderEditProfile').addEventListener('click',openProfileEditor);
-  $('rkSettingsSignOut').addEventListener('click',async()=>{try{if(client)await client.auth.signOut();}catch(e){showAlert(e.message||'Sign out failed.');return;}currentUser=null;profile=null;address=null;updateProfileCards();showLoginMode();showGate();});
-  $('rkEnterSite').addEventListener('click',()=>{if(!currentUser){showLoginMode();showGate();showAlert('ওয়েবসাইটে ঢুকতে Google দিয়ে লগইন করুন।');return;}revealSite();});$('rkPreviewSite').addEventListener('click',()=>{showLoginMode();showGate();showAlert('প্রোফাইল ও অর্ডারের তথ্য সুরক্ষিত রাখতে Google লগইন প্রয়োজন।');});
-  $('rkSignOut').addEventListener('click',async()=>{try{if(client)await client.auth.signOut();}catch(e){showAlert(e.message||'Sign out failed.');return;}currentUser=null;profile=null;address=null;updateProfileCards();showLoginMode();showGate();});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
 
