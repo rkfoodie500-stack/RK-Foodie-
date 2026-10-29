@@ -1906,11 +1906,17 @@ function fetchCurrentLocation() {
 
             if (data && data.address) {
                 const addr = data.address;
-                const road = addr.road || addr.suburb || addr.neighbourhood || '';
-                const village = addr.village || addr.town || addr.city || addr.county || '';
+                const road = addr.road || addr.pedestrian || addr.suburb || '';
+                const neighborhood = addr.neighbourhood || addr.residential || addr.hamlet || '';
+                const town = addr.village || addr.town || addr.city_district || addr.city || '';
+                const county = addr.county || '';
+                const state = addr.state || 'West Bengal';
                 const postcode = addr.postcode || '';
 
-                const fullAddressText = [road, village, data.display_name].filter(Boolean).join(', ');
+                // ডুপ্লিকেট নাম বাদ দিয়ে রাস্তা, এলাকা ও শহরের নাম সুন্দরভাবে সাজানো হলো
+                const addressParts = [road, neighborhood, town, county, state].filter(Boolean);
+                const uniqueParts = [...new Set(addressParts)]; 
+                const fullAddressText = uniqueParts.join(', ') + (postcode ? ` - ${postcode}` : '');
                 
                 const addressBox = document.getElementById('custAddress') || document.getElementById('rkAddressLine');
                 if (addressBox) addressBox.value = fullAddressText;
@@ -1919,7 +1925,7 @@ function fetchCurrentLocation() {
                 if (pincodeBox && postcode) pincodeBox.value = postcode;
 
                 const cityBox = document.getElementById('rkCity');
-                if (cityBox && village) cityBox.value = village;
+                if (cityBox && town) cityBox.value = town;
 
                 alert('সফলভাবে আপনার বর্তমান লোকেশন শনাক্ত করা হয়েছে!');
             } else {
@@ -1943,6 +1949,7 @@ function fetchCurrentLocation() {
     });
 }
 </script>
+
 
 
 <script id="rk-order-history-panel">
