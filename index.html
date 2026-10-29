@@ -1978,6 +1978,185 @@ function fetchCurrentLocation() {
 @keyframes rkLikePop{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}35%{opacity:1;transform:translate(-50%,-75%) scale(1.35)}100%{opacity:0;transform:translate(-50%,-125%) scale(1)}}
 @keyframes rkLikeSpark{0%{opacity:0;transform:scale(.3)}40%{opacity:1;transform:scale(1.3)}100%{opacity:0;transform:translateY(-18px) scale(.7)}}
 </style>
+<!-- RK Foodie Success Modal, Live Timer & Location Sync -->
+<style>
+#rkOrderSuccessModal { position: fixed; inset: 0; z-index: 999999; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 16px; overflow-y: auto; font-family: 'Poppins', sans-serif; }
+#rkOrderSuccessModal.is-open { display: flex; }
+.rk-success-card { background: #fff; width: 100%; max-width: 520px; border-radius: 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); overflow: hidden; animation: rkModalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+@keyframes rkModalPop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.rk-success-header { background: linear-gradient(135deg, #ff6b00, #e05d00); color: #fff; padding: 30px 20px; text-align: center; position: relative; }
+.rk-success-icon { width: 75px; height: 75px; background: #fff; color: #ff6b00; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); animation: rkBounce 1.5s infinite; }
+@keyframes rkBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.rk-success-body { padding: 24px; color: #1e293b; max-height: 70vh; overflow-y: auto; }
+.rk-timer-box { background: #fff7ed; border: 2px dashed #ff881a; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 20px; }
+.rk-timer-digits { font-size: 28px; font-weight: 900; color: #ea580c; letter-spacing: 1px; }
+.rk-info-group { background: #f8fafc; border-radius: 14px; padding: 14px; margin-bottom: 14px; border: 1px solid #e2e8f0; }
+.rk-info-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+.rk-info-row span:first-child { color: #64748b; font-weight: 600; }
+.rk-info-row span:last-child { color: #0f172a; font-weight: 700; text-align: right; }
+</style>
+
+<div id="rkOrderSuccessModal" role="dialog" aria-modal="true">
+    <div class="rk-success-card">
+        <div class="rk-success-header">
+            <div class="rk-success-icon"><i class="fa-solid fa-check"></i></div>
+            <h2 style="font-size: 24px; font-weight: 900; margin: 0;">অর্ডার সফলভাবে গৃহীত হয়েছে!</h2>
+            <p style="font-size: 13px; opacity: 0.9; margin-top: 5px;">আপনার খাবার প্রস্তুত করা শুরু হয়েছে</p>
+        </div>
+        <div class="rk-success-body">
+            <!-- Live Delivery Timer -->
+            <div class="rk-timer-box">
+                <p style="font-size: 12px; font-weight: 700; color: #9a3412; margin-bottom: 4px;"><i class="fa-solid fa-clock mr-1"></i> আনুমানিক ডেলিভারি সময়</p>
+                <div class="rk-timer-digits" id="rkCountdownTimer">৩০:০০ মিনিট</div>
+                <p style="font-size: 11px; color: #c2410c; margin-top: 4px;">লাভপুর শহরের মধ্যে দ্রুততম সময়ে পৌঁছে দেওয়া হবে</p>
+            </div>
+
+            <div class="rk-info-group">
+                <h4 style="font-size: 13px; font-weight: 800; color: #1e293b; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;"><i class="fa-solid fa-receipt mr-1 text-orange-500"></i> অর্ডারের বিবরণ</h4>
+                <div class="rk-info-row"><span>অর্ডার নম্বর:</span> <span id="succOrderId">#RK-12345</span></div>
+                <div class="rk-info-row"><span>গ্রাহকের নাম:</span> <span id="succCustName">-</span></div>
+                <div class="rk-info-row"><span>মোবাইল নম্বর:</span> <span id="succCustPhone">-</span></div>
+                <div class="rk-info-row"><span>পেমেন্ট পদ্ধতি:</span> <span id="succPayment">Cash on Delivery</span></div>
+                <div class="rk-info-row"><span>মোট মূল্য:</span> <span id="succTotal" style="color: #ea580c; font-size: 15px;">₹0</span></div>
+            </div>
+
+            <div class="rk-info-group">
+                <h4 style="font-size: 13px; font-weight: 800; color: #1e293b; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;"><i class="fa-solid fa-location-dot mr-1 text-orange-500"></i> ডেলিভারি ঠিকানা ও ল্যান্ডমার্ক</h4>
+                <p id="succAddress" style="font-size: 12px; color: #334155; line-height: 1.6; margin: 0;"></p>
+            </div>
+
+            <button type="button" onclick="closeSuccessModal()" style="width: 100%; background: #1b2b48; color: #fff; font-weight: 800; padding: 14px; border-radius: 14px; border: none; cursor: pointer; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">হোম পেজে ফিরে যান</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let rkTimerInterval = null;
+
+function startDeliveryTimer(durationInMinutes) {
+    let timer = durationInMinutes * 60;
+    const display = document.getElementById('rkCountdownTimer');
+    if(rkTimerInterval) clearInterval(rkTimerInterval);
+    
+    rkTimerInterval = setInterval(function () {
+        let minutes = parseInt(timer / 60, 10);
+        let seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "০" + minutes : minutes;
+        seconds = seconds < 10 ? "০" + seconds : seconds;
+
+        if (display) display.textContent = minutes + ":" + seconds + " মিনিট";
+
+        if (--timer < 0) {
+            clearInterval(rkTimerInterval);
+            if (display) display.textContent = "ডেলিভারি বয় পৌঁছানোর কাছাকাছি!";
+        }
+    }, 1000);
+}
+
+function showOrderSuccessModal(orderDetails) {
+    document.getElementById('succOrderId').textContent = orderDetails.order_number;
+    document.getElementById('succCustName').textContent = orderDetails.customer_name;
+    document.getElementById('succCustPhone').textContent = orderDetails.phone;
+    document.getElementById('succPayment').textContent = orderDetails.payment_method;
+    document.getElementById('succTotal').textContent = '₹' + orderDetails.total;
+    document.getElementById('succAddress').textContent = orderDetails.address;
+
+    document.getElementById('rkOrderSuccessModal').classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    startDeliveryTimer(25);
+}
+
+function closeSuccessModal() {
+    document.getElementById('rkOrderSuccessModal').classList.remove('is-open');
+    document.body.style.overflow = '';
+    cart = [];
+    if(typeof updateCartUI === 'function') updateCartUI();
+    window.location.reload();
+}
+
+// WhatsApp সাবমিট ও এডমিন ডাটা সিঙ্ক ফাংশন
+window.submitOrderViaWhatsApp = function() {
+    const name = document.getElementById("custName")?.value.trim() || document.getElementById("rkOrderProfileName")?.textContent || "";
+    const phone = document.getElementById("custPhone")?.value.trim() || document.getElementById("rkOrderProfilePhone")?.textContent || "";
+    const address = document.getElementById("custAddress")?.value.trim() || document.getElementById("rkOrderProfileAddress")?.textContent || "";
+    const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || 'Cash on Delivery';
+
+    if (!name || !phone || !address) {
+        alert("অনুগ্রহ করে আপনার নাম, মোবাইল নম্বর এবং সম্পূর্ণ ঠিকানা পূরণ করুন।");
+        return;
+    }
+
+    if (cart.length === 0) {
+        alert("আপনার কার্ট খালি রয়েছে!");
+        return;
+    }
+
+    const grandTotal = cart.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
+    const orderNumber = 'RK-' + Date.now().toString().slice(-8);
+    const orderId = (window.crypto && typeof window.crypto.randomUUID === 'function')
+        ? window.crypto.randomUUID()
+        : ('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+            const r = Math.random() * 16 | 0;
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        }));
+
+    const orderPayload = {
+        id: orderId,
+        order_number: orderNumber,
+        customer_name: name,
+        phone,
+        address,
+        payment_method: paymentMethod,
+        items: cart.map(item => ({
+            id: String(item.id),
+            title: String(item.title || ''),
+            restaurant: String(item.restaurant || ''),
+            category: String(item.category || ''),
+            price: Number(item.price) || 0,
+            quantity: Number(item.quantity) || 1
+        })),
+        total: grandTotal,
+        status: 'pending'
+    };
+
+    // WhatsApp Message
+    let message = `🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর - 2027)*\n`;
+    message += `------------------------------------\n`;
+    message += `🧾 *অর্ডার নম্বর:* ${orderNumber}\n`;
+    message += `👤 *গ্রাহকের নাম:* ${name}\n`;
+    message += `📞 *মোবাইল নম্বর:* ${phone}\n`;
+    message += `📍 *ডেলিভারি ঠিকানা ও ল্যান্ডমার্ক:* ${address}\n`;
+    message += `💳 *পেমেন্ট পদ্ধতি:* ${paymentMethod}\n`;
+    message += `------------------------------------\n`;
+    message += `🍽️ *অর্ডার করা খাবারের তালিকা:*\n`;
+
+    cart.forEach((item, index) => {
+        message += `${index + 1}. ${item.title} - ${item.quantity} পিস (₹${item.price * item.quantity})\n`;
+    });
+
+    message += `------------------------------------\n`;
+    message += `💰 *সর্বমোট মূল্য:* ₹${grandTotal}\n`;
+    message += `------------------------------------\n`;
+    message += `ধন্যবাদ! অর্ডারের কাজ শুরু করা হলো।`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/919907406500?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, '_blank');
+
+    // Supabase সেভ
+    const orderClient = window.RKFoodieSupabase;
+    if (orderClient && typeof orderClient.from === 'function') {
+        orderClient.from('orders').insert(orderPayload).then(({ error }) => {
+            if (error) console.warn('Supabase order save error:', error.message);
+            else console.info('Order successfully synced to Admin Studio:', orderNumber);
+        }).catch(err => console.warn('Supabase connection error:', err));
+    }
+
+    showOrderSuccessModal(orderPayload);
+};
+</script>
 
 </body>
 </html>
