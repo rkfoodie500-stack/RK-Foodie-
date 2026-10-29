@@ -2109,6 +2109,12 @@ function initLiveTrackingMap(custLat, custLon) {
         ], {color: '#ea580c', weight: 4, dashArray: '6, 10'}).addTo(liveMap);
 
         liveMap.fitBounds(polyline.getBounds(), {padding: [30, 30]});
+    
+        // ম্যাপের খালি বা সাদা হয়ে থাকা সমস্যা সমাধানের জন্য এই কোডটি বসান
+        setTimeout(() => {
+            liveMap.invalidateSize();
+        }, 200);
+        
     }, 350);
 }
 
