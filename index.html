@@ -385,30 +385,30 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 </style>
 
 
-<!-- RK Foodie: public access mode; the Google-styled button is only a website entry button. -->
+<!-- RK Foodie: restore Google login and profile controls. -->
 <style id="rk-auth-gate-restore">
   #rkCustomerGate { display: flex; }
   #rkCustomerGate[hidden] { display: none !important; }
-  #rkSettingsProfileAction, #rkOrderEditProfile { display: inline-flex; }
+  #rkSettingsProfileAction, #rkSettingsSignOut, #rkOrderEditProfile { display: inline-flex; }
 </style>
 
 </head>
 <body class="bg-gray-50 text-slate-800 antialiased pb-20 md:pb-6">
 
-    <!-- RK Foodie welcome screen. No account login is required to enter the website. -->
+    <!-- RK Foodie Customer Login/Profile Gate. Google OAuth is the only sign-in method. -->
     <section id="rkCustomerGate" aria-label="RK Foodie customer account">
       <div class="rk-shell"><div class="rk-panel">
         <div class="rk-brand"><div class="rk-brand-mark"><img src="assets/image-1.webp" alt="RK Foodie chef logo"></div><div><h1>RK Foodie</h1><p>Good food, delivered with care</p></div></div>
         <aside class="rk-hero" aria-label="RK Foodie welcome illustration">
           <div class="rk-hero-kicker"><span class="rk-chef-line">Fresh Food</span><span>Happy Mood ♡</span></div>
           <img class="rk-hero-mascot" src="assets/image-2.webp" alt="RK Foodie chef mascot and Google sign-in illustration">
-          <div class="rk-hero-features"><span><b>✓</b> Secure login</span><span><b>↯</b> Fast access</span><span><b>♡</b> Easy ordering</span></div>
+          <div class="rk-hero-features"><span><b>✓</b> Guest access</span><span><b>↯</b> Fast access</span><span><b>♡</b> Easy ordering</span></div>
           <p class="rk-hero-tagline">Eat Good · Live Good</p>
         </aside>
         <div class="rk-content">
           <div class="rk-eyebrow" id="rkGateEyebrow">Your food journey starts here</div>
-          <h2 class="rk-title" id="rkGateTitle">Login to your account</h2>
-          <p class="rk-muted" id="rkGateDescription">Welcome! Tap the button below to enter the RK Foodie website. No login required.</p>
+          <h2 class="rk-title" id="rkGateTitle">Welcome to RK Foodie</h2>
+          <p class="rk-muted" id="rkGateDescription">Continue without login, or create a profile to save your delivery address.</p>
           <div class="rk-steps" aria-hidden="true"><span class="rk-step active" id="rkStep1"></span><span class="rk-step" id="rkStep2"></span><span class="rk-step" id="rkStep3"></span></div>
           <div id="rkGateAlert" class="rk-alert" role="status" aria-live="polite"></div>
           <div id="rkLoginPane">
@@ -429,13 +429,13 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             <button class="rk-btn rk-primary rk-wide" id="rkSaveProfile" type="submit">Save profile & address</button>
           </form>
           <div id="rkAccountPane" hidden>
-            <div class="rk-profile-top"><img id="rkAccountAvatar" class="rk-avatar" alt="Your profile photo" src="https://placehold.co/160x160/fff0e2/9a4d16?text=Photo"/><div><div class="rk-pill">Google account connected</div><h3 id="rkAccountName" style="font-size:20px;font-weight:800;margin:7px 0 3px">Welcome!</h3><p class="rk-muted" id="rkAccountPhone"></p></div></div>
+            <div class="rk-profile-top"><img id="rkAccountAvatar" class="rk-avatar" alt="Your profile photo" src="https://placehold.co/160x160/fff0e2/9a4d16?text=Photo"/><div><div class="rk-pill">Customer profile</div><h3 id="rkAccountName" style="font-size:20px;font-weight:800;margin:7px 0 3px">Welcome!</h3><p class="rk-muted" id="rkAccountPhone"></p></div></div>
             <h3 style="font-size:16px;font-weight:800;margin:18px 0 6px">Saved delivery address</h3><div id="rkSavedAddress" class="rk-address-card"></div>
             <button class="rk-btn rk-primary rk-wide" id="rkEnterSite" type="button"><i class="fa-solid fa-burger"></i> Continue to RK Foodie</button>
             <button class="rk-btn rk-secondary rk-wide" id="rkEditProfile" type="button">Edit profile / address</button>
             <button class="rk-btn rk-secondary rk-wide" id="rkSignOut" type="button">Sign out</button>
           </div>
-          <p class="rk-muted" style="font-size:10px;margin:18px 0 0;text-align:center">Browse the menu and place an order without signing in.</p>
+          <p class="rk-muted" style="font-size:10px;margin:18px 0 0;text-align:center">Your profile and delivery address are saved locally on this device. No Google login required.</p>
         </div>
       </div></div>
     </section>
@@ -459,19 +459,19 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         <section id="rkSettingsProfileCard" class="mt-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-label="Your profile">
             <div class="flex items-center justify-between gap-2 mb-3">
                 <div class="font-bold text-sm text-slate-800"><i class="fa-regular fa-user mr-2 text-orange-500"></i>My Profile</div>
-                <span id="rkSettingsProfileStatus" class="text-[10px] rounded-full bg-slate-100 px-2 py-1 text-slate-500">Guest mode</span>
+                <span id="rkSettingsProfileStatus" class="text-[10px] rounded-full bg-slate-100 px-2 py-1 text-slate-500">Not signed in</span>
             </div>
             <div class="flex items-center gap-3">
                 <img id="rkSettingsAvatar" src="https://placehold.co/96x96/fff0e2/9a4d16?text=Photo" alt="Profile photo" class="h-14 w-14 rounded-full border border-slate-200 object-cover bg-orange-50 shrink-0" />
                 <div class="min-w-0 flex-1">
                     <div id="rkSettingsProfileName" class="font-bold text-sm text-slate-800 truncate">Guest checkout</div>
-                    <div id="rkSettingsProfileEmail" class="text-xs text-slate-500 truncate mt-1">You can order without signing in.</div>
+                    <div id="rkSettingsProfileEmail" class="text-xs text-slate-500 truncate mt-1">Save your delivery details for faster ordering without login.</div>
                     <div id="rkSettingsProfilePhone" class="text-xs text-slate-500 truncate mt-1">Phone number not saved</div>
                 </div>
             </div>
             <div id="rkSettingsProfileAddress" class="mt-3 rounded-xl bg-slate-50 p-3 text-xs leading-relaxed text-slate-600">Your saved delivery address will appear here.</div>
             <div class="grid grid-cols-2 gap-2 mt-3">
-                <button id="rkSettingsProfileAction" type="button" class="rounded-xl bg-orange-500 px-3 py-2.5 text-xs font-bold text-white hover:bg-orange-600">Guest mode</button>
+                <button id="rkSettingsProfileAction" type="button" class="rounded-xl bg-orange-500 px-3 py-2.5 text-xs font-bold text-white hover:bg-orange-600">Create / Edit profile</button>
                 <button id="rkSettingsSignOut" type="button" hidden class="rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">Sign out</button>
             </div>
         </section>
@@ -723,7 +723,47 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
         <!-- Cart Footer & Checkout Form -->
         <div class="border-t border-gray-200 p-4 bg-slate-50 space-y-4" id="cartFooter">
-            
+
+            <!-- Customer details are required for guest checkout; no login is needed. -->
+            <section class="rounded-xl border border-orange-200 bg-white p-3 space-y-3" aria-label="Customer and delivery details">
+                <div class="flex items-center justify-between gap-2">
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-800">ডেলিভারি তথ্য</h4>
+                        <p class="text-xs text-slate-500">অর্ডার দিতে নাম, মোবাইল ও সম্পূর্ণ ঠিকানা দিন</p>
+                    </div>
+                    <button id="rkOrderEditProfile" type="button" class="text-xs font-bold text-orange-600 underline">প্রোফাইল তৈরি / এডিট</button>
+                </div>
+                <div class="space-y-1">
+                    <label for="custName" class="block text-xs font-semibold text-slate-700">আপনার নাম *</label>
+                    <input id="custName" name="customer_name" type="text" required maxlength="80" autocomplete="name" placeholder="পুরো নাম লিখুন" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:border-orange-500 focus:outline-none">
+                </div>
+                <div class="space-y-1">
+                    <label for="custPhone" class="block text-xs font-semibold text-slate-700">মোবাইল নম্বর *</label>
+                    <input id="custPhone" name="customer_phone" type="tel" required inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+91 মোবাইল নম্বর" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:border-orange-500 focus:outline-none">
+                </div>
+                <div class="space-y-1">
+                    <label for="custAddress" class="block text-xs font-semibold text-slate-700">সম্পূর্ণ ডেলিভারির ঠিকানা *</label>
+<textarea id="custAddress" name="customer_address" required rows="3" maxlength="500" autocomplete="street-address"></textarea>
+
+<!-- Use Current Location Button -->
+<button type="button" id="getCurrentLocationBtn" onclick="fetchCurrentLocation()" class="w-full my-2 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-700 font-bold text-xs hover:bg-emerald-100 transition shadow-sm">
+    <i class="fa-solid fa-location-crosshairs text-base"></i>
+    <span>Use current location</span>
+</button>
+
+                </div>
+                <div id="rkOrderProfileSummary" class="rounded-lg bg-orange-50 p-2.5 text-xs text-slate-600">
+                    <div class="flex items-center gap-2">
+                        <img id="rkOrderProfileAvatar" src="https://placehold.co/96x96/fff0e2/9a4d16?text=Photo" alt="Profile photo" class="h-9 w-9 rounded-full border border-orange-100 object-cover">
+                        <div class="min-w-0">
+                            <p id="rkOrderProfileName" class="font-bold text-slate-800">Guest checkout</p>
+                            <p id="rkOrderProfilePhone">মোবাইল নম্বর দেওয়া হয়নি</p>
+                        </div>
+                    </div>
+                    <p id="rkOrderProfileAddress" class="mt-2">ডেলিভারি ঠিকানা এখানে দেখানো হবে।</p>
+                </div>
+            </section>
+
             <!-- Price Summary -->
             <div class="space-y-1.5 text-sm bg-white p-3 rounded-xl border border-gray-200">
                 <div class="flex justify-between text-gray-600">
@@ -1497,57 +1537,180 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
 
 <script id="rk-customer-auth-logic">
-(() => {
+(function () {
   'use strict';
   const $ = id => document.getElementById(id);
+  const STORAGE_KEY = 'rkFoodieGuestProfileV1';
   const gate = $('rkCustomerGate');
+  const form = $('rkProfileForm');
+  let avatarData = '';
+
+  const readProfile = () => {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; }
+    catch (_) { return {}; }
+  };
+  let profile = readProfile();
+
+  const fullAddress = p => [
+    p.address_line,
+    p.landmark ? 'Landmark: ' + p.landmark : '',
+    p.city, p.state, p.pincode
+  ].filter(Boolean).join(', ');
+
+  function updateProfileCards() {
+    profile = readProfile();
+    const name = profile.full_name || profile.receiver_name || 'Guest checkout';
+    const email = profile.email || 'No email added';
+    const phone = profile.phone || 'Phone number not saved';
+    const address = fullAddress(profile) || 'Add your delivery address in your profile or at checkout.';
+    const avatar = profile.avatar_url || 'https://placehold.co/96x96/fff0e2/9a4d16?text=Photo';
+    const setText = (id, value) => { const el = $(id); if (el) el.textContent = value; };
+    ['rkSettingsAvatar', 'rkOrderProfileAvatar'].forEach(id => { const el = $(id); if (el) el.src = avatar; });
+    setText('rkSettingsProfileName', name);
+    setText('rkSettingsProfileEmail', email);
+    setText('rkSettingsProfilePhone', phone);
+    setText('rkSettingsProfileAddress', fullAddress(profile) || 'No saved address yet. Add one using Edit profile / address.');
+    setText('rkSettingsProfileStatus', profile.full_name && profile.address_line ? 'Profile saved' : 'Guest mode');
+    setText('rkOrderProfileName', name);
+    setText('rkOrderProfilePhone', phone);
+    setText('rkOrderProfileAddress', fullAddress(profile) || 'Add your name, phone number and address before ordering.');
+    const action = $('rkSettingsProfileAction');
+    if (action) action.textContent = profile.full_name ? 'Edit profile' : 'Create profile';
+  }
+
+  function syncCheckoutDetails() {
+    profile = readProfile();
+    if ($('custName') && profile.full_name) $('custName').value = profile.full_name;
+    if ($('custPhone') && profile.phone) $('custPhone').value = profile.phone;
+    const address = fullAddress(profile);
+    if ($('custAddress') && address) $('custAddress').value = address;
+    updateProfileCards();
+  }
+
+  function fillProfileForm() {
+    profile = readProfile();
+    $('rkFullName').value = profile.full_name || '';
+    $('rkEmail').value = profile.email || '';
+    $('rkAddressTitle').value = profile.title || 'Home';
+    $('rkRecipient').value = profile.receiver_name || profile.full_name || '';
+    $('rkAddressPhone').value = profile.phone || '';
+    $('rkAddressLine').value = profile.address_line || '';
+    $('rkLandmark').value = profile.landmark || '';
+    $('rkCity').value = profile.city || '';
+    $('rkState').value = profile.state || 'West Bengal';
+    $('rkPincode').value = profile.pincode || '';
+    avatarData = profile.avatar_url || '';
+    if ($('rkAvatarPreview')) $('rkAvatarPreview').src = avatarData || 'https://placehold.co/160x160/fff0e2/9a4d16?text=Photo';
+  }
+
+  function openProfileEditor() {
+    if (!gate || !form) return;
+    fillProfileForm();
+    $('rkLoginPane').hidden = true;
+    $('rkAccountPane').hidden = true;
+    form.hidden = false;
+    $('rkGateTitle').textContent = profile.full_name ? 'Edit your profile' : 'Create your profile';
+    $('rkGateDescription').textContent = 'Your profile and delivery address are saved on this device. No Google login required.';
+    $('rkGateEyebrow').textContent = 'Customer profile';
+    const alert = $('rkGateAlert');
+    if (alert) { alert.style.display = 'none'; alert.textContent = ''; }
+    gate.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
 
   function enterWebsite() {
     if (gate) gate.hidden = true;
     document.body.style.overflow = '';
-    // Public guest mode: no Google OAuth, profile database, or sign-in session required.
-    const status = $('rkSettingsProfileStatus');
-    if (status) status.textContent = 'Guest mode';
-    const name = $('rkSettingsProfileName');
-    if (name) name.textContent = 'Guest checkout';
-    const email = $('rkSettingsProfileEmail');
-    if (email) email.textContent = 'You can order without signing in.';
-    const phone = $('rkSettingsProfilePhone');
-    if (phone) phone.textContent = 'Phone number not saved';
-    const address = $('rkSettingsProfileAddress');
-    if (address) address.textContent = 'Enter your delivery address at checkout.';
-    const action = $('rkSettingsProfileAction');
-    if (action) action.textContent = 'Guest mode';
-    const signOut = $('rkSettingsSignOut');
-    if (signOut) signOut.hidden = true;
+    $('rkLoginPane').hidden = false;
+    form.hidden = true;
+    $('rkAccountPane').hidden = true;
+    updateProfileCards();
+    syncCheckoutDetails();
   }
 
-  // Keep the Google icon for visual familiarity, but make the button enter the site directly.
   const googleButton = $('rkGoogleSignIn');
-  if (googleButton) googleButton.addEventListener('click', enterWebsite);
+  if (googleButton) {
+    googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
+    googleButton.addEventListener('click', enterWebsite);
+  }
   const previewButton = $('rkPreviewSite');
   if (previewButton) previewButton.addEventListener('click', enterWebsite);
   const enterButton = $('rkEnterSite');
   if (enterButton) enterButton.addEventListener('click', enterWebsite);
-
-  // Profile controls no longer open a login gate. Guests can enter delivery details at checkout.
-  const profileAction = $('rkSettingsProfileAction');
-  if (profileAction) profileAction.addEventListener('click', () => {
-    enterWebsite();
-    const checkout = $('custName') || $('custPhone') || $('custAddress');
-    if (checkout) checkout.scrollIntoView({behavior:'smooth', block:'center'});
+  const editButton = $('rkEditProfile');
+  if (editButton) editButton.addEventListener('click', openProfileEditor);
+  const settingsAction = $('rkSettingsProfileAction');
+  if (settingsAction) settingsAction.addEventListener('click', openProfileEditor);
+  const orderEdit = $('rkOrderEditProfile');
+  if (orderEdit) orderEdit.addEventListener('click', openProfileEditor);
+  const signOut = $('rkSettingsSignOut');
+  if (signOut) signOut.addEventListener('click', () => {
+    alert('Google login is disabled. Your saved profile stays on this device. You can clear or edit it from your profile.');
   });
-  const orderProfile = $('rkOrderEditProfile');
-  if (orderProfile) orderProfile.addEventListener('click', enterWebsite);
+  const signOut2 = $('rkSignOut');
+  if (signOut2) signOut2.addEventListener('click', enterWebsite);
 
-  // The landing screen remains visible initially so the Google icon button can be tapped.
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      document.body.style.overflow = 'hidden';
-    }, {once:true});
-  } else {
-    document.body.style.overflow = 'hidden';
-  }
+  const avatarInput = $('rkAvatarFile');
+  if (avatarInput) avatarInput.addEventListener('change', () => {
+    const file = avatarInput.files && avatarInput.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { alert('Please choose an image file.'); return; }
+    if (file.size > 1024 * 1024) { alert('Please choose a profile photo smaller than 1 MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      avatarData = String(reader.result || '');
+      if ($('rkAvatarPreview')) $('rkAvatarPreview').src = avatarData;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  if (form) form.addEventListener('submit', event => {
+    event.preventDefault();
+    const saved = {
+      full_name: $('rkFullName').value.trim(),
+      email: $('rkEmail').value.trim(),
+      title: $('rkAddressTitle').value,
+      receiver_name: $('rkRecipient').value.trim(),
+      phone: $('rkAddressPhone').value.trim(),
+      address_line: $('rkAddressLine').value.trim(),
+      landmark: $('rkLandmark').value.trim(),
+      city: $('rkCity').value.trim(),
+      state: $('rkState').value.trim(),
+      pincode: $('rkPincode').value.trim(),
+      avatar_url: avatarData
+    };
+    if (!saved.full_name || !saved.receiver_name || !saved.phone || !saved.address_line || !saved.city || !saved.state || !/^[0-9]{6}$/.test(saved.pincode)) {
+      alert('Please complete your name, receiver name, mobile number, full address, city/town, state and 6-digit PIN code.');
+      return;
+    }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+      profile = saved;
+      syncCheckoutDetails();
+      if (gate) gate.hidden = true;
+      document.body.style.overflow = '';
+      alert('Your profile and delivery address have been saved on this device.');
+    } catch (error) {
+      alert('Could not save the profile in this browser. Please try a smaller profile photo or check browser storage settings.');
+    }
+  });
+
+  // Checkout fields remain available for guests, and saved details are pre-filled.
+  ['custName', 'custPhone', 'custAddress'].forEach(id => {
+    const field = $(id);
+    if (field) field.addEventListener('change', () => {
+      const p = readProfile();
+      if (id === 'custName') p.full_name = field.value.trim();
+      if (id === 'custPhone') p.phone = field.value.trim();
+      if (id === 'custAddress') p.address_line = field.value.trim();
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (_) {}
+      updateProfileCards();
+    });
+  });
+
+  updateProfileCards();
+  fillProfileForm();
+  // Welcome screen is kept, but both the Google-icon button and Continue button enter as guest.
 })();
 </script>
 
@@ -1717,6 +1880,69 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
 
 
+
+<script>
+function fetchCurrentLocation() {
+    const btn = document.getElementById('getCurrentLocationBtn');
+    if (!navigator.geolocation) {
+        alert('আপনার ব্রাউজার লোকেশন সাপোর্ট করে না।');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-base"></i> লোকেশন খোঁজা হচ্ছে...';
+
+    navigator.geolocation.getCurrentPosition(async position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
+                headers: {
+                    'Accept-Language': 'en'
+                }
+            });
+            const data = await response.json();
+
+            if (data && data.address) {
+                const addr = data.address;
+                const road = addr.road || addr.suburb || addr.neighbourhood || '';
+                const village = addr.village || addr.town || addr.city || addr.county || '';
+                const postcode = addr.postcode || '';
+
+                const fullAddressText = [road, village, data.display_name].filter(Boolean).join(', ');
+                
+                const addressBox = document.getElementById('custAddress') || document.getElementById('rkAddressLine');
+                if (addressBox) addressBox.value = fullAddressText;
+
+                const pincodeBox = document.getElementById('rkPincode');
+                if (pincodeBox && postcode) pincodeBox.value = postcode;
+
+                const cityBox = document.getElementById('rkCity');
+                if (cityBox && village) cityBox.value = village;
+
+                alert('সফলভাবে আপনার বর্তমান লোকেশন শনাক্ত করা হয়েছে!');
+            } else {
+                alert('সঠিক ঠিকানা পাওয়া যায়নি, দয়া করে ম্যানুয়ালি লিখুন।');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('লোকেশন রিড করতে সমস্যা হয়েছে।');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-location-crosshairs text-base"></i> Use current location';
+        }
+    }, error => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-location-crosshairs text-base"></i> Use current location';
+        alert('দয়া করে আপনার ব্রাউজারের লোকেশন পারমিশন (Location Permission) অন করুন।');
+    }, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+    });
+}
+</script>
 
 
 <script id="rk-order-history-panel">
