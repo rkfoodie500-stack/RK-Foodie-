@@ -1903,19 +1903,20 @@ function fetchCurrentLocation() {
                 }
             });
             const data = await response.json();
-
             if (data && data.address) {
                 const addr = data.address;
+                
+                // সুনির্দিষ্ট ল্যান্ডমার্ক, রাস্তা বা পাড়ার নাম খোঁজা
+                const landmark = addr.amenity || addr.shop || addr.building || addr.tourism || '';
                 const road = addr.road || addr.pedestrian || addr.suburb || '';
                 const neighborhood = addr.neighbourhood || addr.residential || addr.hamlet || '';
-                const town = addr.village || addr.town || addr.city_district || addr.city || '';
-                const county = addr.county || '';
-                const state = addr.state || 'West Bengal';
+                const town = addr.village || addr.town || addr.city || '';
                 const postcode = addr.postcode || '';
+                const state = addr.state || 'West Bengal';
 
-                // ডুপ্লিকেট নাম বাদ দিয়ে রাস্তা, এলাকা ও শহরের নাম সুন্দরভাবে সাজানো হলো
-                const addressParts = [road, neighborhood, town, county, state].filter(Boolean);
-                const uniqueParts = [...new Set(addressParts)]; 
+                // সব তথ্য সুন্দরভাবে সাজানো (ডুপ্লিকেট বাদ দিয়ে)
+                const addressParts = [landmark, road, neighborhood, town, state].filter(Boolean);
+                const uniqueParts = [...new Set(addressParts)];
                 const fullAddressText = uniqueParts.join(', ') + (postcode ? ` - ${postcode}` : '');
                 
                 const addressBox = document.getElementById('custAddress') || document.getElementById('rkAddressLine');
@@ -1927,10 +1928,11 @@ function fetchCurrentLocation() {
                 const cityBox = document.getElementById('rkCity');
                 if (cityBox && town) cityBox.value = town;
 
-                alert('সফলভাবে আপনার বর্তমান লোকেশন শনাক্ত করা হয়েছে!');
+                                alert('লোকেশন বসানো হয়েছে! ডেলিভারির সুবিধার্থে বক্সের ভেতরে আপনার ল্যান্ডমার্ক লিখে দিন।');
             } else {
                 alert('সঠিক ঠিকানা পাওয়া যায়নি, দয়া করে ম্যানুয়ালি লিখুন।');
             }
+
         } catch (error) {
             console.error(error);
             alert('লোকেশন রিড করতে সমস্যা হয়েছে।');
