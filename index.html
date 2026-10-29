@@ -2067,6 +2067,51 @@ function startDeliveryTimer(durationInMinutes) {
     }, 1000);
 }
 
+let liveMap = null;
+
+function initLiveTrackingMap(custLat, custLon) {
+    // লাভপুর রেস্টুরেন্ট / বাজারের জিপিএস পজিশন (Latitude & Longitude)
+    const restaurantLat = 23.7432; 
+    const restaurantLon = 87.7785;
+
+    const targetLat = (custLat && !isNaN(custLat)) ? parseFloat(custLat) : restaurantLat;
+    const targetLon = (custLon && !isNaN(custLon)) ? parseFloat(custLon) : restaurantLon;
+
+    setTimeout(() => {
+        const mapElement = document.getElementById('liveTrackingMap');
+        if (!mapElement) return;
+
+        if (liveMap) {
+            liveMap.remove();
+            liveMap = null;
+        }
+
+        // Leaflet ম্যাপ তৈরি
+        liveMap = L.map('liveTrackingMap').setView([restaurantLat, restaurantLon], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(liveMap);
+
+        // ১. রেস্টুরেন্ট পিন মার্কা
+        L.marker([restaurantLat, restaurantLon]).addTo(liveMap)
+            .bindPopup('<b>RK Foodie Kitchen</b><br/>লাভপুর, বীরভূম');
+
+        // ২. কাস্টমার পিন মার্কা
+        L.marker([targetLat, targetLon]).addTo(liveMap)
+            .bindPopup('<b>আপনার ডেলিভারি ঠিকানা</b>').openPopup();
+
+        // ৩. দুই পয়েন্টের মধ্যে লাল অ্যানিমেটেড ড্যাশ রুট লাইন
+        const polyline = L.polyline([
+            [restaurantLat, restaurantLon],
+            [targetLat, targetLon]
+        ], {color: '#ea580c', weight: 4, dashArray: '6, 10'}).addTo(liveMap);
+
+        liveMap.fitBounds(polyline.getBounds(), {padding: [30, 30]});
+    }, 350);
+}
+
 function showOrderSuccessModal(orderDetails) {
     document.getElementById('succOrderId').textContent = orderDetails.order_number;
     document.getElementById('succCustName').textContent = orderDetails.customer_name;
@@ -2077,8 +2122,12 @@ function showOrderSuccessModal(orderDetails) {
 
     document.getElementById('rkOrderSuccessModal').classList.add('is-open');
     document.body.style.overflow = 'hidden';
+    
+    // টাইমার ও লাইভ ট্র্যাকিং ম্যাপ চালুকরণ
     startDeliveryTimer(25);
+    initLiveTrackingMap(orderDetails.latitude, orderDetails.longitude);
 }
+
 
 function closeSuccessModal() {
     document.getElementById('rkOrderSuccessModal').classList.remove('is-open');
