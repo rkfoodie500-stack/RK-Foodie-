@@ -384,12 +384,205 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   @media(max-width:390px){.rk-sheet-item-img{width:52px;height:52px}.rk-sheet-item{gap:8px}.rk-sheet-quantity{gap:5px}.rk-sheet-quantity button{width:25px;height:25px}.rk-sheet-item-name{font-size:11px}}
 </style>
 
+<style id="rk-order-sheet-mobile-polish">
+  /* Keep the existing Your Order bottom-sheet, refine only its mobile layout. */
+  .rk-order-sheet{max-height:min(82dvh,760px);border-radius:24px 24px 0 0;}
+  .rk-sheet-header{padding:5px 16px 11px;align-items:center;}
+  .rk-sheet-header h2{font-size:19px;}
+  .rk-sheet-subtitle{font-size:10px;line-height:1.45;}
+  .rk-sheet-items{padding:8px 14px 12px;min-height:100px;}
+  .rk-sheet-item{display:grid;grid-template-columns:66px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 0;}
+  .rk-sheet-item-img{width:66px;height:66px;border-radius:13px;object-fit:cover;background:#f1f5f9;}
+  .rk-sheet-item-info{min-width:0;}
+  .rk-sheet-item-name{font-size:12px;line-height:1.4;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;}
+  .rk-sheet-item-meta{font-size:10px;line-height:1.35;overflow-wrap:anywhere;}
+  .rk-sheet-item-price{font-size:13px;margin-top:5px;}
+  .rk-sheet-quantity{gap:5px;padding:4px;}
+  .rk-sheet-quantity button{width:28px;height:28px;}
+  .rk-sheet-quantity span{min-width:15px;}
+  .rk-sheet-footer{padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));}
+  .rk-sheet-total{margin-bottom:8px;}
+  .rk-buy-now-button{padding:13px 16px;border-radius:13px;}
+  @media(max-width:380px){
+    .rk-order-sheet{max-height:84dvh;}
+    .rk-sheet-item{grid-template-columns:58px minmax(0,1fr) auto;gap:7px;}
+    .rk-sheet-item-img{width:58px;height:58px;border-radius:11px;}
+    .rk-sheet-item-name{font-size:11px;}
+    .rk-sheet-quantity{gap:3px;}
+    .rk-sheet-quantity button{width:25px;height:25px;}
+  }
+  @media(min-width:700px){.rk-order-sheet{max-height:min(82vh,760px);}}
+  body.site-dark .rk-order-sheet{background:#111c2c;color:#e8edf5;}
+  body.site-dark .rk-sheet-header{border-color:#34445b;}
+  body.site-dark .rk-sheet-header h2,body.site-dark .rk-sheet-item-name,body.site-dark .rk-sheet-quantity span,body.site-dark .rk-sheet-total strong{color:#e8edf5;}
+  body.site-dark .rk-sheet-item{border-color:#34445b;}
+  body.site-dark .rk-sheet-item-meta,body.site-dark .rk-sheet-subtitle,body.site-dark .rk-sheet-total{color:#aab8cc;}
+  body.site-dark .rk-sheet-footer{background:#111c2c;border-color:#34445b;}
+  body.site-dark .rk-sheet-quantity{background:#172338;border-color:#34445b;}
+  body.site-dark .rk-sheet-quantity button,body.site-dark .rk-sheet-close{background:#25344b;color:#f1f5f9;border-color:#40506a;}
+</style>
 
 <!-- RK Foodie: restore Google login and profile controls. -->
 <style id="rk-auth-gate-restore">
   #rkCustomerGate { display: flex; }
   #rkCustomerGate[hidden] { display: none !important; }
   #rkSettingsProfileAction, #rkSettingsSignOut, #rkOrderEditProfile { display: inline-flex; }
+</style>
+
+
+<style id="rk-foodie-mobile-app-polish">
+  /* The profile gate owns its own vertical scrolling on phones. */
+  @media (max-width:760px) {
+    #rkCustomerGate {
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
+      height:100vh;
+      height:100dvh;
+      min-height:0;
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior-y:contain;
+      -webkit-overflow-scrolling:touch;
+      touch-action:pan-y;
+    }
+    #rkCustomerGate .rk-shell {
+      width:100%;
+      min-height:100dvh;
+      height:auto;
+      padding:0 0 calc(28px + env(safe-area-inset-bottom, 0px));
+      align-items:flex-start;
+      justify-content:flex-start;
+    }
+    #rkCustomerGate .rk-panel {
+      min-height:100dvh;
+      height:auto;
+      overflow:visible;
+      flex:0 0 auto;
+    }
+    #rkCustomerGate .rk-content {
+      padding-bottom:calc(36px + env(safe-area-inset-bottom, 0px));
+    }
+    #rkCustomerGate #rkProfileForm {
+      width:100%;
+      min-width:0;
+      padding-bottom:12px;
+    }
+    #rkCustomerGate .rk-field,
+    #rkCustomerGate .rk-grid,
+    #rkCustomerGate .rk-grid > div {
+      min-width:0;
+    }
+    #rkCustomerGate input,
+    #rkCustomerGate textarea,
+    #rkCustomerGate select {
+      font-size:16px;
+      max-width:100%;
+      scroll-margin:18px;
+    }
+    #rkCustomerGate .rk-btn {
+      min-height:48px;
+    }
+  }
+
+  /* Compact, tidy two-column menu on mobile; full-size photos remain in the detail view. */
+  @media (max-width:700px) {
+    #foodGrid {
+      grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+      gap:10px !important;
+      align-items:stretch;
+    }
+    #foodGrid > .rk-food-card {
+      min-width:0;
+      border-radius:14px;
+      box-shadow:0 3px 12px rgba(15,23,42,.055);
+    }
+    #foodGrid .rk-food-card-media {
+      height:108px;
+      flex:0 0 108px;
+    }
+    #foodGrid .rk-food-card-copy {
+      padding:9px 10px 10px;
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      min-height:88px;
+    }
+    #foodGrid .rk-food-card-restaurant {
+      display:none;
+    }
+    #foodGrid .rk-food-card-title {
+      color:#1e293b;
+      font-size:12px;
+      font-weight:800;
+      line-height:1.35;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height:32px;
+      overflow-wrap:anywhere;
+    }
+    #foodGrid .rk-food-card-price {
+      color:#c2410c;
+      font-size:14px;
+      font-weight:900;
+      line-height:1.2;
+      margin-top:3px;
+      font-variant-numeric:tabular-nums;
+    }
+    #foodGrid .rk-food-card-hint {
+      color:#9a3412;
+      font-size:9px;
+      font-weight:700;
+      margin-top:3px;
+      line-height:1.25;
+    }
+    #foodGrid .rk-heart-button {
+      width:29px;
+      height:29px;
+      display:grid;
+      place-items:center;
+      border-radius:999px;
+      background:rgba(255,255,255,.94);
+      box-shadow:0 2px 8px rgba(15,23,42,.16);
+      font-size:12px;
+    }
+    .rk-food-detail-image {
+      height:190px;
+    }
+    .rk-food-detail-copy {
+      padding:16px;
+    }
+    .rk-food-action-row {
+      gap:8px;
+    }
+    .rk-food-action-row .rk-food-order-button,
+    .rk-food-action-row .rk-add-cart-button {
+      min-width:0;
+      padding:12px 10px;
+      font-size:12px;
+    }
+    .rk-header-actions { gap:4px !important; }
+    .rk-header-action {
+      min-height:38px;
+      padding:8px !important;
+      border-radius:10px !important;
+    }
+    .rk-header-action > span:not([id]) { display:none; }
+  }
+  @media (max-width:380px) {
+    #foodGrid { gap:8px !important; }
+    #foodGrid .rk-food-card-media { height:94px; flex-basis:94px; }
+    #foodGrid .rk-food-card-copy { padding:8px; }
+    #foodGrid .rk-food-card-title { font-size:11px; }
+    #foodGrid .rk-food-card-price { font-size:13px; }
+    .rk-header-logo { width:34px !important; height:32px !important; }
+    .rk-header-tagline { display:none; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    #rkCustomerGate *, #foodGrid * { scroll-behavior:auto !important; transition:none !important; }
+  }
 </style>
 
 </head>
@@ -446,9 +639,22 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center"><i class="fa-solid fa-sliders"></i></span><div><h2 class="font-bold text-lg" data-i18n="settings">Settings</h2><p class="text-xs opacity-70" data-i18n="personalize">Personalize your experience</p></div></div>
             <button class="site-menu-button" onclick="toggleSiteMenu(false)" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
         </div>
+        <div class="rk-menu-shortcuts" aria-label="Order shortcuts">
+          <div class="rk-menu-shortcuts-label">QUICK ACCESS</div>
+          <button type="button" class="rk-menu-shortcut rk-menu-orders" onclick="toggleSiteMenu(false);setTimeout(()=>openOrderHistory(),160)">
+            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-receipt"></i></span><span class="rk-menu-shortcut-copy"><strong>Your Ordered</strong><small>অর্ডার ও ডেলিভারি আপডেট</small></span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
+          </button>
+          <button type="button" class="rk-menu-shortcut rk-menu-cart" onclick="toggleSiteMenu(false);setTimeout(()=>toggleCart(true),160)">
+            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-bag-shopping"></i></span><span class="rk-menu-shortcut-copy"><strong>Cart</strong><small>আপনার বাছাই করা খাবার</small></span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
+          </button>
+          <button type="button" class="rk-menu-shortcut rk-menu-liked" onclick="toggleSiteMenu(false);setTimeout(()=>openLikedFoods(),160)">
+            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-heart"></i></span><span class="rk-menu-shortcut-copy"><strong>Like</strong><small>আপনার পছন্দের খাবার</small></span><span id="rkMenuLikedBadge" class="rk-menu-liked-count">0</span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
+          </button>
+        </div>
+        <div class="h-px bg-gray-200 my-5"></div>
         <div class="text-xs uppercase tracking-wider font-bold opacity-60 px-3 mb-2" data-i18n="appearance">Appearance</div>
-        <button class="site-setting-row" onclick="setSiteTheme('light')"><span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-regular fa-sun"></i></span><span data-i18n="lightMode">Light mode</span><span class="ml-auto" id="lightThemeCheck"></span></button>
-        <button class="site-setting-row" onclick="setSiteTheme('dark')"><span class="w-8 h-8 rounded-lg bg-slate-800 text-white flex items-center justify-center"><i class="fa-regular fa-moon"></i></span><span data-i18n="darkMode">Dark mode</span><span class="ml-auto" id="darkThemeCheck"></span></button>
+        <button class="site-setting-row" data-rk-theme-option="light" onclick="setSiteTheme('light')"><span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-regular fa-sun"></i></span><span data-i18n="lightMode">Light mode</span><span class="ml-auto" id="lightThemeCheck"></span></button>
+        <button class="site-setting-row" data-rk-theme-option="dark" onclick="setSiteTheme('dark')"><span class="w-8 h-8 rounded-lg bg-slate-800 text-white flex items-center justify-center"><i class="fa-regular fa-moon"></i></span><span data-i18n="darkMode">Dark mode</span><span class="ml-auto" id="darkThemeCheck"></span></button>
         <div class="h-px bg-gray-200 my-5"></div>
         <button class="site-setting-row" onclick="toggleLanguageMenu()"><span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-language"></i></span><span data-i18n="language">Language</span><span class="ml-auto text-xs opacity-70" id="currentLanguageLabel">English</span><i class="fa-solid fa-chevron-down text-xs opacity-60"></i></button>
         <div id="siteLanguageSubmenu" class="site-submenu" hidden>
@@ -477,6 +683,20 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         </section>
         <div class="mt-4 rounded-2xl bg-orange-50 p-4 text-orange-900"><div class="font-bold mb-1"><i class="fa-solid fa-utensils mr-2"></i>RK Foodie</div><p class="text-xs leading-relaxed" data-i18n="menuNote">Fresh food, delivered with care.</p></div>
     </aside>
+
+
+<style id="rk-menu-shortcuts-polish">
+  .rk-menu-shortcuts{padding:14px;margin:0 0 18px;border:1px solid #e8edf5;border-radius:20px;background:linear-gradient(145deg,#fff,#fff8f2);box-shadow:0 8px 24px rgba(23,32,51,.045)}
+  .rk-menu-shortcuts-label{font-size:10px;font-weight:900;letter-spacing:.15em;color:#94a3b8;padding:2px 5px 10px}
+  .rk-menu-shortcut{width:100%;display:flex;align-items:center;gap:11px;padding:11px 10px;border-radius:14px;text-align:left;transition:background .18s,transform .18s}
+  .rk-menu-shortcut+.rk-menu-shortcut{margin-top:5px}
+  .rk-menu-shortcut:active{transform:scale(.985)}.rk-menu-shortcut:hover{background:#fff}
+  .rk-menu-shortcut-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;font-size:16px;flex-shrink:0}
+  .rk-menu-orders .rk-menu-shortcut-icon{background:#eaf1ff;color:#3159a8}.rk-menu-cart .rk-menu-shortcut-icon{background:#fff0df;color:#e56b0b}.rk-menu-liked .rk-menu-shortcut-icon{background:#ffe8ed;color:#e11d48}
+  .rk-menu-shortcut-copy{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}.rk-menu-shortcut-copy strong{font-size:13px;font-weight:850;color:#172033}.rk-menu-shortcut-copy small{font-size:10px;color:#8792a3;line-height:1.35}.rk-menu-shortcut-arrow{font-size:10px;color:#aab4c2}
+  .rk-menu-liked-count{min-width:21px;height:21px;padding:0 6px;display:grid;place-items:center;border-radius:99px;background:#e11d48;color:#fff;font-size:10px;font-weight:900}
+  body.site-dark .rk-menu-shortcuts{background:#111c2c;border-color:#34445b}.site-dark .rk-menu-shortcut-copy strong{color:#e8edf5}.site-dark .rk-menu-shortcut:hover{background:#1b2a40}.site-dark .rk-menu-shortcut-copy small{color:#aab8cc}
+</style>
 
     <!-- Top Navigation Bar -->
     <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
@@ -519,7 +739,13 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 .rk-header-actions{max-width:100%;}
 .rk-header-action{white-space:nowrap;min-height:42px;}
 @media(min-width:1024px){.rk-header-actions{gap:8px!important}.rk-header-action{padding-left:13px!important;padding-right:13px!important}}
-@media(max-width:700px){.rk-header-actions{gap:5px!important}.rk-header-action{min-width:40px;justify-content:center}}
+@media(max-width:700px){
+  /* Keep the mobile home header clean; cart/history/likes remain available in the side menu. */
+  .rk-header-actions{display:none!important}
+  .rk-header-action{min-width:40px;justify-content:center}
+  /* Remove the duplicate cart shortcut from the phone bottom navigation. */
+  .md\:hidden.fixed.bottom-0 > button:nth-child(3){display:none!important}
+}
 </style>
 
 <!-- RK Foodie Automatic Banner Slider -->
@@ -693,8 +919,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
  window.renderRKFinalCheckout=renderFinal;
  window.closeFinalCheckout=function(){const modal=$('rkFinalCheckout');if(!modal)return;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';};
  window.openFinalCheckout=function(){if(!getCart().length){alert('প্রথমে কার্টে খাবার যোগ করুন।');return;}renderFinal();const modal=$('rkFinalCheckout');modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';};
- window.confirmFinalCheckout=function(){const name=$('custName')?.value.trim(),phone=$('custPhone')?.value.trim(),address=$('custAddress')?.value.trim();if(!name||!phone||!address){window.closeFinalCheckout();if(typeof window.toggleCart==='function')window.toggleCart(true);const target=!name?$('custName'):!phone?$('custPhone'):$('custAddress');target?.focus();alert('অর্ডার সম্পূর্ণ করতে নাম, মোবাইল নম্বর এবং সম্পূর্ণ ঠিকানা পূরণ করুন।');return;}window.closeFinalCheckout();if(typeof window.submitOrderViaWhatsApp==='function')window.submitOrderViaWhatsApp();};
- const oldProceed=window.proceedToCheckout;window.proceedToCheckout=function(){if(!getCart().length){if(typeof oldProceed==='function')oldProceed();return;}if(typeof window.closeOrderSheet==='function')window.closeOrderSheet();if(typeof window.toggleCart==='function')window.toggleCart(false);window.openFinalCheckout();};
+ window.confirmFinalCheckout=function(){const name=$('custName')?.value.trim(),phone=$('custPhone')?.value.trim(),address=$('custAddress')?.value.trim(),digits=(phone||'').replace(/\D/g,'');if(!name||!phone||digits.length<10||digits.length>15||!address){window.closeFinalCheckout();if(typeof window.toggleCart==='function')window.toggleCart(true);const target=!name?$('custName'):!phone||digits.length<10||digits.length>15?$('custPhone'):$('custAddress');target?.focus();alert(!name?'অর্ডার সম্পূর্ণ করতে আপনার নাম লিখুন।':!phone||digits.length<10||digits.length>15?'সঠিক মোবাইল নম্বর লিখুন (১০–১৫টি সংখ্যা)।':'অর্ডার সম্পূর্ণ করতে সম্পূর্ণ ঠিকানা লিখুন।');return;}window.closeFinalCheckout();if(typeof window.submitOrderViaWhatsApp==='function')window.submitOrderViaWhatsApp();};
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('rkFinalCheckout')?.classList.contains('is-open'))window.closeFinalCheckout();});
 })();
 </script>
@@ -703,7 +928,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     <div id="cartOverlay" onclick="toggleCart(false)" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden transition-opacity"></div>
 
     <!-- Slide-out Cart Drawer -->
-    <div id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-lg bg-white z-50 shadow-2xl drawer-closed transition-transform duration-300 ease-in-out flex flex-col">
+    <div id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-lg bg-white z-50 shadow-2xl drawer-closed transition-transform duration-300 ease-in-out flex flex-col rk-order-drawer-scroll">
         
         <!-- Cart Header -->
         <div class="bg-navy text-white p-4 flex items-center justify-between border-b border-navy-800">
@@ -833,12 +1058,30 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
             document.body.style.overflow = open ? 'hidden' : '';
         }
-        function setSiteTheme(theme) {
-            const dark = theme === 'dark'; document.body.classList.toggle('site-dark', dark);
+        // Keep theme control globally callable by inline menu buttons and dynamic panels.
+        window.setSiteTheme = function(theme) {
+            const dark = String(theme).toLowerCase() === 'dark';
+            const root = document.documentElement;
+            const body = document.body;
+            if (!root || !body) return;
+            body.classList.toggle('site-dark', dark);
+            root.classList.toggle('site-dark-root', dark);
+            body.dataset.theme = dark ? 'dark' : 'light';
+            root.dataset.theme = dark ? 'dark' : 'light';
+            root.style.colorScheme = dark ? 'dark' : 'light';
+            body.style.colorScheme = dark ? 'dark' : 'light';
             try { localStorage.setItem('rkFoodieTheme', dark ? 'dark' : 'light'); } catch(e) {}
-            document.getElementById('darkThemeCheck').innerHTML = dark ? '<i class="fa-solid fa-check text-orange-500"></i>' : '';
-            document.getElementById('lightThemeCheck').innerHTML = dark ? '' : '<i class="fa-solid fa-check text-orange-500"></i>';
-        }
+            const darkCheck = document.getElementById('darkThemeCheck');
+            const lightCheck = document.getElementById('lightThemeCheck');
+            if (darkCheck) darkCheck.innerHTML = dark ? '<i class="fa-solid fa-check text-orange-500"></i>' : '';
+            if (lightCheck) lightCheck.innerHTML = dark ? '' : '<i class="fa-solid fa-check text-orange-500"></i>';
+            document.querySelectorAll('[data-rk-theme-option]').forEach(button => {
+                button.setAttribute('aria-pressed', button.getAttribute('data-rk-theme-option') === (dark ? 'dark' : 'light') ? 'true' : 'false');
+            });
+            document.dispatchEvent(new CustomEvent('rkfoodie:themechange', { detail: { theme: dark ? 'dark' : 'light' } }));
+        };
+        // Preserve the existing function name for any older code that references it.
+        function setSiteTheme(theme) { window.setSiteTheme(theme); }
         function toggleLanguageMenu() { const menu=document.getElementById('siteLanguageSubmenu'); menu.hidden=!menu.hidden; }
         const RK_I18N = {
           en: {settings:'Settings',personalize:'Personalize your experience',appearance:'Appearance',lightMode:'Light mode',darkMode:'Dark mode',language:'Language',menuNote:'Fresh food, delivered with care.',cart:'Your Order',specialService:'🚀 2027 Special Service',favoriteFood:'Your favorite food, now',intro:'Enjoy biryani, fast food, cakes and sweets from the best restaurants around Labpur Bus Stand and Market, delivered to your door with no extra charge.',chooseCategory:'Choose a category',allFood:'All food',items:'items',notFound:'Sorry! No food found with this name.',viewAll:'View all food',yourCart:'Your Order',foodPrice:'Food price:',totalPrice:'Grand total:',deliveryAddress:'Delivery address',paymentMethod:'Payment method:',cash:'Cash on Delivery',onlineUPI:'Online UPI',confirmWhatsApp:'Confirm order on WhatsApp',whatsappNote:'When you tap the order button, your order details will be sent directly to our WhatsApp.',home:'Home',search:'Search',serving:'Serving Labpur with Love ❤️ | Labpur, Birbhum, West Bengal',deliveryTime:'Delivery hours: 10:00 AM – 9:30 PM | Helpline: +91 90000 00000',requiredFields:'Please enter your name, mobile number, and full address.',emptyCart:'Your cart is empty!'},
@@ -1134,30 +1377,60 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             document.getElementById("sectionTitle").innerHTML = `<i class="fa-solid ${catObj.icon} text-brandOrange"></i> ${translateText(catObj.name, rkCurrentLanguage)}`;
         }
 
-        // Render food cards; tapping a card opens its full-screen detail view.
+        // Escape remote/menu values before inserting them into HTML.
+        function rkFoodEscape(value) {
+            return String(value ?? '').replace(/[&<>"']/g, ch => ({
+                '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+            }[ch]));
+        }
+
+        // Render compact menu cards; tapping a card opens the full food details.
         function renderFoodGrid(items) {
             const grid = document.getElementById("foodGrid");
             const noResults = document.getElementById("noResults");
-            const countLabel = rkCurrentLanguage === 'en' ? (items.length === 1 ? '1 item' : `${items.length} items`) : rkCurrentLanguage === 'hi' ? `${items.length} आइटम` : `${items.length}টি আইটেম`;
-            document.getElementById("itemCount").innerText = countLabel;
-            if (items.length === 0) {
+            const count = document.getElementById("itemCount");
+            const countLabel = rkCurrentLanguage === 'en'
+                ? (items.length === 1 ? '1 item' : `${items.length} items`)
+                : rkCurrentLanguage === 'hi' ? `${items.length} आइटम` : `${items.length}টি আইটেম`;
+            if (count) count.textContent = countLabel;
+
+            if (!items.length) {
                 grid.innerHTML = "";
                 noResults.classList.remove("hidden");
                 setSiteLanguage(rkCurrentLanguage);
                 return;
             }
+
             noResults.classList.add("hidden");
-            grid.innerHTML = items.map(item => `
-                <article role="button" tabindex="0" onclick='openFoodDetails(${JSON.stringify(String(item.id))})' onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFoodDetails(this.dataset.foodId)}" data-food-id="${String(item.id)}" aria-label="${item.title} - বিস্তারিত দেখুন" class="w-full text-left bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-orange-400">
-                    <div class="w-full">
-                        <div class="relative h-44 w-full overflow-hidden bg-gray-100">
-                            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover transition duration-300" onerror="this.src='https://placehold.co/500x300/1B2B48/FFFFFF?text=RK+Foodie'">
-                            <button type="button" class="rk-heart-button absolute top-3 right-3" aria-label="Like food" onclick="event.stopPropagation();toggleFoodLike('${String(item.id).replace(/'/g, "\\'")}')"><i class="fa-regular fa-heart"></i></button>
+            grid.innerHTML = items.map(item => {
+                const id = rkFoodEscape(item.id);
+                const title = rkFoodEscape(item.title);
+                const restaurant = rkFoodEscape(item.restaurant);
+                const image = rkFoodEscape(item.image || 'https://placehold.co/500x300/1B2B48/FFFFFF?text=RK+Foodie');
+                const price = Number(item.price) || 0;
+                return `
+                    <article role="button" tabindex="0"
+                        onclick="openFoodDetails(this.dataset.foodId)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFoodDetails(this.dataset.foodId)}"
+                        data-food-id="${id}" aria-label="${title} - বিস্তারিত দেখুন"
+                        class="rk-food-card w-full text-left bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col focus:outline-none focus:ring-2 focus:ring-orange-400">
+                        <div class="rk-food-card-media relative w-full overflow-hidden bg-gray-100">
+                            <img src="${image}" alt="${title}" loading="lazy"
+                                class="w-full h-full object-cover transition duration-300"
+                                onerror="this.onerror=null;this.src='https://placehold.co/500x300/1B2B48/FFFFFF?text=RK+Foodie'">
+                            <button type="button" class="rk-heart-button absolute top-2 right-2" data-food-id="${id}"
+                                aria-label="Like food"
+                                onclick="event.stopPropagation();toggleFoodLike(this.closest('.rk-food-card').dataset.foodId,this)">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
                         </div>
-                        <div class="p-4 space-y-1"><p class="text-[11px] text-gray-400 font-medium">${item.restaurant}</p><h3 class="font-bold text-slate-800 text-sm leading-snug">${item.title}</h3><p class="pt-1 text-base font-extrabold text-navy">₹${item.price}</p><p class="text-xs font-bold text-orange-600 pt-1"><i class="fa-solid fa-circle-info mr-1"></i> বিস্তারিত দেখুন</p></div>
-                    </div>
-                </article>
-            `).join("");
+                        <div class="rk-food-card-copy min-w-0">
+                            <p class="rk-food-card-restaurant">${restaurant}</p>
+                            <h3 class="rk-food-card-title">${title}</h3>
+                            <p class="rk-food-card-price">₹${price.toLocaleString('en-IN')}</p>
+                        </div>
+                    </article>`;
+            }).join("");
             setSiteLanguage(rkCurrentLanguage);
         }
 
@@ -1169,25 +1442,35 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             activeFoodDetailsId = item.id;
             const view = document.getElementById('foodDetailsView');
             const main = document.getElementById('foodDetailsMain');
+            const safeId = rkFoodEscape(item.id);
+            const safeTitle = rkFoodEscape(item.title);
+            const safeRestaurant = rkFoodEscape(item.restaurant);
+            const safeImage = rkFoodEscape(item.image || 'https://placehold.co/700x500/1B2B48/FFFFFF?text=RK+Foodie');
             main.innerHTML = `
               <article class="rk-food-detail-layout">
-                <img class="rk-food-detail-image" src="${item.image}" alt="${item.title}" onerror="this.src='https://placehold.co/700x500/1B2B48/FFFFFF?text=RK+Foodie'">
+                <img class="rk-food-detail-image" src="${safeImage}" alt="${safeTitle}" onerror="this.onerror=null;this.src='https://placehold.co/700x500/1B2B48/FFFFFF?text=RK+Foodie'">
                 <div class="rk-food-detail-copy">
-                  <h1 class="text-2xl md:text-3xl font-extrabold leading-tight text-navy">${item.title}</h1>
-                  <p class="text-sm text-gray-500"><i class="fa-solid fa-store mr-1 text-orange-500"></i>${item.restaurant}</p>
-                  <p class="text-3xl font-extrabold text-orange-600">₹${item.price}</p>
-                  <p class="text-sm leading-6 text-gray-600"></p>
-                  <div class="rk-food-action-row"><button type="button" class="rk-food-order-button" onclick='orderFromFoodDetails(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-bag-shopping"></i> Order now</button><button type="button" class="rk-add-cart-button" onclick='addFoodToSavedCart(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-cart-plus"></i> Add to Cart</button><button type="button" class="rk-detail-like-button" onclick='toggleFoodLike(${JSON.stringify(String(item.id))})'><i class="fa-regular fa-heart"></i> Like</button></div>
+                  <h1 class="text-2xl md:text-3xl font-extrabold leading-tight text-navy">${safeTitle}</h1>
+                  <p class="text-sm text-gray-500"><i class="fa-solid fa-store mr-1 text-orange-500"></i>${safeRestaurant}</p>
+                  <p class="text-3xl font-extrabold text-orange-600">₹${Number(item.price)||0}</p>
+                  <p class="text-sm leading-6 text-gray-600">${rkFoodEscape(item.description || item.ingredients || '')}</p>
+                  <div class="rk-food-action-row">
+                    <button type="button" class="rk-food-order-button" data-food-id="${safeId}" onclick="orderFromFoodDetails(this.dataset.foodId)"><i class="fa-solid fa-bag-shopping"></i> Order now</button>
+                    <button type="button" class="rk-add-cart-button" data-food-id="${safeId}" onclick="addFoodToSavedCart(this.dataset.foodId)"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                    <button type="button" class="rk-detail-like-button" data-food-id="${safeId}" onclick="toggleFoodLike(this.dataset.foodId,this)"><i class="fa-regular fa-heart"></i> Like</button>
+                  </div>
                   <p id="foodDetailOrderNotice" class="hidden text-sm font-semibold text-emerald-700" role="status"></p>
                 </div>
               </article>`;
             const related = foodItems.filter(food => String(food.id) !== String(item.id));
-            document.getElementById('foodDetailsRelated').innerHTML = related.map(food => `
-              <article class="rk-related-card hover:shadow-md transition">
-                <img role="button" tabindex="0" onclick='openFoodDetails(${JSON.stringify(String(food.id))}, false)' src="${food.image}" alt="${food.title}" onerror="this.src='https://placehold.co/180x160/1B2B48/FFFFFF?text=Food'">
-                <span class="min-w-0 flex-1" role="button" tabindex="0" onclick='openFoodDetails(${JSON.stringify(String(food.id))}, false)'><span class="block text-sm font-bold text-slate-800">${food.title}</span><span class="block text-xs text-gray-500 mt-1">${food.restaurant}</span><span class="block text-sm font-extrabold text-orange-600 mt-2">₹${food.price}</span></span>
-                <button type="button" class="rk-heart-button" aria-label="Like food" onclick="toggleFoodLike('${String(food.id).replace(/'/g, "\\'")}')"><i class="fa-regular fa-heart"></i></button>
-              </article>`).join('');
+            document.getElementById('foodDetailsRelated').innerHTML = related.map(food => {
+              const relatedId = rkFoodEscape(food.id);
+              return `<article class="rk-related-card hover:shadow-md transition">
+                <img role="button" tabindex="0" data-food-id="${relatedId}" onclick="openFoodDetails(this.dataset.foodId, false)" src="${rkFoodEscape(food.image || 'https://placehold.co/180x160/1B2B48/FFFFFF?text=Food')}" alt="${rkFoodEscape(food.title)}" onerror="this.onerror=null;this.src='https://placehold.co/180x160/1B2B48/FFFFFF?text=Food'">
+                <span class="min-w-0 flex-1" role="button" tabindex="0" data-food-id="${relatedId}" onclick="openFoodDetails(this.dataset.foodId, false)"><span class="block text-sm font-bold text-slate-800">${rkFoodEscape(food.title)}</span><span class="block text-xs text-gray-500 mt-1">${rkFoodEscape(food.restaurant)}</span><span class="block text-sm font-extrabold text-orange-600 mt-2">₹${Number(food.price)||0}</span></span>
+                <button type="button" class="rk-heart-button" aria-label="Like food" data-food-id="${relatedId}" onclick="toggleFoodLike(this.dataset.foodId,this)"><i class="fa-regular fa-heart"></i></button>
+              </article>`;
+            }).join('');
             view.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             document.getElementById('detailsCartBadge').textContent = cart.reduce((sum, food) => sum + food.quantity, 0);
@@ -1320,6 +1603,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                 overlay.classList.remove("hidden");
                 drawer.classList.remove("drawer-closed");
                 drawer.classList.add("drawer-open");
+                drawer.scrollTop = 0;
             } else {
                 overlay.classList.add("hidden");
                 drawer.classList.remove("drawer-open");
@@ -1616,6 +1900,15 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     if (alert) { alert.style.display = 'none'; alert.textContent = ''; }
     gate.hidden = false;
     document.body.style.overflow = 'hidden';
+    // The account gate is its own scroll container; reset it when opening the editor.
+    gate.scrollTop = 0;
+    requestAnimationFrame(() => {
+      gate.scrollTop = 0;
+      const firstField = $('rkFullName');
+      if (firstField && window.matchMedia('(max-width: 760px)').matches) {
+        firstField.scrollIntoView({ block: 'nearest', behavior: 'auto' });
+      }
+    });
   }
 
   function enterWebsite() {
@@ -1702,7 +1995,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       const p = readProfile();
       if (id === 'custName') p.full_name = field.value.trim();
       if (id === 'custPhone') p.phone = field.value.trim();
-      if (id === 'custAddress') p.address_line = field.value.trim();
+      if (id === 'custAddress') { p.address_line = field.value.trim(); p.landmark = ''; p.city = ''; p.state = ''; p.pincode = ''; }
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (_) {}
       updateProfileCards();
     });
@@ -1772,7 +2065,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     saveCart();syncBadges();
     const container=document.getElementById('cartItemsContainer'),footer=document.getElementById('cartFooter');if(!container||!footer)return;
     if(!cart.length){container.innerHTML='<div class="text-center py-16 space-y-3"><div class="w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto text-2xl"><i class="fa-solid fa-basket-shopping"></i></div><p class="text-gray-500 font-medium text-sm">আপনার কার্ট খালি রয়েছে!</p><button onclick="toggleCart(false)" class="text-xs bg-navy text-white px-4 py-2 rounded-xl font-semibold">খাবার দেখুন</button></div>';footer.classList.add('hidden');
-    }else{footer.classList.remove('hidden');container.innerHTML=cart.map(item=>`<div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><img class="rk-cart-item-thumb" src="${item.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food'}" alt="${String(item.title||'Food').replace(/"/g,'&quot;')}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="flex-1 min-w-0"><h4 class="text-xs font-bold text-gray-800">${item.title||'Food item'}</h4><p class="text-[11px] text-gray-400">${money(item.price)} × ${item.quantity}</p><p class="text-xs font-extrabold text-navy mt-0.5">${money((Number(item.price)||0)*(Number(item.quantity)||1))}</p><button type="button" class="rk-cart-remove-button" onclick='removeSavedCartItem(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-trash-can"></i> Remove</button></div><div class="flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-gray-200"><button type="button" aria-label="Decrease quantity" onclick='updateQuantity(${JSON.stringify(String(item.id))},-1)' class="w-7 h-7 bg-white rounded-lg text-gray-700 font-bold text-xs shadow-sm flex items-center justify-center"><i class="fa-solid fa-minus"></i></button><span class="text-xs font-bold text-navy w-4 text-center">${item.quantity}</span><button type="button" aria-label="Increase quantity" onclick='updateQuantity(${JSON.stringify(String(item.id))},1)' class="w-7 h-7 bg-white rounded-lg text-gray-700 font-bold text-xs shadow-sm flex items-center justify-center"><i class="fa-solid fa-plus"></i></button></div></div>`).join('');}
+    }else{footer.classList.remove('hidden');container.innerHTML=cart.map(item=>`<article class="rk-cart-row bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><div class="rk-cart-row-main"><img class="rk-cart-item-thumb" src="${item.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food'}" alt="${String(item.title||'Food').replace(/"/g,'&quot;')}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="rk-cart-row-info"><h4 class="rk-cart-row-title text-xs font-bold text-gray-800">${item.title||'Food item'}</h4><p class="rk-cart-row-meta text-[11px] text-gray-400">${money(item.price)} × ${item.quantity}</p><p class="rk-cart-row-total text-xs font-extrabold text-navy mt-0.5">${money((Number(item.price)||0)*(Number(item.quantity)||1))}</p></div></div><div class="rk-cart-row-controls"><button type="button" class="rk-cart-remove-button" onclick='removeSavedCartItem(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-trash-can"></i> Remove</button><div class="rk-cart-quantity flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-gray-200"><button type="button" aria-label="Decrease quantity" onclick='updateQuantity(${JSON.stringify(String(item.id))},-1)' class="w-7 h-7 bg-white rounded-lg text-gray-700 font-bold text-xs shadow-sm flex items-center justify-center"><i class="fa-solid fa-minus"></i></button><span class="text-xs font-bold text-navy w-4 text-center">${item.quantity}</span><button type="button" aria-label="Increase quantity" onclick='updateQuantity(${JSON.stringify(String(item.id))},1)' class="w-7 h-7 bg-white rounded-lg text-gray-700 font-bold text-xs shadow-sm flex items-center justify-center"><i class="fa-solid fa-plus"></i></button></div></div></article>`).join('');}
     const total=totalPrice();const subtotal=document.getElementById('subtotalPrice'),grand=document.getElementById('grandTotalPrice');if(subtotal)subtotal.textContent=money(total);if(grand)grand.textContent=money(total);renderSheet();
   };
   window.proceedToCheckout=function(){
@@ -1841,39 +2134,51 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 <script id="rk-liked-foods-logic">
 (function(){
  const KEY='rkFoodieLikedFoodsV1';
- const getLikes=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]').map(String)}catch(e){return []}};
- const saveLikes=ids=>{try{localStorage.setItem(KEY,JSON.stringify([...new Set(ids.map(String))]))}catch(e){}};
- const findFood=id=>{const list=(typeof foodItems!=='undefined'&&Array.isArray(foodItems))?foodItems:(Array.isArray(window.foodItems)?window.foodItems:[]);return list.find(f=>String(f.id)===String(id));};
- window.toggleFoodLike=function(id){
-   const ids=getLikes(),key=String(id),exists=ids.includes(key);
-   saveLikes(exists?ids.filter(x=>x!==key):[...ids,key]);
-   renderLiked();syncHeartButtons();
-   if(!exists){
-     const selector=`[data-food-id="${CSS.escape(key)}"] .rk-heart-button`;
-     const target=document.querySelector(selector)||document.querySelector('.rk-detail-like-button.is-liked');
-     if(target){const burst=document.createElement('span');burst.className='rk-like-burst';burst.innerHTML='♥ <span>✦</span><span>✦</span>';target.appendChild(burst);setTimeout(()=>burst.remove(),900);}
-     const toast=document.createElement('div');toast.textContent='🎉 ❤️ পছন্দের তালিকায় যোগ হয়েছে';toast.style.cssText='position:fixed;z-index:200;left:50%;bottom:28px;transform:translateX(-50%);background:#881337;color:#fff;padding:11px 17px;border-radius:14px;font-size:13px;font-weight:700;box-shadow:0 8px 24px #0002';document.body.appendChild(toast);setTimeout(()=>toast.remove(),1800)
-   }
- };
+ const getLikes=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');return [...new Set((Array.isArray(v)?v:[]).map(String).filter(Boolean))]}catch(e){return []}};
+ const saveLikes=ids=>{try{localStorage.setItem(KEY,JSON.stringify([...new Set(ids.map(String).filter(Boolean))]))}catch(e){}};
+ const foodList=()=>Array.isArray(window.foodItems)?window.foodItems:[];
+ const findFood=id=>foodList().find(f=>String(f.id)===String(id));
+ function likeControls(){return [...document.querySelectorAll('.rk-heart-button,.rk-detail-like-button,[data-rk-like-button]')];}
+ function controlId(btn){const card=btn.closest('.rk-food-card[data-food-id]');return String(btn.dataset.foodId||card?.dataset.foodId||btn.closest('[data-food-id]')?.dataset.foodId||'');}
  function syncHeartButtons(){
    const liked=new Set(getLikes());
-   document.querySelectorAll('[data-food-id]').forEach(card=>{const id=card.dataset.foodId;const btn=card.querySelector('.rk-heart-button');if(btn){btn.classList.toggle('is-liked',liked.has(String(id)));const html=liked.has(String(id))?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>';if(btn.innerHTML!==html)btn.innerHTML=html}});
-   document.querySelectorAll('.rk-detail-like-button').forEach(btn=>{const m=btn.getAttribute('onclick')||'';const id=(m.match(/toggleFoodLike\(["']([^"']+)/)||[])[1];const yes=id&&liked.has(id);btn.classList.toggle('is-liked',!!yes);const html=yes?'<i class="fa-solid fa-heart"></i> Liked':'<i class="fa-regular fa-heart"></i> Like';if(btn.innerHTML!==html)btn.innerHTML=html});
-   const badge=document.getElementById('likedBadge');if(badge)badge.textContent=liked.size;
+   likeControls().forEach(btn=>{
+     const id=controlId(btn);if(!id)return;const yes=liked.has(id);
+     btn.classList.toggle('is-liked',yes);btn.setAttribute('aria-pressed',yes?'true':'false');
+     let html;if(btn.classList.contains('rk-detail-like-button'))html=yes?'<i class="fa-solid fa-heart"></i> Liked':'<i class="fa-regular fa-heart"></i> Like';
+     else if(btn.dataset.rkLikeButton==='remove')html=yes?'<i class="fa-solid fa-heart"></i> সরান':'<i class="fa-regular fa-heart"></i> Like';
+     else html=yes?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>';
+     if(btn.innerHTML!==html)btn.innerHTML=html;
+   });
+   const count=liked.size;['likedBadge','rkMenuLikedBadge'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent=count});
  }
+ window.toggleFoodLike=function(id,sourceButton){
+   const key=String(id||'');if(!key)return;const ids=getLikes(),exists=ids.includes(key);
+   saveLikes(exists?ids.filter(x=>x!==key):[...ids,key]);
+   syncHeartButtons();renderLiked();
+   if(!exists){
+     let target=sourceButton&&sourceButton.isConnected?sourceButton:likeControls().find(btn=>controlId(btn)===key&&btn.getClientRects().length);
+     if(target){target.classList.remove('rk-like-animate');void target.offsetWidth;target.classList.add('rk-like-animate');const burst=document.createElement('span');burst.className='rk-like-burst';burst.innerHTML='♥ <span>✦</span><span>✦</span>';target.appendChild(burst);setTimeout(()=>{burst.remove();target.classList.remove('rk-like-animate')},950)}
+     const toast=document.createElement('div');toast.textContent='❤️ পছন্দের তালিকায় যোগ হয়েছে';toast.style.cssText='position:fixed;z-index:200000;left:50%;bottom:28px;transform:translateX(-50%);background:#881337;color:#fff;padding:11px 17px;border-radius:14px;font-size:13px;font-weight:700;box-shadow:0 8px 24px #0002';document.body.appendChild(toast);setTimeout(()=>toast.remove(),1800);
+   }
+ };
  function renderLiked(){
    const box=document.getElementById('rkLikedFoodsList');if(!box)return;
    const items=getLikes().map(findFood).filter(Boolean);
-   box.innerHTML=items.length?items.map(item=>`<article class="rk-liked-card"><img src="${item.image||''}" alt=""><div class="flex-1 min-w-0"><h3 class="font-extrabold text-slate-900">${item.title||'Food'}</h3><p class="text-xs text-slate-500 mt-1">${item.restaurant||'RK Foodie'}</p><p class="text-lg font-black text-orange-600 mt-2">₹${Number(item.price)||0}</p><div class="flex flex-wrap gap-2 mt-3"><button type="button" class="px-3 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold" onclick='closeLikedFoods();orderFromFoodDetails(${JSON.stringify(String(item.id))})'>Order now</button><button type="button" class="px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold" onclick='addFoodToSavedCart(${JSON.stringify(String(item.id))});closeLikedFoods()'><i class="fa-solid fa-cart-plus"></i> Cart</button><button type="button" class="px-3 py-2 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold" onclick='toggleFoodLike(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-heart"></i> সরান</button></div></div></article>`).join(''):'<div class="col-span-full text-center py-16 text-slate-500"><i class="fa-regular fa-heart text-4xl text-rose-200"></i><p class="font-bold mt-3">এখনও কোনো খাবার লাইক করেননি</p><p class="text-sm mt-1">খাবারের ছবির ❤️ বাটনে চাপ দিন।</p></div>';
+   box.innerHTML=items.length?items.map(item=>`<article class="rk-liked-card"><img src="${item.image||''}" alt=""><div class="flex-1 min-w-0"><h3 class="font-extrabold text-slate-900">${item.title||'Food'}</h3><p class="text-xs text-slate-500 mt-1">${item.restaurant||'RK Foodie'}</p><p class="text-lg font-black text-orange-600 mt-2">₹${Number(item.price)||0}</p><div class="flex flex-wrap gap-2 mt-3"><button type="button" class="px-3 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold" onclick='closeLikedFoods();orderFromFoodDetails(${JSON.stringify(String(item.id))})'>Order now</button><button type="button" class="px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold" onclick='addFoodToSavedCart(${JSON.stringify(String(item.id))});closeLikedFoods()'><i class="fa-solid fa-cart-plus"></i> Cart</button><button type="button" data-rk-like-button="remove" data-food-id="${String(item.id).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}" class="rk-liked-remove-like px-3 py-2 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold" onclick='toggleFoodLike(this.dataset.foodId,this)'><i class="fa-solid fa-heart"></i> সরান</button></div></div></article>`).join(''):'<div class="col-span-full text-center py-16 text-slate-500"><i class="fa-regular fa-heart text-4xl text-rose-200"></i><p class="font-bold mt-3">এখনও কোনো খাবার লাইক করেননি</p><p class="text-sm mt-1">খাবারের ছবির ❤️ বাটনে চাপ দিন।</p></div>';
    syncHeartButtons();
  }
  window.openLikedFoods=function(){renderLiked();const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.add('is-open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
  window.closeLikedFoods=function(){const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.remove('is-open');panel.setAttribute('aria-hidden','true');document.body.style.overflow=''};
- document.addEventListener('DOMContentLoaded',()=>{renderLiked();syncHeartButtons()});
- // Avoid observing every DOM mutation: heart updates themselves mutate the DOM and can freeze slower phones.
  window.rkSyncHeartButtons=syncHeartButtons;
- const originalRenderFoodGrid=window.renderFoodGrid;
- if(typeof originalRenderFoodGrid==='function'){window.renderFoodGrid=function(items){originalRenderFoodGrid(items);syncHeartButtons();};}
+ document.addEventListener('DOMContentLoaded',syncHeartButtons);
+ window.addEventListener('storage',e=>{if(e.key===KEY){syncHeartButtons();renderLiked()}});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncHeartButtons()});
+ // Grid/detail/related cards are re-created dynamically; sync their heart state after every DOM update.
+ const observer=new MutationObserver(()=>{if(!window.rkLikeSyncQueued){window.rkLikeSyncQueued=true;requestAnimationFrame(()=>{window.rkLikeSyncQueued=false;syncHeartButtons()})}});
+ const observeGrid=()=>{const grid=document.getElementById('foodGrid');if(grid&&!grid.dataset.rkLikeObserved){grid.dataset.rkLikeObserved='1';observer.observe(grid,{childList:true,subtree:true})}};
+ observeGrid();document.addEventListener('DOMContentLoaded',observeGrid);
+ document.addEventListener('click',e=>{if(e.target.closest('.rk-heart-button,.rk-detail-like-button,[data-rk-like-button]'))requestAnimationFrame(syncHeartButtons)},true);
  document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeLikedFoods()});
 })();
 </script>
@@ -1881,93 +2186,82 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
 
 
-<script>
-function fetchCurrentLocation() {
+<script id="rk-current-location-fixed">
+async function fetchCurrentLocation() {
     const btn = document.getElementById('getCurrentLocationBtn');
-    if (!navigator.geolocation) {
-        alert('আপনার ব্রাউজার লোকেশন সাপোর্ট করে না।');
+    const addressBox = document.getElementById('custAddress') || document.getElementById('rkAddressLine');
+    if (!btn) return;
+    const original = '<i class="fa-solid fa-location-crosshairs text-base"></i> <span>Use current location</span>';
+    const setStatus = message => {
+        let status = document.getElementById('rkLocationStatus');
+        if (!status) { status = document.createElement('p'); status.id = 'rkLocationStatus'; status.className = 'mt-1 text-xs leading-5 text-slate-500'; btn.insertAdjacentElement('afterend', status); }
+        status.textContent = message;
+    };
+    if (!navigator.geolocation) { setStatus('এই ব্রাউজারে GPS লোকেশন সাপোর্ট নেই। ঠিকানা হাতে লিখুন।'); return; }
+    if (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        setStatus('লোকেশন চালাতে ওয়েবসাইটটি HTTPS লিংকে খুলুন। file:// বা সাধারণ HTTP-তে GPS কাজ নাও করতে পারে।');
         return;
     }
-
     btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-base"></i> লোকেশন খোঁজা হচ্ছে...';
-
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-base"></i><span>লোকেশন খোঁজা হচ্ছে...</span>';
+    setStatus('আপনার ডিভাইসের লোকেশন অনুমতির অপেক্ষায়…');
+    const restore = () => { btn.disabled = false; btn.innerHTML = original; };
     navigator.geolocation.getCurrentPosition(async position => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-
+        const { latitude, longitude, accuracy } = position.coords;
         try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
-                headers: {
-                    'Accept-Language': 'en'
-                }
-            });
-            const data = await response.json();
-            if (data && data.address) {
-                const addr = data.address;
-                
-                // সুনির্দিষ্ট ল্যান্ডমার্ক, রাস্তা বা পাড়ার নাম খোঁজা
-                const landmark = addr.amenity || addr.shop || addr.building || addr.tourism || '';
-                const road = addr.road || addr.pedestrian || addr.suburb || '';
-                const neighborhood = addr.neighbourhood || addr.residential || addr.hamlet || '';
-                const town = addr.village || addr.town || addr.city || '';
-                const postcode = addr.postcode || '';
-                const state = addr.state || 'West Bengal';
-
-                // সব তথ্য সুন্দরভাবে সাজানো (ডুপ্লিকেট বাদ দিয়ে)
-                const addressParts = [landmark, road, neighborhood, town, state].filter(Boolean);
-                const uniqueParts = [...new Set(addressParts)];
-                const fullAddressText = uniqueParts.join(', ') + (postcode ? ` - ${postcode}` : '');
-                
-                const addressBox = document.getElementById('custAddress') || document.getElementById('rkAddressLine');
-                if (addressBox) addressBox.value = fullAddressText;
-
-                const pincodeBox = document.getElementById('rkPincode');
-                if (pincodeBox && postcode) pincodeBox.value = postcode;
-
-                const cityBox = document.getElementById('rkCity');
-                if (cityBox && town) cityBox.value = town;
-
-                                alert('লোকেশন বসানো হয়েছে! ডেলিভারির সুবিধার্থে বক্সের ভেতরে আপনার ল্যান্ডমার্ক লিখে দিন।');
-            } else {
-                alert('সঠিক ঠিকানা পাওয়া যায়নি, দয়া করে ম্যানুয়ালি লিখুন।');
+            setStatus('GPS পাওয়া গেছে। ঠিকানা শনাক্ত করা হচ্ছে…');
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 12000);
+            let data = null;
+            try {
+                const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(latitude)}&lon=${encodeURIComponent(longitude)}&zoom=18&addressdetails=1`;
+                const response = await fetch(url, { headers: { 'Accept': 'application/json', 'Accept-Language': 'bn,en' }, signal: controller.signal });
+                if (!response.ok) throw new Error(`Address service returned ${response.status}`);
+                data = await response.json();
+            } finally { clearTimeout(timeout); }
+            const a = data?.address || {};
+            const parts = [a.amenity || a.shop || a.building || a.tourism, a.house_number && a.road ? `${a.house_number} ${a.road}` : (a.road || a.pedestrian), a.neighbourhood || a.residential || a.suburb || a.hamlet, a.village || a.town || a.city || a.county, a.state, a.postcode]
+                .map(v => String(v || '').trim()).filter(Boolean);
+            const unique = [...new Set(parts)];
+            const addressText = unique.join(', ') || String(data?.display_name || '').trim();
+            if (addressBox) {
+                addressBox.value = addressText || `GPS location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)} (add house/landmark details)`;
+                addressBox.dispatchEvent(new Event('input', { bubbles: true }));
+                addressBox.dispatchEvent(new Event('change', { bubbles: true }));
             }
-
+            const profileAddress = document.getElementById('rkAddressLine');
+            if (profileAddress && profileAddress !== addressBox && addressText) { profileAddress.value = addressText; profileAddress.dispatchEvent(new Event('input', {bubbles:true})); profileAddress.dispatchEvent(new Event('change', {bubbles:true})); }
+            if (a.postcode && document.getElementById('rkPincode')) document.getElementById('rkPincode').value = a.postcode;
+            const city = a.village || a.town || a.city || a.county;
+            if (city && document.getElementById('rkCity')) document.getElementById('rkCity').value = city;
+            if (a.state && document.getElementById('rkState')) document.getElementById('rkState').value = a.state;
+            if (typeof updateProfileCards === 'function') updateProfileCards();
+            if (addressText) setStatus(`ঠিকানা বসানো হয়েছে। GPS নির্ভুলতা প্রায় ${Math.max(1, Math.round(accuracy || 0))} মিটার। প্রয়োজন হলে বাড়ি/ল্যান্ডমার্ক যোগ করুন।`);
+            else setStatus('GPS পাওয়া গেছে, তবে ঠিকানার নাম পাওয়া যায়নি। ঠিকানার ঘরে GPS কো-অর্ডিনেট দেওয়া হয়েছে—বাড়ি/ল্যান্ডমার্ক লিখুন।');
         } catch (error) {
-            console.error(error);
-            alert('লোকেশন রিড করতে সমস্যা হয়েছে।');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fa-solid fa-location-crosshairs text-base"></i> Use current location';
-        }
+            console.warn('RK Foodie reverse geocoding:', error);
+            if (addressBox) {
+                addressBox.value = `GPS: ${latitude.toFixed(6)}, ${longitude.toFixed(6)} (বাড়ি/ল্যান্ডমার্ক লিখুন)`;
+                addressBox.dispatchEvent(new Event('input', {bubbles:true}));
+                addressBox.dispatchEvent(new Event('change', {bubbles:true}));
+            }
+            setStatus('GPS লোকেশন পাওয়া গেছে, কিন্তু ঠিকানার নাম লোড হয়নি। কো-অর্ডিনেট বসানো হয়েছে; অনুগ্রহ করে বাড়ি/ল্যান্ডমার্ক লিখুন।');
+        } finally { restore(); }
     }, error => {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-location-crosshairs text-base"></i> Use current location';
-        alert('দয়া করে আপনার ব্রাউজারের লোকেশন পারমিশন (Location Permission) অন করুন।');
-    }, {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-    });
+        restore();
+        const messages = {
+            1: 'লোকেশন অনুমতি দেওয়া হয়নি। ব্রাউজারের Site settings থেকে Location → Allow করে আবার চেষ্টা করুন।',
+            2: 'ডিভাইসের লোকেশন পাওয়া যাচ্ছে না। GPS/Location চালু করে আবার চেষ্টা করুন।',
+            3: 'লোকেশন পেতে সময় শেষ হয়েছে। GPS চালু রেখে খোলা জায়গায় আবার চেষ্টা করুন।'
+        };
+        setStatus(messages[error.code] || 'লোকেশন নেওয়া যায়নি। Location permission ও GPS সেটিংস পরীক্ষা করুন।');
+    }, { enableHighAccuracy: true, timeout: 25000, maximumAge: 60000 });
 }
 </script>
 
 
 
-<script id="rk-order-history-panel">
-(function(){
- const key='rkFoodieOrderHistoryV1';
- function read(){try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[]}catch(e){return[]}}
- window.openOrderHistory=function(){
-  let panel=document.getElementById('rkOrderHistoryPanel');
-  if(!panel){panel=document.createElement('section');panel.id='rkOrderHistoryPanel';panel.style.cssText='position:fixed;inset:0;z-index:120000;background:#f8fafc;overflow:auto;';panel.innerHTML='<div style="max-width:900px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;padding:10px 0 18px;border-bottom:1px solid #e5e7eb"><button type="button" onclick="closeOrderHistory()" style="font-size:24px;padding:6px 12px">←</button><div><h2 style="font-size:22px;font-weight:800">Your Ordered</h2><p style="color:#64748b;font-size:13px">শুধু অর্ডার করা খাবারের ইতিহাস</p></div></header><div id="rkOrderHistoryItems" style="display:grid;gap:12px;padding:18px 0"></div></div>';document.body.appendChild(panel);}
-  const box=document.getElementById('rkOrderHistoryItems'),items=read();box.innerHTML=items.length?items.map(o=>'<article style="border:1px solid #e5e7eb;border-radius:14px;padding:14px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>'+esc(o.order_number||o.id)+'</strong><span style="color:#64748b;font-size:12px">'+esc(new Date(o.created_at).toLocaleString())+'</span></div><div style="margin-top:8px">'+(o.items||[]).map(i=>'<div style="display:flex;align-items:center;gap:10px;padding:7px 0"><img src="'+esc(i.image||'https://placehold.co/60x60')+'" style="width:48px;height:48px;object-fit:cover;border-radius:8px"><span style="flex:1">'+esc(i.title)+' × '+Number(i.quantity||1)+'</span><b>₹'+(Number(i.price)||0)*(Number(i.quantity)||1)+'</b></div>').join('')+'</div><div style="text-align:right;font-weight:800;margin-top:8px">Total: ₹'+(Number(o.total)||0)+'</div></article>').join(''):'<div style="text-align:center;padding:55px 12px;color:#64748b">এখনও কোনো অর্ডার হিস্ট্রি নেই।</div>';
-  panel.style.display='block';document.body.style.overflow='hidden';
- };
- window.closeOrderHistory=function(){const p=document.getElementById('rkOrderHistoryPanel');if(p)p.style.display='none';document.body.style.overflow='';};
- function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-})();
-</script>
+
 <style>
 .rk-heart-button.is-liked,.rk-detail-like-button.is-liked{color:#e11d48!important;background:#ffe4e6!important;border-color:#fb7185!important}
 .rk-heart-button.is-liked i,.rk-detail-like-button.is-liked i{color:#e11d48!important}
@@ -1975,6 +2269,10 @@ function fetchCurrentLocation() {
 .rk-like-burst{position:absolute;pointer-events:none;left:50%;top:50%;transform:translate(-50%,-50%);font-size:18px;color:#e11d48;animation:rkLikePop .85s ease-out forwards;z-index:20}
 .rk-like-burst span{position:absolute;font-size:12px;color:#fb7185;animation:rkLikeSpark .8s ease-out forwards}.rk-like-burst span:first-child{left:-13px;top:-12px}.rk-like-burst span:last-child{right:-13px;top:-9px}
 .rk-heart-button,.rk-detail-like-button{position:relative;overflow:visible}
+.rk-like-animate{animation:rkHeartTap .42s cubic-bezier(.2,.8,.2,1)}
+.rk-like-animate i{animation:rkHeartIcon .72s cubic-bezier(.2,.8,.2,1)}
+@keyframes rkHeartTap{0%{transform:scale(1)}35%{transform:scale(1.28)}65%{transform:scale(.92)}100%{transform:scale(1)}}
+@keyframes rkHeartIcon{0%{transform:scale(.55) rotate(-18deg)}45%{transform:scale(1.35) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
 @keyframes rkLikePop{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}35%{opacity:1;transform:translate(-50%,-75%) scale(1.35)}100%{opacity:0;transform:translate(-50%,-125%) scale(1)}}
 @keyframes rkLikeSpark{0%{opacity:0;transform:scale(.3)}40%{opacity:1;transform:scale(1.3)}100%{opacity:0;transform:translateY(-18px) scale(.7)}}
 </style>
@@ -2075,87 +2373,6 @@ function closeSuccessModal() {
     window.location.reload();
 }
 
-// WhatsApp সাবমিট ও এডমিন ডাটা সিঙ্ক ফাংশন
-window.submitOrderViaWhatsApp = function() {
-    const name = document.getElementById("custName")?.value.trim() || document.getElementById("rkOrderProfileName")?.textContent || "";
-    const phone = document.getElementById("custPhone")?.value.trim() || document.getElementById("rkOrderProfilePhone")?.textContent || "";
-    const address = document.getElementById("custAddress")?.value.trim() || document.getElementById("rkOrderProfileAddress")?.textContent || "";
-    const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || 'Cash on Delivery';
-
-    if (!name || !phone || !address) {
-        alert("অনুগ্রহ করে আপনার নাম, মোবাইল নম্বর এবং সম্পূর্ণ ঠিকানা পূরণ করুন।");
-        return;
-    }
-
-    if (cart.length === 0) {
-        alert("আপনার কার্ট খালি রয়েছে!");
-        return;
-    }
-
-    const grandTotal = cart.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
-    const orderNumber = 'RK-' + Date.now().toString().slice(-8);
-    const orderId = (window.crypto && typeof window.crypto.randomUUID === 'function')
-        ? window.crypto.randomUUID()
-        : ('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-            const r = Math.random() * 16 | 0;
-            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-        }));
-
-    const orderPayload = {
-        id: orderId,
-        order_number: orderNumber,
-        customer_name: name,
-        phone,
-        address,
-        payment_method: paymentMethod,
-        items: cart.map(item => ({
-            id: String(item.id),
-            title: String(item.title || ''),
-            restaurant: String(item.restaurant || ''),
-            category: String(item.category || ''),
-            price: Number(item.price) || 0,
-            quantity: Number(item.quantity) || 1
-        })),
-        total: grandTotal,
-        status: 'pending'
-    };
-
-    // WhatsApp Message
-    let message = `🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর - 2027)*\n`;
-    message += `------------------------------------\n`;
-    message += `🧾 *অর্ডার নম্বর:* ${orderNumber}\n`;
-    message += `👤 *গ্রাহকের নাম:* ${name}\n`;
-    message += `📞 *মোবাইল নম্বর:* ${phone}\n`;
-    message += `📍 *ডেলিভারি ঠিকানা ও ল্যান্ডমার্ক:* ${address}\n`;
-    message += `💳 *পেমেন্ট পদ্ধতি:* ${paymentMethod}\n`;
-    message += `------------------------------------\n`;
-    message += `🍽️ *অর্ডার করা খাবারের তালিকা:*\n`;
-
-    cart.forEach((item, index) => {
-        message += `${index + 1}. ${item.title} - ${item.quantity} পিস (₹${item.price * item.quantity})\n`;
-    });
-
-    message += `------------------------------------\n`;
-    message += `💰 *সর্বমোট মূল্য:* ₹${grandTotal}\n`;
-    message += `------------------------------------\n`;
-    message += `ধন্যবাদ! অর্ডারের কাজ শুরু করা হলো।`;
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/919907406500?text=${encodedMessage}`;
-
-    window.open(whatsappUrl, '_blank');
-
-    // Supabase সেভ
-    const orderClient = window.RKFoodieSupabase;
-    if (orderClient && typeof orderClient.from === 'function') {
-        orderClient.from('orders').insert(orderPayload).then(({ error }) => {
-            if (error) console.warn('Supabase order save error:', error.message);
-            else console.info('Order successfully synced to Admin Studio:', orderNumber);
-        }).catch(err => console.warn('Supabase connection error:', err));
-    }
-
-    showOrderSuccessModal(orderPayload);
-};
 </script>
 
 
@@ -2181,7 +2398,10 @@ window.submitOrderViaWhatsApp = function() {
  const money=v=>'₹'+(Number(v)||0).toLocaleString('en-IN',{maximumFractionDigits:2});
  const readHistory=()=>{try{const v=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');return Array.isArray(v)?v:[]}catch(_){return[]}};
  const saveHistory=o=>{try{const rows=readHistory().filter(x=>x.order_number!==o.order_number);rows.unshift(o);localStorage.setItem(HISTORY_KEY,JSON.stringify(rows.slice(0,100)));return true}catch(e){console.warn('Order history could not be saved locally',e);return false}};
- function fullAddress(){return document.getElementById('custAddress')?.value.trim()||document.getElementById('rkOrderProfileAddress')?.textContent.trim()||''}
+ function fullAddress(){
+   const entered=document.getElementById('custAddress')?.value.trim();if(entered)return entered;
+   try{const p=JSON.parse(localStorage.getItem('rkFoodieGuestProfileV1')||'{}');return [p.address_line,p.landmark?'Landmark: '+p.landmark:'',p.city,p.state,p.pincode].filter(Boolean).join(', ')}catch(_){return ''}
+ }
  function receiptMarkup(o){
    const rows=(o.items||[]).map(i=>`<tr><td class="item-name">${esc(i.title)}</td><td class="qty">${Number(i.quantity)||1}</td><td class="num">${money(i.price)}</td><td class="num">${money((Number(i.price)||0)*(Number(i.quantity)||1))}</td></tr>`).join('');
    const date=new Date(o.created_at||Date.now()).toLocaleString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true});
@@ -2189,14 +2409,29 @@ window.submitOrderViaWhatsApp = function() {
    *{box-sizing:border-box}body{margin:0;padding:18px;background:#f2f2f2;color:#111;font-family:Arial,Helvetica,sans-serif}.slip{width:100%;max-width:380px;margin:0 auto;background:#fff;padding:22px 18px;border:1px solid #ddd;box-shadow:0 2px 12px #0000000c}.brand{text-align:center;padding-bottom:13px;border-bottom:2px dashed #222}.brand h1{font-size:29px;letter-spacing:-1px;margin:0 0 4px;font-weight:900}.brand p{font-size:13px;letter-spacing:2px;margin:0;font-weight:700}.meta{padding:12px 0;border-bottom:2px dashed #222;font-size:13px;line-height:1.9}.line{display:flex;gap:8px}.line b{min-width:98px}.status{display:inline-block;background:#e8f7ec;color:#147a35;border:1px solid #8bc99d;border-radius:4px;padding:2px 8px;font-weight:800;letter-spacing:.5px}.section-title{font-size:19px;font-weight:900;margin:17px 0 10px;text-transform:uppercase}.customer{padding:10px;background:#f4f7f4;border-left:4px solid #9bc9a6;margin:10px 0 14px;line-height:1.7}.customer-name{font-size:17px;font-weight:900;background:#e4f2e6;padding:4px 7px;display:inline-block;border-radius:3px;margin-bottom:5px}.customer-detail{font-size:13px;overflow-wrap:anywhere}.items-title{font-size:18px;font-weight:900;margin:17px 0 10px}.items{width:100%;border-collapse:collapse;table-layout:fixed}.items th,.items td{padding:8px 3px;border-bottom:1px dashed #777;font-size:12px}.items th{font-size:12px;text-align:left;border-top:1px dashed #222;border-bottom:1px dashed #222}.items th:first-child,.items td:first-child{width:39%;overflow-wrap:anywhere}.items th:nth-child(2),.items td:nth-child(2){width:10%;text-align:center}.items th:nth-child(3),.items td:nth-child(3){width:23%;text-align:right}.items th:nth-child(4),.items td:nth-child(4){width:28%;text-align:right}.total{font-size:21px;font-weight:900;padding:13px 0;border-bottom:2px dashed #222}.status-row{padding:12px 0;font-size:14px}.thanks{text-align:center;font-size:11px;margin:17px 0 0;line-height:1.5}.actions{display:flex;gap:8px;justify-content:center;margin:14px auto;max-width:380px}.actions button{border:0;border-radius:5px;background:#222;color:#fff;padding:10px 14px;font-weight:700;cursor:pointer}@page{size:80mm auto;margin:4mm}@media print{body{padding:0;background:#fff}.slip{width:100%;max-width:none;margin:0;padding:3mm;border:0;box-shadow:none}.actions{display:none}.brand h1{font-size:25px}}
    </style></head><body><main class="slip"><header class="brand"><h1>RK Foodie</h1><p>DELIVERY ORDER SLIP</p></header><section class="meta"><div class="line"><b>Order No:</b><span>${esc(o.order_number)}</span></div><div class="line"><b>Order Date:</b><span>${esc(date)}</span></div><div class="line"><b>Payment:</b><span>${esc(o.payment_method||'Cash on Delivery')}</span></div></section><h2 class="items-title">ORDERED ITEMS</h2><table class="items"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table><h2 class="section-title">Customer Details</h2><section class="customer"><div class="customer-name">${esc(o.customer_name)}</div><div class="customer-detail"><b>Phone:</b> ${esc(o.phone)}</div><div class="customer-detail"><b>Address:</b> ${esc(o.address)}</div></section><div class="total">TOTAL AMOUNT: ${money(o.total)}</div><div class="status-row"><b>Status:</b> <span class="status">CONFIRMED</span></div><p class="thanks">Please deliver the order to the address above. Thank you!</p></main><div class="actions"><button onclick="window.print()">Print / Save PDF</button><button onclick="if(navigator.share)navigator.share({title:'${esc(o.order_number)} Delivery Slip',text:document.querySelector('.slip').innerText}).catch(()=>{});else alert('Use Print → Save as PDF, then share the PDF.')">Share Slip</button></div>
 
+
+<style id="rk-global-like-feedback">
+.rk-heart-button.is-liked,.rk-detail-like-button.is-liked,[data-rk-like-button].is-liked{color:#e11d48!important;background:#ffe4e6!important;border-color:#fb7185!important;}
+.rk-heart-button.is-liked i,.rk-detail-like-button.is-liked i,[data-rk-like-button].is-liked i{color:#e11d48!important;}
+.rk-detail-like-button.is-liked{box-shadow:0 0 0 2px #fecdd3 inset;}
+.rk-liked-remove-like.is-liked{background:#ffe4e6!important;color:#be123c!important;border:1px solid #fb7185!important;}
+.rk-like-animate{animation:rkHeartTap .42s cubic-bezier(.2,.8,.2,1);}
+@keyframes rkHeartTap{0%{transform:scale(1)}35%{transform:scale(1.28)}68%{transform:scale(.9)}100%{transform:scale(1)}}
+</style>
+
+
+
+
 </body></html>`
  }
+ // Reusable, customer-UI-independent slip renderer for the upcoming Delivery Partner app integration.
+ window.rkBuildDeliverySlipHtml=function(order){return order&&typeof order==='object'?receiptMarkup(order):''};
  window.rkPrintDeliverySlip=function(orderNumber){const o=readHistory().find(x=>x.order_number===orderNumber);if(!o){alert('Order slip not found on this device.');return}const w=window.open('','_blank');if(!w){alert('Please allow pop-ups to print the delivery slip.');return}w.document.open();w.document.write(receiptMarkup(o));w.document.close()};
  window.openOrderHistory=function(){
    let panel=document.getElementById('rkOrderHistoryPanel');
    if(!panel){panel=document.createElement('section');panel.id='rkOrderHistoryPanel';panel.style.cssText='position:fixed;inset:0;z-index:120000;background:#f8fafc;overflow:auto;font-family:Poppins,sans-serif';panel.innerHTML='<div style="max-width:900px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;padding:10px 0 18px;border-bottom:1px solid #e5e7eb"><button type="button" onclick="closeOrderHistory()" style="font-size:24px;padding:6px 12px">←</button><div><h2 style="font-size:22px;font-weight:800">Your Ordered</h2><p style="color:#64748b;font-size:13px">আপনার অর্ডার, ঠিকানা ও ডেলিভারি আপডেট</p></div></header><div id="rkOrderHistoryItems" style="display:grid;gap:12px;padding:18px 0"></div></div>';document.body.appendChild(panel)}
    const items=readHistory(),box=document.getElementById('rkOrderHistoryItems');
-   box.innerHTML=items.length?items.map(o=>{const eta=Number(o.estimated_delivery_at)||0;const itemRows=(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f1f5f9"><img src="${esc(i.image||'https://placehold.co/60x60')}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px"><span style="flex:1;min-width:0"><b>${esc(i.title)}</b><small style="display:block;color:#64748b">${Number(i.quantity)||1} × ${money(i.price)}</small></span><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');return `<article style="border:1px solid #e2e8f0;border-radius:18px;padding:16px;background:white;box-shadow:0 5px 18px #0f172a08"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">${esc(o.order_number||o.id)}</strong><span style="font-size:11px;padding:5px 9px;border-radius:99px;background:#fff7ed;color:#c2410c;font-weight:800">${esc(o.status||'pending').toUpperCase()}</span></div><p style="font-size:11px;color:#64748b;margin-top:4px">Placed: ${esc(new Date(o.created_at||Date.now()).toLocaleString())}</p><div style="margin-top:10px">${itemRows}</div><div style="margin-top:12px;padding:12px;border-radius:12px;background:#f8fafc;font-size:12px;line-height:1.7"><b>Delivery address</b><br>${esc(o.address)}<br><b>Contact:</b> ${esc(o.phone)}<br><b>Payment:</b> ${esc(o.payment_method||'Cash on Delivery')}<br><b>Estimated arrival:</b> ${esc(o.estimated_delivery_text||'25–40 minutes after order confirmation')} ${eta?`<br><b>Time remaining:</b> <span data-eta="${eta}" class="rk-history-countdown"></span>`:''}</div><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px"><strong style="font-size:18px">Total: ${money(o.total)}</strong><button onclick="rkPrintDeliverySlip('${esc(o.order_number)}')" style="background:#172554;color:white;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:800"><i class="fa-solid fa-receipt"></i> Delivery slip / Print</button></div></article>`}).join(''):'<div style="text-align:center;padding:55px 12px;color:#64748b">এখনও কোনো অর্ডার নেই। খাবার অর্ডার করলে সম্পূর্ণ বিবরণ এখানে দেখা যাবে।</div>';
+   box.innerHTML=items.length?items.map(o=>{const eta=Number(o.estimated_delivery_at)||0;const itemRows=(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f1f5f9"><img src="${esc(i.image||'https://placehold.co/60x60')}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px"><span style="flex:1;min-width:0"><b>${esc(i.title)}</b><small style="display:block;color:#64748b">${Number(i.quantity)||1} × ${money(i.price)}</small></span><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');return `<article style="border:1px solid #e2e8f0;border-radius:18px;padding:16px;background:white;box-shadow:0 5px 18px #0f172a08"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">${esc(o.order_number||o.id)}</strong><span style="font-size:11px;padding:5px 9px;border-radius:99px;background:#fff7ed;color:#c2410c;font-weight:800">${esc(o.status||'pending').toUpperCase()}</span></div><p style="font-size:11px;color:#64748b;margin-top:4px">Placed: ${esc(new Date(o.created_at||Date.now()).toLocaleString())}</p><div style="margin-top:10px">${itemRows}</div><div style="margin-top:12px;padding:12px;border-radius:12px;background:#f8fafc;font-size:12px;line-height:1.7"><b>Delivery address</b><br>${esc(o.address)}<br><b>Contact:</b> ${esc(o.phone)}<br><b>Payment:</b> ${esc(o.payment_method||'Cash on Delivery')}<br><b>Estimated arrival:</b> ${esc(o.estimated_delivery_text||'25–40 minutes after order confirmation')} ${eta?`<br><b>Time remaining:</b> <span data-eta="${eta}" class="rk-history-countdown"></span>`:''}</div><div style="display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px"><strong style="font-size:18px">Total: ${money(o.total)}</strong></div></article>`}).join(''):'<div style="text-align:center;padding:55px 12px;color:#64748b">এখনও কোনো অর্ডার নেই। খাবার অর্ডার করলে সম্পূর্ণ বিবরণ এখানে দেখা যাবে।</div>';
    panel.style.display='block';document.body.style.overflow='hidden';
    const tick=()=>box.querySelectorAll('[data-eta]').forEach(el=>{let n=Math.max(0,Math.floor((Number(el.dataset.eta)-Date.now())/1000));el.textContent=n?`${Math.floor(n/60)} মিনিট ${n%60} সেকেন্ড`:'আনুমানিক সময় শেষ — আপডেটের জন্য দোকানের সঙ্গে যোগাযোগ করুন';});tick();if(window.rkHistoryTimer)clearInterval(window.rkHistoryTimer);window.rkHistoryTimer=setInterval(()=>{if(!document.getElementById('rkOrderHistoryPanel')||document.getElementById('rkOrderHistoryPanel').style.display==='none'){clearInterval(window.rkHistoryTimer);return}tick()},1000);
  };
@@ -2208,33 +2443,57 @@ window.submitOrderViaWhatsApp = function() {
    if(items)items.innerHTML=`<h4 style="font-size:13px;font-weight:800;color:#1e293b;margin:0 0 4px">আপনার অর্ডার</h4>`+(o.items||[]).map(i=>`<div class="rk-success-item"><img src="${esc(i.image||'https://placehold.co/80x80?text=Food')}" alt=""><div class="rk-si-name">${esc(i.title)}<div class="rk-si-sub">${Number(i.quantity)||1} × ${money(i.price)}</div></div><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');
    const oldSync=document.getElementById('rkOrderSyncStatus');if(oldSync)oldSync.remove();
    let actions=document.getElementById('rkSuccessActions');if(!actions&&body){actions=document.createElement('div');actions.id='rkSuccessActions';actions.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px';const close=body.querySelector('button[onclick="closeSuccessModal()"]');if(close)close.before(actions);else body.appendChild(actions)}
-   if(actions)actions.innerHTML=`<button class="rk-order-action primary" onclick="openOrderHistory()"><i class="fa-solid fa-receipt"></i> Your Ordered</button><button class="rk-order-action" onclick="rkPrintDeliverySlip('${esc(o.order_number)}')"><i class="fa-solid fa-print"></i> Order slip</button>`;
+   if(actions)actions.innerHTML=`<button class="rk-order-action primary" onclick="openOrderHistory()"><i class="fa-solid fa-receipt"></i> Your Ordered</button>`;
+   let sync=document.getElementById('rkOrderSyncStatus');if(!sync&&body){sync=document.createElement('p');sync.id='rkOrderSyncStatus';sync.className='rk-sync-status';if(actions)actions.after(sync);else body.appendChild(sync)}
+   if(sync){sync.className='rk-sync-status';sync.textContent='অর্ডারটি এই ডিভাইসে সেভ হয়েছে; সার্ভারে সিঙ্ক হচ্ছে…'}
    const modal=document.getElementById('rkOrderSuccessModal');modal.classList.add('is-open');document.body.style.overflow='hidden';
    const eta=Number(o.estimated_delivery_at)||Date.now()+25*60000;const tick=()=>{const n=Math.max(0,Math.floor((eta-Date.now())/1000));set('rkCountdownTimer',n?`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')} মিনিট`:'আনুমানিক ডেলিভারি সময় এসে গেছে');};tick();if(window.rkTimerInterval)clearInterval(window.rkTimerInterval);window.rkTimerInterval=setInterval(()=>{if(!modal.classList.contains('is-open')){clearInterval(window.rkTimerInterval);return}tick()},1000);
  };
  window.submitOrderViaWhatsApp=async function(){
-   const name=document.getElementById('custName')?.value.trim()||document.getElementById('rkOrderProfileName')?.textContent.trim()||'';
-   const phone=document.getElementById('custPhone')?.value.trim()||document.getElementById('rkOrderProfilePhone')?.textContent.trim()||'';
-   const address=fullAddress();const paymentMethod=document.querySelector('input[name="payment"]:checked')?.value||'Cash on Delivery';
-   if(!name||!phone||!address){alert('অনুগ্রহ করে আপনার নাম, মোবাইল নম্বর এবং সম্পূর্ণ ঠিকানা পূরণ করুন।');return}
+   if(window.rkOrderSubmitting)return;
+   const readProfile=()=>{try{return JSON.parse(localStorage.getItem('rkFoodieGuestProfileV1')||'{}')}catch(_){return {}}};
+   const profile=readProfile();
+   const name=document.getElementById('custName')?.value.trim()||profile.full_name||profile.receiver_name||'';
+   const phone=document.getElementById('custPhone')?.value.trim()||profile.phone||'';
+   const address=fullAddress();
+   const paymentMethod=document.querySelector('input[name="payment"]:checked')?.value||'Cash on Delivery';
+   const digits=phone.replace(/\D/g,'');
+   if(!name||!phone||digits.length<10||digits.length>15||!address){
+     alert(!name?'অনুগ্রহ করে আপনার নাম লিখুন।':!phone||digits.length<10||digits.length>15?'সঠিক মোবাইল নম্বর লিখুন (১০–১৫টি সংখ্যা)।':'অনুগ্রহ করে সম্পূর্ণ ডেলিভারি ঠিকানা লিখুন।');
+     return;
+   }
    const activeCart=(typeof cart!=='undefined'&&Array.isArray(cart))?cart:[];
    if(!activeCart.length){alert('আপনার কার্ট খালি রয়েছে!');return}
-   const cartItems=activeCart.map(i=>({id:String(i.id??''),title:String(i.title||'Food item'),restaurant:String(i.restaurant||''),category:String(i.category||''),price:Number(i.price)||0,quantity:Math.max(1,Number(i.quantity)||1),image:String(i.image||'')}));
-   const grandTotal=cartItems.reduce((sum,i)=>sum+i.price*i.quantity,0);const orderNumber='RK-'+Date.now().toString().slice(-8);const orderId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}));
-   const createdAt=new Date();const etaAt=new Date(createdAt.getTime()+25*60000);const trackingToken=(window.crypto&&crypto.getRandomValues?Array.from(window.crypto.getRandomValues(new Uint8Array(24)),b=>b.toString(16).padStart(2,'0')).join(''):(String(Date.now())+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2))).slice(0,48);const orderPayload={id:orderId,order_number:orderNumber,tracking_token:trackingToken,customer_name:name,phone,address,payment_method:paymentMethod,items:cartItems.map(({image,...i})=>i),total:grandTotal,status:'pending'};
-   const historyOrder={...orderPayload,items:cartItems,created_at:createdAt.toISOString(),estimated_delivery_at:etaAt.getTime(),estimated_delivery_text:etaAt.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),sync_status:'pending'};
-   saveHistory(historyOrder);
-   let message=`🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর)*\n🧾 *অর্ডার নম্বর:* ${orderNumber}\n👤 *নাম:* ${name}\n📞 *মোবাইল:* ${phone}\n📍 *ডেলিভারি ঠিকানা:* ${address}\n💳 *পেমেন্ট:* ${paymentMethod}\n⏰ *আনুমানিক ডেলিভারি:* ${historyOrder.estimated_delivery_text}\n------------------------------\n🍽️ *অর্ডারের তালিকা:*\n`;
-   cartItems.forEach((i,n)=>message+=`${n+1}. ${i.title} × ${i.quantity} — ${money(i.price*i.quantity)}\n`);message+=`------------------------------\n💰 *মোট:* ${money(grandTotal)}\n*অর্ডার স্লিপ:* Your Ordered থেকে প্রিন্ট/শেয়ার করুন।`;
-   // Open WhatsApp synchronously from the click gesture; browsers may block delayed popups.
-   const wa=window.open(`https://wa.me/919907406500?text=${encodeURIComponent(message)}`,'_blank');
-   if(!wa)alert('WhatsApp খুলতে পপ-আপ ব্লক হয়েছে। আপনার ব্রাউজারে pop-ups অনুমতি দিন।');
-   window.showOrderSuccessModal(historyOrder);
-   const client=window.RKFoodieSupabase;
-   if(client&&typeof client.from==='function'){
-     try{const {error}=await client.from('orders').insert(orderPayload);if(error)throw error;historyOrder.sync_status='synced';saveHistory(historyOrder);console.info('RK Foodie order synced:',orderNumber)}
-     catch(err){historyOrder.sync_status='failed';historyOrder.sync_error=String(err?.message||err);saveHistory(historyOrder);console.error('RK Foodie Supabase order insert failed:',err)}
-   }else{historyOrder.sync_status='not-configured';saveHistory(historyOrder);console.warn('RK Foodie Supabase client not configured')}
+   window.rkOrderSubmitting=true;
+   const submitButtons=[...document.querySelectorAll('[onclick*="submitOrderViaWhatsApp"]')];
+   submitButtons.forEach(button=>{button.disabled=true;button.dataset.rkSubmitWasDisabled='false';button.style.opacity='.65'});
+   try{
+     const cartItems=activeCart.map(i=>({id:String(i.id??''),title:String(i.title||'Food item'),restaurant:String(i.restaurant||''),category:String(i.category||''),price:Math.max(0,Number(i.price)||0),quantity:Math.max(1,Number(i.quantity)||1),image:String(i.image||'')}));
+     const grandTotal=cartItems.reduce((sum,i)=>sum+i.price*i.quantity,0);
+     const orderNumber='RK-'+Date.now().toString().slice(-8);
+     const orderId=(window.crypto&&typeof window.crypto.randomUUID==='function')?window.crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}));
+     const createdAt=new Date(),etaAt=new Date(createdAt.getTime()+25*60000);
+     const trackingToken=(window.crypto&&window.crypto.getRandomValues?Array.from(window.crypto.getRandomValues(new Uint8Array(24)),b=>b.toString(16).padStart(2,'0')).join(''):(String(Date.now())+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2))).slice(0,48);
+     const orderPayload={id:orderId,order_number:orderNumber,tracking_token:trackingToken,customer_name:name,phone,address,payment_method:paymentMethod,items:cartItems.map(({image,...i})=>i),total:grandTotal,status:'pending'};
+     const historyOrder={...orderPayload,items:cartItems,created_at:createdAt.toISOString(),estimated_delivery_at:etaAt.getTime(),estimated_delivery_text:etaAt.toLocaleTimeString('bn-IN',{hour:'2-digit',minute:'2-digit'}),sync_status:'pending'};
+     const historySaved=saveHistory(historyOrder);
+     let message=`🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর)*\n🧾 *অর্ডার নম্বর:* ${orderNumber}\n👤 *নাম:* ${name}\n📞 *মোবাইল:* ${phone}\n📍 *ডেলিভারি ঠিকানা:* ${address}\n💳 *পেমেন্ট:* ${paymentMethod}\n⏰ *আনুমানিক ডেলিভারি:* ${historyOrder.estimated_delivery_text}\n------------------------------\n🍽️ *অর্ডারের তালিকা:*\n`;
+     cartItems.forEach((i,n)=>message+=`${n+1}. ${i.title} × ${i.quantity} — ${money(i.price*i.quantity)}\n`);
+     message+=`------------------------------\n💰 *মোট:* ${money(grandTotal)}\nধন্যবাদ! আপনার অর্ডারটি RK Foodie-তে পাঠানো হয়েছে।`;
+     // Open WhatsApp while the original click gesture is still active.
+     const wa=window.open(`https://wa.me/919907406500?text=${encodeURIComponent(message)}`,'_blank');
+     if(!wa)alert('WhatsApp খুলতে পপ-আপ ব্লক হয়েছে। ব্রাউজারে pop-ups অনুমতি দিন।');
+     if(!historySaved)alert('অর্ডার WhatsApp-এ পাঠানো হবে, তবে এই ডিভাইসে অর্ডার হিস্ট্রি সেভ করা যায়নি।');
+     if(typeof window.showOrderSuccessModal==='function')window.showOrderSuccessModal(historyOrder);
+     const client=window.RKFoodieSupabase;
+     if(client&&typeof client.from==='function'){
+       try{const {error}=await client.from('orders').insert(orderPayload);if(error)throw error;historyOrder.sync_status='synced';delete historyOrder.sync_error;saveHistory(historyOrder);const status=document.getElementById('rkOrderSyncStatus');if(status){status.className='rk-sync-status ok';status.textContent='অর্ডারটি সার্ভারেও সফলভাবে সিঙ্ক হয়েছে।'}console.info('RK Foodie order synced:',orderNumber)}
+       catch(err){historyOrder.sync_status='failed';historyOrder.sync_error=String(err?.message||err);saveHistory(historyOrder);const status=document.getElementById('rkOrderSyncStatus');if(status){status.className='rk-sync-status bad';status.textContent='অর্ডার WhatsApp ও এই ডিভাইসে সেভ হয়েছে, কিন্তু সার্ভারে সিঙ্ক হয়নি। দোকানের সঙ্গে যোগাযোগ করুন।'}console.error('RK Foodie Supabase order insert failed:',err)}
+     }else{historyOrder.sync_status='not-configured';saveHistory(historyOrder);const status=document.getElementById('rkOrderSyncStatus');if(status){status.className='rk-sync-status bad';status.textContent='Supabase সংযোগ সেট করা নেই; অর্ডারটি শুধু WhatsApp ও এই ডিভাইসে সেভ হয়েছে।'}console.warn('RK Foodie Supabase client not configured')}
+   } finally {
+     window.rkOrderSubmitting=false;
+     submitButtons.forEach(button=>{button.disabled=false;button.style.opacity=''});
+   }
  };
 })();
 </script>
@@ -2300,6 +2559,255 @@ window.submitOrderViaWhatsApp = function() {
  const originalOpen=window.openOrderHistory;
  window.openOrderHistory=function(){if(typeof originalOpen==='function')originalOpen();const box=document.getElementById('rkOrderHistoryItems');if(!box)return;box.querySelectorAll('article').forEach((card,cardIndex)=>{const order=read()[cardIndex];if(!order)return;card.querySelectorAll('img').forEach((img,itemIndex)=>{img.style.cursor='pointer';img.title='পণ্যের বিস্তারিত ও লাইভ ডেলিভারি ট্র্যাকিং';img.onclick=()=>window.rkOpenTrackedItem(order.order_number,itemIndex)})})};
  window.addEventListener('pagehide',stop);
+})();
+</script>
+
+<style id="rk-order-scroll-and-theme-final-fix">
+/* Your Order: one natural page scroll, selected foods first and delivery form below. */
+#cartDrawer.rk-order-drawer-scroll{
+  overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;align-items:stretch;
+}
+#cartDrawer.rk-order-drawer-scroll>.bg-navy{
+  position:sticky;top:0;z-index:5;flex:0 0 auto;
+}
+#cartDrawer #cartItemsContainer{
+  display:flex;flex:0 0 auto!important;flex-direction:column;gap:12px!important;
+  min-height:0;overflow:visible!important;padding:14px 16px 18px!important;
+}
+#cartDrawer #cartFooter{flex:0 0 auto!important;width:100%;margin-top:0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));}
+#cartDrawer #cartFooter>section{margin-bottom:2px;}
+.rk-cart-row{display:flex;flex-direction:column;gap:10px;width:100%;min-width:0;overflow:hidden;}
+.rk-cart-row-main{display:flex;align-items:center;gap:12px;min-width:0;width:100%;}
+.rk-cart-row-info{flex:1;min-width:0;}
+.rk-cart-row-title{white-space:normal;overflow-wrap:anywhere;line-height:1.45;font-size:13px;}
+.rk-cart-row-meta{margin-top:4px;line-height:1.4;}
+.rk-cart-row-total{margin-top:4px;font-size:13px;}
+.rk-cart-row-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-left:66px;min-height:34px;}
+.rk-cart-quantity{flex-shrink:0;}
+#cartDrawer #cartFooter textarea{width:100%;min-height:88px;padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#1e293b;font-size:13px;line-height:1.5;}
+/* The quick order sheet uses the same full-width, non-clipped item layout. */
+.rk-order-sheet .rk-sheet-item{grid-template-columns:66px minmax(0,1fr)!important;align-items:start;}
+.rk-order-sheet .rk-sheet-item-info{grid-column:2;grid-row:1;}
+.rk-order-sheet .rk-sheet-quantity{grid-column:2;grid-row:2;justify-self:start;margin-top:0;}
+.rk-order-sheet .rk-sheet-item-name{display:block;-webkit-line-clamp:unset;overflow:visible;white-space:normal;overflow-wrap:anywhere;}
+@media(max-width:390px){
+  #cartDrawer #cartItemsContainer{padding:12px 12px 16px!important;}
+  .rk-cart-item-thumb{width:58px;height:58px;}
+  .rk-cart-row-controls{padding-left:0;}
+  .rk-order-sheet .rk-sheet-item{grid-template-columns:58px minmax(0,1fr)!important;}
+}
+
+/* Keep the theme consistent in dynamically-created panels, checkout and success screens. */
+body.site-dark #cartDrawer,
+body.site-dark #cartDrawer #cartFooter,
+body.site-dark #cartDrawer #cartFooter>section,
+body.site-dark #cartDrawer #cartFooter .bg-white,
+body.site-dark #cartDrawer #cartFooter .bg-slate-50,
+body.site-dark #rkFinalCheckout,
+body.site-dark #rkFinalCheckout .rk-final-shell,
+body.site-dark #rkFinalCheckout .rk-final-card,
+body.site-dark #rkOrderHistoryPanel,
+body.site-dark #rkOrderHistoryPanel>div,
+body.site-dark #rkOrderSuccessModal .rk-success-card,
+body.site-dark #rkOrderSuccessModal .rk-success-body,
+body.site-dark #rkCustomerGate .rk-panel,
+body.site-dark #rkSettingsProfileCard,
+body.site-dark #rkOrderSheet{
+  background:#111c2c!important;color:#e8edf5!important;border-color:#34445b!important;
+}
+body.site-dark #cartDrawer .rk-cart-row,
+body.site-dark #cartDrawer .rk-cart-quantity,
+body.site-dark #cartDrawer #cartFooter .bg-slate-50,
+body.site-dark #cartDrawer #cartFooter .bg-orange-50,
+body.site-dark #rkFinalCheckout .rk-final-total,
+body.site-dark #rkOrderHistoryPanel [style*="background:#f8fafc"],
+body.site-dark #rkOrderHistoryPanel [style*="background: #f8fafc"]{
+  background:#172338!important;border-color:#34445b!important;
+}
+body.site-dark #cartDrawer h3,body.site-dark #cartDrawer h4,
+body.site-dark #cartDrawer label,body.site-dark #cartDrawer p,
+body.site-dark #cartDrawer span,body.site-dark #cartDrawer strong,
+body.site-dark #rkFinalCheckout h2,body.site-dark #rkFinalCheckout h3,
+body.site-dark #rkFinalCheckout p,body.site-dark #rkFinalCheckout strong,
+body.site-dark #rkOrderHistoryPanel h2,body.site-dark #rkOrderHistoryPanel h3,
+body.site-dark #rkOrderHistoryPanel p,body.site-dark #rkOrderHistoryPanel b,
+body.site-dark #rkOrderHistoryPanel strong,
+body.site-dark #rkOrderSuccessModal .rk-success-body,
+body.site-dark #rkCustomerGate .rk-panel h1,
+body.site-dark #rkCustomerGate .rk-panel h2,
+body.site-dark #rkCustomerGate .rk-panel p{color:#e8edf5!important;}
+body.site-dark #cartDrawer .text-gray-400,body.site-dark #cartDrawer .text-slate-500,
+body.site-dark #cartDrawer .text-slate-600,body.site-dark #rkFinalCheckout .text-slate-400,
+body.site-dark #rkFinalCheckout .text-slate-500,body.site-dark #rkOrderHistoryPanel small,
+body.site-dark #rkOrderHistoryPanel [style*="color:#64748b"],
+body.site-dark #rkOrderHistoryPanel [style*="color: #64748b"]{color:#aab8cc!important;}
+body.site-dark #cartDrawer input,body.site-dark #cartDrawer textarea,
+body.site-dark #cartDrawer select,body.site-dark #rkCustomerGate input,
+body.site-dark #rkCustomerGate textarea,body.site-dark #rkCustomerGate select{
+  background:#0b1422!important;color:#f8fafc!important;border-color:#40506a!important;
+}
+body.site-dark #cartDrawer input::placeholder,body.site-dark #cartDrawer textarea::placeholder{color:#a8b4c6!important;}
+body.site-dark #cartDrawer .rk-cart-quantity button,
+body.site-dark #rkFinalCheckout .rk-final-back,
+body.site-dark #rkOrderSheet .rk-sheet-quantity button{background:#25344b!important;color:#f1f5f9!important;border-color:#40506a!important;}
+body.site-dark #rkFinalCheckout .rk-final-header{background:rgba(17,28,44,.96)!important;border-color:#34445b!important;}
+body.site-dark #rkFinalCheckout .rk-final-customer-row,
+body.site-dark #rkFinalCheckout .rk-final-item,
+body.site-dark #rkOrderHistoryPanel article{border-color:#34445b!important;}
+body.site-dark #rkOrderHistoryPanel article{background:#111c2c!important;color:#e8edf5!important;}
+body.site-dark #rkOrderHistoryPanel article>div[style*="background:#f8fafc"],
+body.site-dark #rkOrderHistoryPanel article>div[style*="background: #f8fafc"]{background:#172338!important;}
+body.site-dark #rkOrderSuccessModal .rk-success-body{color:#e8edf5!important;}
+body.site-dark #rkOrderSuccessModal .rk-success-item{border-color:#34445b!important;}
+body.site-dark #rkOrderSuccessModal .rk-si-sub{color:#aab8cc!important;}
+body.site-dark #rkCustomerGate{background:radial-gradient(circle at 10% 5%,#26354a 0,transparent 32%),linear-gradient(145deg,#080f1b,#111c2c 60%,#0b1422)!important;color:#e8edf5!important;}
+body.site-dark #rkCustomerGate .rk-panel{border-color:#34445b!important;}
+body.site-dark #rkCustomerGate .rk-panel [class*="bg-white"],
+body.site-dark #rkCustomerGate .rk-panel [class*="bg-slate-50"]{background:#172338!important;}
+body.site-dark #rkCustomerGate .rk-panel [class*="text-slate-"],
+body.site-dark #rkCustomerGate .rk-panel label{color:#d7e0ed!important;}
+body.site-dark #rkOrderHistoryPanel button[style*="background:#172554"]{background:#263b5d!important;color:#fff!important;}
+body.site-dark #rkLikedFoodsPanel,
+body.site-dark #rkLikedFoodsPanel .rk-liked-shell,
+body.site-dark #rkLikedFoodsPanel .rk-liked-card,
+body.site-dark #rkProductTrackingModal,
+body.site-dark #rkProductTrackingModal>div{background:#111c2c!important;color:#e8edf5!important;border-color:#34445b!important;}
+body.site-dark #rkLikedFoodsPanel .rk-liked-header{background:rgba(17,28,44,.96)!important;border-color:#34445b!important;}
+body.site-dark #rkLikedFoodsPanel h2,body.site-dark #rkLikedFoodsPanel h3,
+body.site-dark #rkLikedFoodsPanel p,body.site-dark #rkLikedFoodsPanel strong,
+body.site-dark #rkProductTrackingModal h2,body.site-dark #rkProductTrackingModal h3,
+body.site-dark #rkProductTrackingModal b,body.site-dark #rkProductTrackingModal p{color:#e8edf5!important;}
+body.site-dark #rkLikedFoodsPanel .rk-liked-card,
+body.site-dark #rkProductTrackingModal section,
+body.site-dark #rkProductTrackingModal [style*="background:#f8fafc"]{background:#172338!important;border-color:#34445b!important;}
+body.site-dark #rkProductTrackingModal [style*="color:#64748b"],
+body.site-dark #rkProductTrackingModal [style*="color: #64748b"]{color:#aab8cc!important;}
+
+/* Explicit light mode restores native light surfaces even after dynamic dark-mode changes. */
+body:not(.site-dark){color-scheme:light;}
+body:not(.site-dark) #cartDrawer,
+body:not(.site-dark) #cartDrawer #cartFooter,
+body:not(.site-dark) #rkFinalCheckout .rk-final-shell,
+body:not(.site-dark) #rkFinalCheckout .rk-final-card,
+body:not(.site-dark) #rkOrderHistoryPanel,
+body:not(.site-dark) #rkOrderHistoryPanel>div{color:#1e293b;}
+
+/* RK Foodie professional dark theme v2 — applies to the complete page and dynamically opened screens. */
+html.site-dark-root, html[data-theme="dark"] { color-scheme:dark!important; background:#080f1b!important; }
+body.site-dark, body[data-theme="dark"] {
+  --rk-bg:#080f1b; --rk-surface:#111c2c; --rk-surface-2:#172338;
+  --rk-surface-3:#1d2b41; --rk-border:#34445b; --rk-text:#e8edf5;
+  --rk-muted:#aab8cc; --rk-input:#0b1422;
+  background:var(--rk-bg)!important; color:var(--rk-text)!important; color-scheme:dark!important;
+}
+body.site-dark main, body.site-dark footer, body.site-dark #siteSettingsDrawer,
+body.site-dark #cartDrawer, body.site-dark #rkFinalCheckout,
+body.site-dark #rkOrderHistoryPanel, body.site-dark #rkLikedFoodsPanel,
+body.site-dark #rkProductTrackingModal, body.site-dark #rkOrderSheet,
+body.site-dark #rkOrderSuccessModal, body.site-dark #rkCustomerGate,
+body.site-dark #rkSettingsProfileCard {
+  color:var(--rk-text)!important;
+}
+/* Common content surfaces, including Tailwind-generated cards and dynamically rendered sections. */
+body.site-dark .bg-white, body.site-dark .bg-white\/95,
+body.site-dark .bg-gray-50, body.site-dark .bg-gray-100,
+body.site-dark .bg-slate-50, body.site-dark .bg-slate-100,
+body.site-dark .bg-orange-50, body.site-dark .bg-amber-50,
+body.site-dark .bg-blue-50, body.site-dark .bg-emerald-50,
+body.site-dark .bg-green-50,
+body.site-dark [style*="background:#fff"], body.site-dark [style*="background: #fff"],
+body.site-dark [style*="background:white"], body.site-dark [style*="background: white"],
+body.site-dark [style*="background:#ffffff"], body.site-dark [style*="background: #ffffff"],
+body.site-dark [style*="background-color: rgb(255, 255, 255)"] {
+  background:var(--rk-surface)!important; color:var(--rk-text)!important;
+}
+body.site-dark .bg-slate-50, body.site-dark .bg-gray-50,
+body.site-dark .bg-orange-50, body.site-dark .bg-blue-50,
+body.site-dark [style*="background:#f8fafc"], body.site-dark [style*="background: #f8fafc"],
+body.site-dark [style*="background:#f9fafb"], body.site-dark [style*="background: #f9fafb"] {
+  background:var(--rk-surface-2)!important;
+}
+body.site-dark [class*="border-gray-"], body.site-dark [class*="border-slate-"],
+body.site-dark .border, body.site-dark [style*="border:1px solid"],
+body.site-dark [style*="border: 1px solid"] { border-color:var(--rk-border)!important; }
+/* Readable typography while retaining branded orange/green/red action colors. */
+body.site-dark .text-slate-900, body.site-dark .text-slate-800,
+body.site-dark .text-slate-700, body.site-dark .text-gray-900,
+body.site-dark .text-gray-800, body.site-dark .text-gray-700,
+body.site-dark .text-gray-600, body.site-dark .text-gray-500,
+body.site-dark .text-navy, body.site-dark h1, body.site-dark h2,
+body.site-dark h3, body.site-dark h4, body.site-dark label,
+body.site-dark main p, body.site-dark main li,
+body.site-dark #cartDrawer p, body.site-dark #cartDrawer span,
+body.site-dark #cartDrawer strong, body.site-dark #cartDrawer label {
+  color:var(--rk-text)!important;
+}
+body.site-dark .text-slate-400, body.site-dark .text-gray-400,
+body.site-dark small, body.site-dark .text-muted { color:var(--rk-muted)!important; }
+body.site-dark input, body.site-dark textarea, body.site-dark select,
+body.site-dark option {
+  background:var(--rk-input)!important; color:#f8fafc!important;
+  border-color:#40506a!important; color-scheme:dark!important;
+}
+body.site-dark input::placeholder, body.site-dark textarea::placeholder { color:#94a3b8!important; opacity:1; }
+body.site-dark .shadow, body.site-dark .shadow-sm, body.site-dark .shadow-md,
+body.site-dark .shadow-lg, body.site-dark .shadow-xl {
+  box-shadow:0 10px 28px rgba(0,0,0,.28)!important;
+}
+/* Header, navigation, drawers and popovers. */
+body.site-dark header, body.site-dark nav, body.site-dark #siteSettingsDrawer,
+body.site-dark .site-submenu, body.site-dark .rk-liked-header,
+body.site-dark .rk-final-header, body.site-dark .rk-sheet-header {
+  background:#111c2c!important; color:var(--rk-text)!important; border-color:var(--rk-border)!important;
+}
+body.site-dark .site-menu-button, body.site-dark .site-setting-row,
+body.site-dark .rk-order-action:not(.primary) {
+  background:#172338!important; color:var(--rk-text)!important; border-color:var(--rk-border)!important;
+}
+body.site-dark .site-setting-row:hover, body.site-dark .site-menu-button:hover { background:#22334d!important; }
+/* Keep food images and brand/action buttons intact; darken their surrounding cards only. */
+body.site-dark #foodGrid article, body.site-dark #foodGrid .food-card,
+body.site-dark #foodGrid [class*="rounded"][class*="shadow"],
+body.site-dark .rk-liked-card, body.site-dark .rk-cart-row,
+body.site-dark .rk-final-card, body.site-dark .rk-final-item,
+body.site-dark .rk-success-card, body.site-dark .rk-order-sheet,
+body.site-dark #rkOrderHistoryPanel article {
+  background:var(--rk-surface)!important; color:var(--rk-text)!important; border-color:var(--rk-border)!important;
+}
+body.site-dark #subtotalPrice, body.site-dark #grandTotalPrice,
+body.site-dark .food-price, body.site-dark .price-tag,
+body.site-dark #foodGrid [class*="text-orange"] { color:#ffb454!important; }
+body.site-dark .text-emerald-600, body.site-dark .text-green-600 { color:#6ee7b7!important; }
+body.site-dark button:focus-visible, body.site-dark a:focus-visible,
+body.site-dark input:focus-visible, body.site-dark select:focus-visible,
+body.site-dark textarea:focus-visible { outline:2px solid #fb923c!important; outline-offset:2px; }
+/* Avoid browser-default light autofill/select surfaces in dark mode. */
+body.site-dark input:-webkit-autofill, body.site-dark input:-webkit-autofill:hover,
+body.site-dark input:-webkit-autofill:focus {
+  -webkit-text-fill-color:#f8fafc!important;
+  box-shadow:0 0 0 1000px var(--rk-input) inset!important;
+  transition:background-color 9999s ease-out 0s;
+}
+/* Explicit light mode resets page-level surfaces and native form controls. */
+html:not(.site-dark-root), body:not(.site-dark) { color-scheme:light; }
+
+</style>
+
+
+<script id="rk-theme-persistence-fix">
+(function(){
+  function applySavedTheme(){
+    let saved='light';
+    try{saved=localStorage.getItem('rkFoodieTheme')||'light'}catch(e){}
+    if(typeof window.setSiteTheme==='function')window.setSiteTheme(saved);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applySavedTheme,{once:true});
+  else applySavedTheme();
+  window.addEventListener('storage',function(e){
+    if(e.key==='rkFoodieTheme'&&typeof window.setSiteTheme==='function')
+      window.setSiteTheme(e.newValue==='dark'?'dark':'light');
+  });
 })();
 </script>
 
