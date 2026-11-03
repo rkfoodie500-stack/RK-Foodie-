@@ -2376,7 +2376,7 @@ function closeSuccessModal() {
 </script>
 
 
-<!-- RK Foodie order-flow upgrade: persistent customer history, delivery ETA and printable delivery slip. -->
+<!-- RK Foodie order-flow upgrade: persistent customer history and delivery ETA. -->
 <style id="rk-order-pro-upgrade-styles">
 #rkOrderSuccessModal .rk-success-card{max-width:620px;border:1px solid rgba(255,255,255,.7);animation:rkSuccessEnter .55s cubic-bezier(.2,.8,.2,1) both}
 @keyframes rkSuccessEnter{0%{opacity:0;transform:translateY(24px) scale(.96)}65%{opacity:1;transform:translateY(-3px) scale(1.005)}100%{opacity:1;transform:translateY(0) scale(1)}}
@@ -2402,31 +2402,7 @@ function closeSuccessModal() {
    const entered=document.getElementById('custAddress')?.value.trim();if(entered)return entered;
    try{const p=JSON.parse(localStorage.getItem('rkFoodieGuestProfileV1')||'{}');return [p.address_line,p.landmark?'Landmark: '+p.landmark:'',p.city,p.state,p.pincode].filter(Boolean).join(', ')}catch(_){return ''}
  }
- function receiptMarkup(o){
-   const rows=(o.items||[]).map(i=>`<tr><td class="item-name">${esc(i.title)}</td><td class="qty">${Number(i.quantity)||1}</td><td class="num">${money(i.price)}</td><td class="num">${money((Number(i.price)||0)*(Number(i.quantity)||1))}</td></tr>`).join('');
-   const date=new Date(o.created_at||Date.now()).toLocaleString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true});
-   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Delivery Slip ${esc(o.order_number)}</title><style>
-   *{box-sizing:border-box}body{margin:0;padding:18px;background:#f2f2f2;color:#111;font-family:Arial,Helvetica,sans-serif}.slip{width:100%;max-width:380px;margin:0 auto;background:#fff;padding:22px 18px;border:1px solid #ddd;box-shadow:0 2px 12px #0000000c}.brand{text-align:center;padding-bottom:13px;border-bottom:2px dashed #222}.brand h1{font-size:29px;letter-spacing:-1px;margin:0 0 4px;font-weight:900}.brand p{font-size:13px;letter-spacing:2px;margin:0;font-weight:700}.meta{padding:12px 0;border-bottom:2px dashed #222;font-size:13px;line-height:1.9}.line{display:flex;gap:8px}.line b{min-width:98px}.status{display:inline-block;background:#e8f7ec;color:#147a35;border:1px solid #8bc99d;border-radius:4px;padding:2px 8px;font-weight:800;letter-spacing:.5px}.section-title{font-size:19px;font-weight:900;margin:17px 0 10px;text-transform:uppercase}.customer{padding:10px;background:#f4f7f4;border-left:4px solid #9bc9a6;margin:10px 0 14px;line-height:1.7}.customer-name{font-size:17px;font-weight:900;background:#e4f2e6;padding:4px 7px;display:inline-block;border-radius:3px;margin-bottom:5px}.customer-detail{font-size:13px;overflow-wrap:anywhere}.items-title{font-size:18px;font-weight:900;margin:17px 0 10px}.items{width:100%;border-collapse:collapse;table-layout:fixed}.items th,.items td{padding:8px 3px;border-bottom:1px dashed #777;font-size:12px}.items th{font-size:12px;text-align:left;border-top:1px dashed #222;border-bottom:1px dashed #222}.items th:first-child,.items td:first-child{width:39%;overflow-wrap:anywhere}.items th:nth-child(2),.items td:nth-child(2){width:10%;text-align:center}.items th:nth-child(3),.items td:nth-child(3){width:23%;text-align:right}.items th:nth-child(4),.items td:nth-child(4){width:28%;text-align:right}.total{font-size:21px;font-weight:900;padding:13px 0;border-bottom:2px dashed #222}.status-row{padding:12px 0;font-size:14px}.thanks{text-align:center;font-size:11px;margin:17px 0 0;line-height:1.5}.actions{display:flex;gap:8px;justify-content:center;margin:14px auto;max-width:380px}.actions button{border:0;border-radius:5px;background:#222;color:#fff;padding:10px 14px;font-weight:700;cursor:pointer}@page{size:80mm auto;margin:4mm}@media print{body{padding:0;background:#fff}.slip{width:100%;max-width:none;margin:0;padding:3mm;border:0;box-shadow:none}.actions{display:none}.brand h1{font-size:25px}}
-   </style></head><body><main class="slip"><header class="brand"><h1>RK Foodie</h1><p>DELIVERY ORDER SLIP</p></header><section class="meta"><div class="line"><b>Order No:</b><span>${esc(o.order_number)}</span></div><div class="line"><b>Order Date:</b><span>${esc(date)}</span></div><div class="line"><b>Payment:</b><span>${esc(o.payment_method||'Cash on Delivery')}</span></div></section><h2 class="items-title">ORDERED ITEMS</h2><table class="items"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table><h2 class="section-title">Customer Details</h2><section class="customer"><div class="customer-name">${esc(o.customer_name)}</div><div class="customer-detail"><b>Phone:</b> ${esc(o.phone)}</div><div class="customer-detail"><b>Address:</b> ${esc(o.address)}</div></section><div class="total">TOTAL AMOUNT: ${money(o.total)}</div><div class="status-row"><b>Status:</b> <span class="status">CONFIRMED</span></div><p class="thanks">Please deliver the order to the address above. Thank you!</p></main><div class="actions"><button onclick="window.print()">Print / Save PDF</button><button onclick="if(navigator.share)navigator.share({title:'${esc(o.order_number)} Delivery Slip',text:document.querySelector('.slip').innerText}).catch(()=>{});else alert('Use Print → Save as PDF, then share the PDF.')">Share Slip</button></div>
-
-
-<style id="rk-global-like-feedback">
-.rk-heart-button.is-liked,.rk-detail-like-button.is-liked,[data-rk-like-button].is-liked{color:#e11d48!important;background:#ffe4e6!important;border-color:#fb7185!important;}
-.rk-heart-button.is-liked i,.rk-detail-like-button.is-liked i,[data-rk-like-button].is-liked i{color:#e11d48!important;}
-.rk-detail-like-button.is-liked{box-shadow:0 0 0 2px #fecdd3 inset;}
-.rk-liked-remove-like.is-liked{background:#ffe4e6!important;color:#be123c!important;border:1px solid #fb7185!important;}
-.rk-like-animate{animation:rkHeartTap .42s cubic-bezier(.2,.8,.2,1);}
-@keyframes rkHeartTap{0%{transform:scale(1)}35%{transform:scale(1.28)}68%{transform:scale(.9)}100%{transform:scale(1)}}
-</style>
-
-
-
-
-</body></html>`
- }
- // Reusable, customer-UI-independent slip renderer for the upcoming Delivery Partner app integration.
- window.rkBuildDeliverySlipHtml=function(order){return order&&typeof order==='object'?receiptMarkup(order):''};
- window.rkPrintDeliverySlip=function(orderNumber){const o=readHistory().find(x=>x.order_number===orderNumber);if(!o){alert('Order slip not found on this device.');return}const w=window.open('','_blank');if(!w){alert('Please allow pop-ups to print the delivery slip.');return}w.document.open();w.document.write(receiptMarkup(o));w.document.close()};
+ // Customer-side slip controls removed; delivery slip is available in the Delivery Partner app only.
  window.openOrderHistory=function(){
    let panel=document.getElementById('rkOrderHistoryPanel');
    if(!panel){panel=document.createElement('section');panel.id='rkOrderHistoryPanel';panel.style.cssText='position:fixed;inset:0;z-index:120000;background:#f8fafc;overflow:auto;font-family:Poppins,sans-serif';panel.innerHTML='<div style="max-width:900px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;padding:10px 0 18px;border-bottom:1px solid #e5e7eb"><button type="button" onclick="closeOrderHistory()" style="font-size:24px;padding:6px 12px">←</button><div><h2 style="font-size:22px;font-weight:800">Your Ordered</h2><p style="color:#64748b;font-size:13px">আপনার অর্ডার, ঠিকানা ও ডেলিভারি আপডেট</p></div></header><div id="rkOrderHistoryItems" style="display:grid;gap:12px;padding:18px 0"></div></div>';document.body.appendChild(panel)}
