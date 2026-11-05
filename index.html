@@ -585,6 +585,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   }
 </style>
 
+<style id="rk-customer-map-legend-style">.rk-customer-map-legend{display:flex;flex-wrap:wrap;gap:9px 15px;padding:10px;margin-top:8px;border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;color:#334155;font-size:12px;font-weight:700}.rk-customer-map-legend span{display:inline-flex;align-items:center;gap:7px}.rk-customer-dot,.rk-partner-dot{width:13px;height:13px;border-radius:50%;display:inline-block;border:2px solid white;box-shadow:0 0 0 1px #64748b}.rk-customer-dot{background:#2563eb}.rk-partner-dot{background:#f97316}.rk-route-line{width:22px;height:4px;border-radius:4px;background:#2563eb;display:inline-block}.rk-track-pin{width:32px;height:32px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid white;box-shadow:0 2px 8px #0005;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:900}.rk-track-pin span{transform:rotate(45deg)}.rk-track-pin.customer{background:#2563eb}.rk-track-pin.partner{background:#f97316}</style>
 </head>
 <body class="bg-gray-50 text-slate-800 antialiased pb-20 md:pb-6">
 
@@ -2206,28 +2207,8 @@ async function fetchCurrentLocation() {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-base"></i><span>লোকেশন খোঁজা হচ্ছে...</span>';
     setStatus('আপনার ডিভাইসের লোকেশন অনুমতির অপেক্ষায়…');
     const restore = () => { btn.disabled = false; btn.innerHTML = original; };
-    // Any manual edit to the address invalidates the previously captured GPS.
-    if (addressBox && !addressBox.dataset.rkGpsEditBound) {
-        addressBox.dataset.rkGpsEditBound = '1';
-        addressBox.addEventListener('input', () => {
-            if (!window.RKFoodieSettingAddressFromGps) window.RKFoodieCheckoutGps = null;
-        });
-    }
     navigator.geolocation.getCurrentPosition(async position => {
         const { latitude, longitude, accuracy } = position.coords;
-        if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
-            window.RKFoodieCheckoutGps = null;
-            setStatus('ডিভাইস থেকে বৈধ GPS পাওয়া যায়নি। ঠিকানা হাতে লিখুন অথবা আবার চেষ্টা করুন।');
-            restore();
-            return;
-        }
-        // Do not turn a coarse city-level fix into a false exact delivery pin.
-        if (!Number.isFinite(accuracy) || accuracy > 100) {
-            window.RKFoodieCheckoutGps = null;
-            setStatus(`GPS এখনও নির্ভুল নয় (প্রায় ${Math.round(accuracy || 0)} মিটার)। Location/GPS চালু রেখে খোলা জায়গায় আবার চেষ্টা করুন। ১০০ মিটারের মধ্যে না এলে ঠিকানা হাতে লিখুন; ভুল GPS অর্ডারে পাঠানো হবে না।`);
-            restore();
-            return;
-        }
         try {
             setStatus('GPS পাওয়া গেছে। ঠিকানা শনাক্ত করা হচ্ছে…');
             const controller = new AbortController();
@@ -2245,14 +2226,10 @@ async function fetchCurrentLocation() {
             const unique = [...new Set(parts)];
             const addressText = unique.join(', ') || String(data?.display_name || '').trim();
             if (addressBox) {
-                window.RKFoodieSettingAddressFromGps = true;
                 addressBox.value = addressText || `GPS location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)} (add house/landmark details)`;
                 addressBox.dispatchEvent(new Event('input', { bubbles: true }));
                 addressBox.dispatchEvent(new Event('change', { bubbles: true }));
-                window.RKFoodieSettingAddressFromGps = false;
             }
-            // Keep the exact GPS separately from the human-readable address.
-            window.RKFoodieCheckoutGps = { lat: latitude, lng: longitude, accuracy: accuracy, captured_at: Date.now() };
             const profileAddress = document.getElementById('rkAddressLine');
             if (profileAddress && profileAddress !== addressBox && addressText) { profileAddress.value = addressText; profileAddress.dispatchEvent(new Event('input', {bubbles:true})); profileAddress.dispatchEvent(new Event('change', {bubbles:true})); }
             if (a.postcode && document.getElementById('rkPincode')) document.getElementById('rkPincode').value = a.postcode;
@@ -2265,14 +2242,11 @@ async function fetchCurrentLocation() {
         } catch (error) {
             console.warn('RK Foodie reverse geocoding:', error);
             if (addressBox) {
-                window.RKFoodieSettingAddressFromGps = true;
                 addressBox.value = `GPS: ${latitude.toFixed(6)}, ${longitude.toFixed(6)} (বাড়ি/ল্যান্ডমার্ক লিখুন)`;
                 addressBox.dispatchEvent(new Event('input', {bubbles:true}));
                 addressBox.dispatchEvent(new Event('change', {bubbles:true}));
-                window.RKFoodieSettingAddressFromGps = false;
             }
-            window.RKFoodieCheckoutGps = { lat: latitude, lng: longitude, accuracy: accuracy, captured_at: Date.now() };
-            setStatus('GPS পাওয়া গেছে, তবে ঠিকানার নাম লোড হয়নি। GPS পিন সেভ হয়েছে; বাড়ি/ল্যান্ডমার্ক লিখুন।');
+            setStatus('GPS লোকেশন পাওয়া গেছে, কিন্তু ঠিকানার নাম লোড হয়নি। কো-অর্ডিনেট বসানো হয়েছে; অনুগ্রহ করে বাড়ি/ল্যান্ডমার্ক লিখুন।');
         } finally { restore(); }
     }, error => {
         restore();
@@ -2282,7 +2256,7 @@ async function fetchCurrentLocation() {
             3: 'লোকেশন পেতে সময় শেষ হয়েছে। GPS চালু রেখে খোলা জায়গায় আবার চেষ্টা করুন।'
         };
         setStatus(messages[error.code] || 'লোকেশন নেওয়া যায়নি। Location permission ও GPS সেটিংস পরীক্ষা করুন।');
-    }, { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 });
+    }, { enableHighAccuracy: true, timeout: 25000, maximumAge: 60000 });
 }
 </script>
 
@@ -2477,9 +2451,7 @@ function closeSuccessModal() {
      const orderId=(window.crypto&&typeof window.crypto.randomUUID==='function')?window.crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}));
      const createdAt=new Date(),etaAt=new Date(createdAt.getTime()+25*60000);
      const trackingToken=(window.crypto&&window.crypto.getRandomValues?Array.from(window.crypto.getRandomValues(new Uint8Array(24)),b=>b.toString(16).padStart(2,'0')).join(''):(String(Date.now())+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2))).slice(0,48);
-     const gps=window.RKFoodieCheckoutGps;
-     const gpsIsFresh=!!(gps && Number.isFinite(gps.lat) && Number.isFinite(gps.lng) && Number.isFinite(gps.accuracy) && gps.accuracy<=100 && Date.now()-Number(gps.captured_at||0)<=15*60*1000);
-     const orderPayload={id:orderId,order_number:orderNumber,tracking_token:trackingToken,customer_name:name,phone,address,payment_method:paymentMethod,items:cartItems.map(({image,...i})=>i),total:grandTotal,status:'pending',...(gpsIsFresh?{customer_lat:gps.lat,customer_lng:gps.lng,customer_accuracy:gps.accuracy}:{})};
+     const orderPayload={id:orderId,order_number:orderNumber,tracking_token:trackingToken,customer_name:name,phone,address,payment_method:paymentMethod,items:cartItems.map(({image,...i})=>i),total:grandTotal,status:'pending'};
      const historyOrder={...orderPayload,items:cartItems,created_at:createdAt.toISOString(),estimated_delivery_at:etaAt.getTime(),estimated_delivery_text:etaAt.toLocaleTimeString('bn-IN',{hour:'2-digit',minute:'2-digit'}),sync_status:'pending'};
      const historySaved=saveHistory(historyOrder);
      let message=`🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর)*\n🧾 *অর্ডার নম্বর:* ${orderNumber}\n👤 *নাম:* ${name}\n📞 *মোবাইল:* ${phone}\n📍 *ডেলিভারি ঠিকানা:* ${address}\n💳 *পেমেন্ট:* ${paymentMethod}\n⏰ *আনুমানিক ডেলিভারি:* ${historyOrder.estimated_delivery_text}\n------------------------------\n🍽️ *অর্ডারের তালিকা:*\n`;
@@ -2497,7 +2469,6 @@ function closeSuccessModal() {
      }else{historyOrder.sync_status='not-configured';saveHistory(historyOrder);const status=document.getElementById('rkOrderSyncStatus');if(status){status.className='rk-sync-status bad';status.textContent='Supabase সংযোগ সেট করা নেই; অর্ডারটি শুধু WhatsApp ও এই ডিভাইসে সেভ হয়েছে।'}console.warn('RK Foodie Supabase client not configured')}
    } finally {
      window.rkOrderSubmitting=false;
-     window.RKFoodieCheckoutGps=null;
      submitButtons.forEach(button=>{button.disabled=false;button.style.opacity=''});
    }
  };
@@ -2524,11 +2495,11 @@ function closeSuccessModal() {
  function trackingModal(){let m=document.getElementById('rkProductTrackingModal');if(!m){m=document.createElement('section');m.id='rkProductTrackingModal';m.style.cssText='position:fixed;inset:0;z-index:130000;background:#f8fafc;overflow:auto;font-family:Poppins,Arial,sans-serif';document.body.appendChild(m)}return m}
  window.rkOpenTrackedItem=async function(orderNo,index){
    stop();const o=read().find(x=>String(x.order_number)===String(orderNo));if(!o)return;const it=(o.items||[])[Number(index)]||{};const modal=trackingModal();
-   modal.innerHTML=`<div style="max-width:760px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;border-bottom:1px solid #e2e8f0;padding-bottom:14px"><button id="rkTrackClose" type="button" style="font-size:25px;padding:4px 12px">←</button><div><b style="font-size:20px">Product Details</b><div style="font-size:12px;color:#64748b">Order ${esc(o.order_number)}</div></div></header><div style="display:grid;grid-template-columns:110px 1fr;gap:14px;padding:18px 0"><img src="${esc(it.image||'https://placehold.co/200x200')}" alt="" style="width:110px;height:110px;object-fit:cover;border-radius:14px"><div><h2 style="font-size:19px;font-weight:800">${esc(it.title||it.name||'Food item')}</h2><p style="color:#64748b;font-size:13px">Quantity: ${Number(it.quantity)||1}</p><p style="font-weight:800;color:#ea580c">${money(it.price)}</p><p style="font-size:12px;color:#64748b">Order total: ${money(o.total)}</p></div></div><section style="border:1px solid #dbe4ee;border-radius:16px;padding:15px"><h3 style="font-size:18px;font-weight:800">Live Delivery Tracking</h3><p style="font-size:12px;color:#64748b;margin:5px 0 12px">আপনার লোকেশন শেয়ার করলে ডেলিভারি পার্টনারের লাইভ অবস্থান, রাস্তার রুট, দূরত্ব ও আনুমানিক সময় দেখা যাবে।</p><button id="rkStartCustomerGps" type="button" style="background:#15956b;color:white;padding:11px 15px;border-radius:10px;font-weight:800">আমার লোকেশন শেয়ার করে ট্র্যাকিং চালু করুন</button><div id="rkTrackStatus" role="status" style="font-size:12px;color:#475569;margin:12px 0">লোকেশন অনুমতির অপেক্ষায়…</div><div id="rkTrackMap" style="height:330px;border-radius:12px;overflow:hidden;background:#e5e7eb"></div><div id="rkTrackDistance" style="font-size:14px;font-weight:800;margin-top:12px">লোকেশন পাওয়া গেলে দূরত্ব ও ETA দেখানো হবে।</div><div id="rkTrackUpdated" style="font-size:11px;color:#64748b;margin-top:5px"></div></section><div style="margin-top:14px;padding:12px;background:#f8fafc;border-radius:12px;font-size:12px;line-height:1.8"><b>Delivery Address:</b><br>${esc(o.address||'—')}<br><b>Order Status:</b> ${esc(String(o.status||'pending').replace(/_/g,' ').toUpperCase())}</div><p style="font-size:11px;color:#64748b;margin-top:12px">Map data © OpenStreetMap contributors. Route estimate may vary with traffic and road conditions.</p></div>`;
+   modal.innerHTML=`<div style="max-width:760px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;border-bottom:1px solid #e2e8f0;padding-bottom:14px"><button id="rkTrackClose" type="button" style="font-size:25px;padding:4px 12px">←</button><div><b style="font-size:20px">Product Details</b><div style="font-size:12px;color:#64748b">Order ${esc(o.order_number)}</div></div></header><div style="display:grid;grid-template-columns:110px 1fr;gap:14px;padding:18px 0"><img src="${esc(it.image||'https://placehold.co/200x200')}" alt="" style="width:110px;height:110px;object-fit:cover;border-radius:14px"><div><h2 style="font-size:19px;font-weight:800">${esc(it.title||it.name||'Food item')}</h2><p style="color:#64748b;font-size:13px">Quantity: ${Number(it.quantity)||1}</p><p style="font-weight:800;color:#ea580c">${money(it.price)}</p><p style="font-size:12px;color:#64748b">Order total: ${money(o.total)}</p></div></div><section style="border:1px solid #dbe4ee;border-radius:16px;padding:15px"><h3 style="font-size:18px;font-weight:800">Live Delivery Tracking</h3><p style="font-size:12px;color:#64748b;margin:5px 0 12px">আপনার লোকেশন শেয়ার করলে ডেলিভারি পার্টনারের লাইভ অবস্থান, রাস্তার রুট, দূরত্ব ও আনুমানিক সময় দেখা যাবে।</p><button id="rkStartCustomerGps" type="button" style="background:#15956b;color:white;padding:11px 15px;border-radius:10px;font-weight:800">আমার লোকেশন শেয়ার করে ট্র্যাকিং চালু করুন</button><div id="rkTrackStatus" role="status" style="font-size:12px;color:#475569;margin:12px 0">লোকেশন অনুমতির অপেক্ষায়…</div><div id="rkTrackMap" style="height:330px;border-radius:12px;overflow:hidden;background:#e5e7eb"></div><div class="rk-customer-map-legend"><span><i class="rk-customer-dot"></i> আপনার লোকেশন (Customer)</span><span><i class="rk-partner-dot"></i> ডেলিভারি পার্টনার</span><span><i class="rk-route-line"></i> আপনার কাছে আসার রাস্তা</span></div><div id="rkTrackDistance" style="font-size:14px;font-weight:800;margin-top:12px">লোকেশন পাওয়া গেলে দূরত্ব ও ETA দেখানো হবে।</div><div id="rkTrackUpdated" style="font-size:11px;color:#64748b;margin-top:5px"></div></section><div style="margin-top:14px;padding:12px;background:#f8fafc;border-radius:12px;font-size:12px;line-height:1.8"><b>Delivery Address:</b><br>${esc(o.address||'—')}<br><b>Order Status:</b> ${esc(String(o.status||'pending').replace(/_/g,' ').toUpperCase())}</div><p style="font-size:11px;color:#64748b;margin-top:12px">Map data © OpenStreetMap contributors. Route estimate may vary with traffic and road conditions.</p></div>`;
    modal.style.display='block';document.body.style.overflow='hidden';
    const status=modal.querySelector('#rkTrackStatus'),distance=modal.querySelector('#rkTrackDistance'),updated=modal.querySelector('#rkTrackUpdated'),mapBox=modal.querySelector('#rkTrackMap');
    let customer=null,driver=null,lastRouteAt=0,lastRouteDriver=null,routeBusy=false,routeCoords=null,customerMarker=null,driverMarker=null,snappedDriver=null;
-   modal.querySelector('#rkTrackClose').onclick=()=>{stop();modal.style.display='none';document.body.style.overflow=''};
+   modal.querySelector('#rkTrackClose').onclick=()=>{stop();if(typeof customerWatchId==='number')navigator.geolocation.clearWatch(customerWatchId);modal.style.display='none';document.body.style.overflow=''};
    const client=window.RKFoodieSupabase;
    async function getTracking(){if(!client||!o.tracking_token){status.textContent='এই অর্ডারের ট্র্যাকিং টোকেন নেই। নতুন অর্ডারের জন্য SQL সেটআপ সম্পন্ন করুন।';return}
      const {data,error}=await client.rpc('get_delivery_tracking',{p_order_number:o.order_number,p_tracking_token:o.tracking_token});
@@ -2550,16 +2521,16 @@ function closeSuccessModal() {
        routeCoords=r.geometry.coordinates.map(p=>[p[1],p[0]]);lastRouteAt=now;lastRouteDriver={...driver};
        distance.textContent=`রাস্তা দিয়ে দূরত্ব: ${(r.distance/1000).toFixed(2)} km · আনুমানিক সময়: ${Math.max(1,Math.round(r.duration/60))} মিনিট`;
        if(activeLine)activeLine.setLatLngs(routeCoords);else activeLine=L.polyline(routeCoords,{color:'#2563eb',weight:6,opacity:.85}).addTo(activeMap);
-       activeMap.fitBounds(activeLine.getBounds(),{padding:[35,35]});
+       if(!activeMap._rkInitialFit){activeMap.fitBounds(activeLine.getBounds(),{padding:[35,35]});activeMap._rkInitialFit=true;}
      }catch(e){distance.textContent='রাস্তার রুট এখন পাওয়া যাচ্ছে না। '+(customer&&driver?`সোজা দূরত্ব: ${km(customer,driver).toFixed(2)} km`:'');console.warn('RK Foodie route:',e.message)}finally{routeBusy=false}
    }
    async function renderMap(){if(!customer&&!driver)return;try{await ensureMap();if(!activeMap){const p=customer||driver;activeMap=L.map(mapBox).setView([p.lat,p.lng],14);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'}).addTo(activeMap)}
-     if(customer){if(!customerMarker)customerMarker=L.marker([customer.lat,customer.lng]).addTo(activeMap).bindPopup('ডেলিভারি ঠিকানা');else customerMarker.setLatLng([customer.lat,customer.lng])}
-     if(driver){const dp=snappedDriver||driver;if(!driverMarker)driverMarker=L.marker([dp.lat,dp.lng]).addTo(activeMap).bindPopup('ডেলিভারি পার্টনার');else driverMarker.setLatLng([dp.lat,dp.lng])}else if(driverMarker){activeMap.removeLayer(driverMarker);driverMarker=null;snappedDriver=null}
+     if(customer){const ci=L.divIcon({className:'',html:'<div class="rk-track-pin customer"><span>YOU</span></div>',iconSize:[32,38],iconAnchor:[16,34],popupAnchor:[0,-32]});if(!customerMarker)customerMarker=L.marker([customer.lat,customer.lng],{icon:ci}).addTo(activeMap).bindPopup('<b>আপনার অবস্থান</b><br>Customer');else customerMarker.setLatLng([customer.lat,customer.lng])}
+     if(driver){const dp=snappedDriver||driver;const di=L.divIcon({className:'',html:'<div class="rk-track-pin partner"><span>DP</span></div>',iconSize:[32,38],iconAnchor:[16,34],popupAnchor:[0,-32]});if(!driverMarker)driverMarker=L.marker([dp.lat,dp.lng],{icon:di}).addTo(activeMap).bindPopup('<b>ডেলিভারি পার্টনার</b><br>Live location');else driverMarker.setLatLng([dp.lat,dp.lng])}else if(driverMarker){activeMap.removeLayer(driverMarker);driverMarker=null;snappedDriver=null}
      if(!customer||!driver){const p=customer||driver;activeMap.setView([p.lat,p.lng],15);distance.textContent='দুইটি লোকেশন পাওয়া গেলে রাস্তার দূরত্ব ও ETA দেখাবে।'}else await route();
      setTimeout(()=>activeMap&&activeMap.invalidateSize(),150);
    }catch(e){status.textContent='ম্যাপ লোড হয়নি: '+e.message}}
-   modal.querySelector('#rkStartCustomerGps').onclick=()=>{if(!navigator.geolocation){status.textContent='এই ডিভাইসে GPS নেই।';return}if(!client){status.textContent='Supabase সংযোগ পাওয়া যায়নি।';return}status.textContent='আপনার লোকেশন নেওয়া হচ্ছে…';navigator.geolocation.getCurrentPosition(async pos=>{const c=pos.coords;const {data,error}=await client.rpc('set_delivery_customer_location',{p_order_number:o.order_number,p_tracking_token:o.tracking_token,p_lat:c.latitude,p_lng:c.longitude,p_accuracy:c.accuracy});if(error){status.textContent='লোকেশন সেভ হয়নি: '+error.message;return}customer={lat:c.latitude,lng:c.longitude};status.textContent='আপনার লোকেশন সুরক্ষিতভাবে সেভ হয়েছে। ডেলিভারি GPS-এর অপেক্ষায়…';await renderMap();await getTracking();if(pollTimer)clearInterval(pollTimer);pollTimer=setInterval(getTracking,8000)},err=>{status.textContent='লোকেশন অনুমতি/সমস্যা: '+err.message},{enableHighAccuracy:true,maximumAge:10000,timeout:20000})};
+   let customerWatchId=null;modal.querySelector('#rkStartCustomerGps').onclick=()=>{if(!navigator.geolocation){status.textContent='এই ডিভাইসে GPS নেই।';return}if(!client){status.textContent='Supabase সংযোগ পাওয়া যায়নি।';return}status.textContent='আপনার নির্ভুল GPS লোকেশন নেওয়া হচ্ছে…';if(customerWatchId!==null)navigator.geolocation.clearWatch(customerWatchId);customerWatchId=navigator.geolocation.watchPosition(async pos=>{const c=pos.coords;if(!Number.isFinite(c.latitude)||!Number.isFinite(c.longitude)||c.accuracy>250){status.textContent='GPS নির্ভুলতা এখন '+Math.round(c.accuracy)+' মিটার। ভালো সিগন্যালের জন্য অপেক্ষা করুন; ভুল লোকেশন পাঠানো হচ্ছে না।';return}const {data,error}=await client.rpc('set_delivery_customer_location',{p_order_number:o.order_number,p_tracking_token:o.tracking_token,p_lat:c.latitude,p_lng:c.longitude,p_accuracy:c.accuracy});if(error){status.textContent='লোকেশন সেভ হয়নি: '+error.message;return}customer={lat:c.latitude,lng:c.longitude};status.textContent='আপনার লাইভ লোকেশন শেয়ার হচ্ছে। ডেলিভারি পার্টনারের অবস্থান খোঁজা হচ্ছে…';await renderMap();await getTracking();if(!pollTimer)pollTimer=setInterval(getTracking,8000)},err=>{status.textContent='লোকেশন অনুমতি/সমস্যা: '+err.message},{enableHighAccuracy:true,maximumAge:5000,timeout:25000})};
    if(o.tracking_token){getTracking();pollTimer=setInterval(getTracking,10000)}
  };
  const originalOpen=window.openOrderHistory;
