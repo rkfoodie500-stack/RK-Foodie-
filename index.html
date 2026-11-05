@@ -2206,8 +2206,28 @@ async function fetchCurrentLocation() {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-base"></i><span>লোকেশন খোঁজা হচ্ছে...</span>';
     setStatus('আপনার ডিভাইসের লোকেশন অনুমতির অপেক্ষায়…');
     const restore = () => { btn.disabled = false; btn.innerHTML = original; };
+    // Any manual edit to the address invalidates the previously captured GPS.
+    if (addressBox && !addressBox.dataset.rkGpsEditBound) {
+        addressBox.dataset.rkGpsEditBound = '1';
+        addressBox.addEventListener('input', () => {
+            if (!window.RKFoodieSettingAddressFromGps) window.RKFoodieCheckoutGps = null;
+        });
+    }
     navigator.geolocation.getCurrentPosition(async position => {
         const { latitude, longitude, accuracy } = position.coords;
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+            window.RKFoodieCheckoutGps = null;
+            setStatus('ডিভাইস থেকে বৈধ GPS পাওয়া যায়নি। ঠিকানা হাতে লিখুন অথবা আবার চেষ্টা করুন।');
+            restore();
+            return;
+        }
+        // Do not turn a coarse city-level fix into a false exact delivery pin.
+        if (!Number.isFinite(accuracy) || accuracy > 100) {
+            window.RKFoodieCheckoutGps = null;
+            setStatus(`GPS এখনও নির্ভুল নয় (প্রায় ${Math.round(accuracy || 0)} মিটার)। Location/GPS চালু রেখে খোলা জায়গায় আবার চেষ্টা করুন। ১০০ মিটারের মধ্যে না এলে ঠিকানা হাতে লিখুন; ভুল GPS অর্ডারে পাঠানো হবে না।`);
+            restore();
+            return;
+        }
         try {
             setStatus('GPS পাওয়া গেছে। ঠিকানা শনাক্ত করা হচ্ছে…');
             const controller = new AbortController();
@@ -2225,10 +2245,14 @@ async function fetchCurrentLocation() {
             const unique = [...new Set(parts)];
             const addressText = unique.join(', ') || String(data?.display_name || '').trim();
             if (addressBox) {
+                window.RKFoodieSettingAddressFromGps = true;
                 addressBox.value = addressText || `GPS location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)} (add house/landmark details)`;
                 addressBox.dispatchEvent(new Event('input', { bubbles: true }));
                 addressBox.dispatchEvent(new Event('change', { bubbles: true }));
+                window.RKFoodieSettingAddressFromGps = false;
             }
+            // Keep the exact GPS separately from the human-readable address.
+            window.RKFoodieCheckoutGps = { lat: latitude, lng: longitude, accuracy: accuracy, captured_at: Date.now() };
             const profileAddress = document.getElementById('rkAddressLine');
             if (profileAddress && profileAddress !== addressBox && addressText) { profileAddress.value = addressText; profileAddress.dispatchEvent(new Event('input', {bubbles:true})); profileAddress.dispatchEvent(new Event('change', {bubbles:true})); }
             if (a.postcode && document.getElementById('rkPincode')) document.getElementById('rkPincode').value = a.postcode;
@@ -2241,11 +2265,14 @@ async function fetchCurrentLocation() {
         } catch (error) {
             console.warn('RK Foodie reverse geocoding:', error);
             if (addressBox) {
+                window.RKFoodieSettingAddressFromGps = true;
                 addressBox.value = `GPS: ${latitude.toFixed(6)}, ${longitude.toFixed(6)} (বাড়ি/ল্যান্ডমার্ক লিখুন)`;
                 addressBox.dispatchEvent(new Event('input', {bubbles:true}));
                 addressBox.dispatchEvent(new Event('change', {bubbles:true}));
+                window.RKFoodieSettingAddressFromGps = false;
             }
-            setStatus('GPS লোকেশন পাওয়া গেছে, কিন্তু ঠিকানার নাম লোড হয়নি। কো-অর্ডিনেট বসানো হয়েছে; অনুগ্রহ করে বাড়ি/ল্যান্ডমার্ক লিখুন।');
+            window.RKFoodieCheckoutGps = { lat: latitude, lng: longitude, accuracy: accuracy, captured_at: Date.now() };
+            setStatus('GPS পাওয়া গেছে, তবে ঠিকানার নাম লোড হয়নি। GPS পিন সেভ হয়েছে; বাড়ি/ল্যান্ডমার্ক লিখুন।');
         } finally { restore(); }
     }, error => {
         restore();
@@ -2255,7 +2282,7 @@ async function fetchCurrentLocation() {
             3: 'লোকেশন পেতে সময় শেষ হয়েছে। GPS চালু রেখে খোলা জায়গায় আবার চেষ্টা করুন।'
         };
         setStatus(messages[error.code] || 'লোকেশন নেওয়া যায়নি। Location permission ও GPS সেটিংস পরীক্ষা করুন।');
-    }, { enableHighAccuracy: true, timeout: 25000, maximumAge: 60000 });
+    }, { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 });
 }
 </script>
 
@@ -2450,7 +2477,9 @@ function closeSuccessModal() {
      const orderId=(window.crypto&&typeof window.crypto.randomUUID==='function')?window.crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}));
      const createdAt=new Date(),etaAt=new Date(createdAt.getTime()+25*60000);
      const trackingToken=(window.crypto&&window.crypto.getRandomValues?Array.from(window.crypto.getRandomValues(new Uint8Array(24)),b=>b.toString(16).padStart(2,'0')).join(''):(String(Date.now())+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2))).slice(0,48);
-     const orderPayload={id:orderId,order_number:orderNumber,tracking_token:trackingToken,customer_name:name,phone,address,payment_method:paymentMethod,items:cartItems.map(({image,...i})=>i),total:grandTotal,status:'pending'};
+     const gps=window.RKFoodieCheckoutGps;
+     const gpsIsFresh=!!(gps && Number.isFinite(gps.lat) && Number.isFinite(gps.lng) && Number.isFinite(gps.accuracy) && gps.accuracy<=100 && Date.now()-Number(gps.captured_at||0)<=15*60*1000);
+     const orderPayload={id:orderId,order_number:orderNumber,tracking_token:trackingToken,customer_name:name,phone,address,payment_method:paymentMethod,items:cartItems.map(({image,...i})=>i),total:grandTotal,status:'pending',...(gpsIsFresh?{customer_lat:gps.lat,customer_lng:gps.lng,customer_accuracy:gps.accuracy}:{})};
      const historyOrder={...orderPayload,items:cartItems,created_at:createdAt.toISOString(),estimated_delivery_at:etaAt.getTime(),estimated_delivery_text:etaAt.toLocaleTimeString('bn-IN',{hour:'2-digit',minute:'2-digit'}),sync_status:'pending'};
      const historySaved=saveHistory(historyOrder);
      let message=`🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর)*\n🧾 *অর্ডার নম্বর:* ${orderNumber}\n👤 *নাম:* ${name}\n📞 *মোবাইল:* ${phone}\n📍 *ডেলিভারি ঠিকানা:* ${address}\n💳 *পেমেন্ট:* ${paymentMethod}\n⏰ *আনুমানিক ডেলিভারি:* ${historyOrder.estimated_delivery_text}\n------------------------------\n🍽️ *অর্ডারের তালিকা:*\n`;
@@ -2468,6 +2497,7 @@ function closeSuccessModal() {
      }else{historyOrder.sync_status='not-configured';saveHistory(historyOrder);const status=document.getElementById('rkOrderSyncStatus');if(status){status.className='rk-sync-status bad';status.textContent='Supabase সংযোগ সেট করা নেই; অর্ডারটি শুধু WhatsApp ও এই ডিভাইসে সেভ হয়েছে।'}console.warn('RK Foodie Supabase client not configured')}
    } finally {
      window.rkOrderSubmitting=false;
+     window.RKFoodieCheckoutGps=null;
      submitButtons.forEach(button=>{button.disabled=false;button.style.opacity=''});
    }
  };
