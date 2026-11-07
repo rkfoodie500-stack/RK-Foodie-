@@ -2193,7 +2193,7 @@ window.rkCustomerGpsFix = window.rkCustomerGpsFix || null;
 try {
     const savedGps = JSON.parse(localStorage.getItem('rkFoodieCustomerGpsV1') || 'null');
     if (savedGps && Number.isFinite(Number(savedGps.latitude)) && Number.isFinite(Number(savedGps.longitude)) &&
-        Number(savedGps.accuracy) <= 250 && Date.now() - Number(savedGps.captured_at) <= 10 * 60 * 1000) {
+        Number(savedGps.accuracy) <= 5000 && Date.now() - Number(savedGps.captured_at) <= 10 * 60 * 1000) {
         window.rkCustomerGpsFix = savedGps;
     } else {
         localStorage.removeItem('rkFoodieCustomerGpsV1');
@@ -2222,7 +2222,7 @@ async function fetchCurrentLocation() {
         const { latitude, longitude, accuracy } = position.coords;
         const gpsIsTrusted = Number.isFinite(latitude) && Number.isFinite(longitude) &&
             latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180 &&
-            Number.isFinite(accuracy) && accuracy > 0 && accuracy <= 250;
+            Number.isFinite(accuracy) && accuracy > 0 && accuracy <= 5000;
         if (gpsIsTrusted) {
             window.rkCustomerGpsFix = { latitude, longitude, accuracy, captured_at: Date.now() };
             try { localStorage.setItem('rkFoodieCustomerGpsV1', JSON.stringify(window.rkCustomerGpsFix)); } catch (_) {}
@@ -2260,7 +2260,7 @@ async function fetchCurrentLocation() {
             if (typeof updateProfileCards === 'function') updateProfileCards();
             if (addressText) setStatus(gpsIsTrusted
                 ? `ঠিকানা বসানো হয়েছে। GPS নির্ভুলতা প্রায় ${Math.max(1, Math.round(accuracy))} মিটার; এই লোকেশন অর্ডারের সঙ্গে সেভ হবে। প্রয়োজন হলে বাড়ি/ল্যান্ডমার্ক যোগ করুন।`
-                : `ঠিকানা বসানো হয়েছে, কিন্তু GPS নির্ভুলতা ±${Math.max(1, Math.round(accuracy || 0))} মিটার। ২৫০ মিটারের বেশি হওয়ায় এই GPS ম্যাপের জন্য সেভ করা হয়নি। Location চালু রেখে আবার চেষ্টা করুন।`);
+                : `ঠিকানা বসানো হয়েছে, কিন্তু GPS নির্ভুলতা ±${Math.max(1, Math.round(accuracy || 0))} মিটার। ৫০০০ মিটারের বেশি হওয়ায় এই GPS ম্যাপের জন্য সেভ করা হয়নি। ফোনের Location permission-এ Precise location চালু করে আবার চেষ্টা করুন।`);
             else setStatus(gpsIsTrusted
                 ? 'GPS পাওয়া গেছে, তবে ঠিকানার নাম পাওয়া যায়নি। কো-অর্ডিনেট বসানো হয়েছে—বাড়ি/ল্যান্ডমার্ক লিখুন।'
                 : 'GPS পাওয়া গেছে, কিন্তু নির্ভুলতা কম। সঠিক রুটের জন্য GPS আবার নিন।');
@@ -2283,7 +2283,7 @@ async function fetchCurrentLocation() {
             3: 'লোকেশন পেতে সময় শেষ হয়েছে। GPS চালু রেখে খোলা জায়গায় আবার চেষ্টা করুন।'
         };
         setStatus(messages[error.code] || 'লোকেশন নেওয়া যায়নি। Location permission ও GPS সেটিংস পরীক্ষা করুন।');
-    }, { enableHighAccuracy: true, timeout: 25000, maximumAge: 60000 });
+    }, { enableHighAccuracy: true, timeout: 60000, maximumAge: 0 });
 }
 </script>
 
@@ -2496,7 +2496,7 @@ function closeSuccessModal() {
       let customerGps=window.rkCustomerGpsFix;
       if(!customerGps){try{customerGps=JSON.parse(localStorage.getItem('rkFoodieCustomerGpsV1')||'null')}catch(_){customerGps=null}}
       const gpsFresh=!!customerGps&&Number.isFinite(Number(customerGps.latitude))&&Number.isFinite(Number(customerGps.longitude))&&
-        Number(customerGps.accuracy)>0&&Number(customerGps.accuracy)<=250&&
+        Number(customerGps.accuracy)>0&&Number(customerGps.accuracy)<=5000&&
         Date.now()-Number(customerGps.captured_at)<=10*60*1000;
       const customerLat=gpsFresh?Number(customerGps.latitude):null;
       const customerLng=gpsFresh?Number(customerGps.longitude):null;
@@ -2556,7 +2556,7 @@ function closeSuccessModal() {
      const {data,error}=await client.rpc('get_delivery_tracking',{p_order_number:o.order_number,p_tracking_token:o.tracking_token});
      if(error){status.textContent='Supabase tracking error: '+error.message;return}
      const customerAccuracy=Number(data?.customer_accuracy);
-      if(data&&data.customer_lat!=null&&data.customer_lng!=null&&Number.isFinite(customerAccuracy)&&customerAccuracy>0&&customerAccuracy<=250)customer={lat:Number(data.customer_lat),lng:Number(data.customer_lng)};else customer=null;
+      if(data&&data.customer_lat!=null&&data.customer_lng!=null&&Number.isFinite(customerAccuracy)&&customerAccuracy>0&&customerAccuracy<=5000)customer={lat:Number(data.customer_lat),lng:Number(data.customer_lng)};else customer=null;
      if(data&&data.driver_lat!=null&&data.driver_lng!=null&&data.driver_active)driver={lat:Number(data.driver_lat),lng:Number(data.driver_lng)};else driver=null;
      if(data&&data.order_status){o.status=data.order_status;const orderStatusEl=modal.querySelector('#rkTrackOrderStatus');if(orderStatusEl)orderStatusEl.textContent=String(data.order_status).replace(/_/g,' ').toUpperCase();const history=read();const index=history.findIndex(x=>String(x.order_number)===String(o.order_number));if(index>=0){history[index].status=data.order_status;try{localStorage.setItem(KEY,JSON.stringify(history))}catch(_){}}}
      if(data&&data.customer_location_updated_at)updated.textContent='Customer GPS: '+new Date(data.customer_location_updated_at).toLocaleString('bn-IN');else if(data&&data.updated_at)updated.textContent='সর্বশেষ GPS আপডেট: '+new Date(data.updated_at).toLocaleString('bn-IN');
@@ -2572,7 +2572,7 @@ function closeSuccessModal() {
        const result=await fetch(url).then(r=>{if(!r.ok)throw new Error('Route service unavailable');return r.json()});
        const r=result?.routes?.[0];if(!r||!r.geometry?.coordinates?.length)throw new Error('No road route found');
        routeCoords=r.geometry.coordinates.map(p=>[p[1],p[0]]);lastRouteAt=now;lastRouteDriver={...driver};
-       distance.textContent=`রাস্তা দিয়ে দূরত্ব: ${(r.distance/1000).toFixed(2)} km · আনুমানিক সময়: ${Math.max(1,Math.round(r.duration/60))} মিনিট`;
+       distance.textContent=`রাস্তা দিয়ে দূরত্ব: ${(r.distance/1000).toFixed(2)} km · আনুমানিক সময়: ${Math.max(1,Math.round(r.duration/60))} মিনিট · GPS accuracy customer ±${Math.round(Number(o.customer_accuracy||0))}m`; 
        if(activeLine)activeLine.setLatLngs(routeCoords);else activeLine=L.polyline(routeCoords,{color:'#2563eb',weight:6,opacity:.85}).addTo(activeMap);
        if(!activeMap._rkInitialFit){activeMap.fitBounds(activeLine.getBounds(),{padding:[35,35]});activeMap._rkInitialFit=true;}
      }catch(e){distance.textContent='রাস্তার রুট এখন পাওয়া যাচ্ছে না। '+(customer&&driver?`সোজা দূরত্ব: ${km(customer,driver).toFixed(2)} km`:'');console.warn('RK Foodie route:',e.message)}finally{routeBusy=false}
@@ -2581,9 +2581,9 @@ function closeSuccessModal() {
      if(customer){const ci=L.divIcon({className:'',html:'<div class="rk-track-pin customer"><span>YOU</span></div>',iconSize:[32,38],iconAnchor:[16,34],popupAnchor:[0,-32]});if(!customerMarker)customerMarker=L.marker([customer.lat,customer.lng],{icon:ci}).addTo(activeMap).bindPopup('<b>আপনার অবস্থান</b><br>Customer');else customerMarker.setLatLng([customer.lat,customer.lng])}
      if(driver){const dp=snappedDriver||driver;const di=L.divIcon({className:'',html:'<div class="rk-track-pin partner"><span>DP</span></div>',iconSize:[32,38],iconAnchor:[16,34],popupAnchor:[0,-32]});if(!driverMarker)driverMarker=L.marker([dp.lat,dp.lng],{icon:di}).addTo(activeMap).bindPopup('<b>ডেলিভারি পার্টনার</b><br>Live location');else driverMarker.setLatLng([dp.lat,dp.lng])}else if(driverMarker){activeMap.removeLayer(driverMarker);driverMarker=null;snappedDriver=null}
      if(!customer||!driver){const p=customer||driver;activeMap.setView([p.lat,p.lng],15);distance.textContent='দুইটি লোকেশন পাওয়া গেলে রাস্তার দূরত্ব ও ETA দেখাবে।'}else await route();
-     setTimeout(()=>activeMap&&activeMap.invalidateSize(),150);
+     setTimeout(()=>activeMap&&activeMap.invalidateSize(true),150);setTimeout(()=>activeMap&&activeMap.invalidateSize(true),700);
    }catch(e){status.textContent='ম্যাপ লোড হয়নি: '+e.message}}
-   let customerWatchId=null;modal.querySelector('#rkStartCustomerGps').onclick=()=>{if(!navigator.geolocation){status.textContent='এই ডিভাইসে GPS নেই।';return}if(!client){status.textContent='Supabase সংযোগ পাওয়া যায়নি।';return}status.textContent='আপনার নির্ভুল GPS লোকেশন নেওয়া হচ্ছে…';if(customerWatchId!==null)navigator.geolocation.clearWatch(customerWatchId);customerWatchId=navigator.geolocation.watchPosition(async pos=>{const c=pos.coords;if(!Number.isFinite(c.latitude)||!Number.isFinite(c.longitude)||c.accuracy>250){status.textContent='GPS নির্ভুলতা এখন '+Math.round(c.accuracy)+' মিটার। ভালো সিগন্যালের জন্য অপেক্ষা করুন; ভুল লোকেশন পাঠানো হচ্ছে না।';return}const {data,error}=await client.rpc('set_delivery_customer_location',{p_order_number:o.order_number,p_tracking_token:o.tracking_token,p_lat:c.latitude,p_lng:c.longitude,p_accuracy:c.accuracy});if(error){status.textContent='লোকেশন সেভ হয়নি: '+error.message;return}customer={lat:c.latitude,lng:c.longitude};status.textContent='আপনার লাইভ লোকেশন শেয়ার হচ্ছে। ডেলিভারি পার্টনারের অবস্থান খোঁজা হচ্ছে…';await renderMap();await getTracking();if(!pollTimer)pollTimer=setInterval(getTracking,8000)},err=>{status.textContent='লোকেশন অনুমতি/সমস্যা: '+err.message},{enableHighAccuracy:true,maximumAge:5000,timeout:25000})};
+   let customerWatchId=null;modal.querySelector('#rkStartCustomerGps').onclick=()=>{if(!navigator.geolocation){status.textContent='এই ডিভাইসে GPS নেই।';return}if(!client){status.textContent='Supabase সংযোগ পাওয়া যায়নি।';return}status.textContent='আপনার নির্ভুল GPS লোকেশন নেওয়া হচ্ছে…';if(customerWatchId!==null)navigator.geolocation.clearWatch(customerWatchId);customerWatchId=navigator.geolocation.watchPosition(async pos=>{const c=pos.coords;if(!Number.isFinite(c.latitude)||!Number.isFinite(c.longitude)||c.accuracy>5000){status.textContent='GPS নির্ভুলতা এখন '+Math.round(c.accuracy)+' মিটার। ভালো সিগন্যালের জন্য অপেক্ষা করুন; ভুল লোকেশন পাঠানো হচ্ছে না।';return}const {data,error}=await client.rpc('set_delivery_customer_location',{p_order_number:o.order_number,p_tracking_token:o.tracking_token,p_lat:c.latitude,p_lng:c.longitude,p_accuracy:c.accuracy});if(error){status.textContent='লোকেশন সেভ হয়নি: '+error.message;return}customer={lat:c.latitude,lng:c.longitude};status.textContent='আপনার লাইভ লোকেশন শেয়ার হচ্ছে। ডেলিভারি পার্টনারের অবস্থান খোঁজা হচ্ছে…';await renderMap();await getTracking();if(!pollTimer)pollTimer=setInterval(getTracking,8000)},err=>{status.textContent='লোকেশন অনুমতি/সমস্যা: '+err.message},{enableHighAccuracy:true,maximumAge:5000,timeout:25000})};
    if(o.tracking_token){getTracking();pollTimer=setInterval(getTracking,10000)}
  };
  const originalOpen=window.openOrderHistory;
