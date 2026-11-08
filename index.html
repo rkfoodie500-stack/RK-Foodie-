@@ -2465,7 +2465,7 @@ function closeSuccessModal() {
    let panel=document.getElementById('rkOrderHistoryPanel');
    if(!panel){panel=document.createElement('section');panel.id='rkOrderHistoryPanel';panel.style.cssText='position:fixed;inset:0;z-index:120000;background:#f8fafc;overflow:auto;font-family:Poppins,sans-serif';panel.innerHTML='<div style="max-width:900px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;padding:10px 0 18px;border-bottom:1px solid #e5e7eb"><button type="button" onclick="closeOrderHistory()" style="font-size:24px;padding:6px 12px">←</button><div><h2 style="font-size:22px;font-weight:800">Your Ordered</h2><p style="color:#64748b;font-size:13px">আপনার অর্ডার, ঠিকানা ও ডেলিভারি আপডেট</p></div></header><div id="rkOrderHistoryItems" style="display:grid;gap:12px;padding:18px 0"></div></div>';document.body.appendChild(panel)}
    const items=readHistory(),box=document.getElementById('rkOrderHistoryItems');
-   box.innerHTML=items.length?items.map(o=>{const eta=Number(o.estimated_delivery_at)||0;const itemRows=(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f1f5f9"><img src="${esc(i.image||'https://placehold.co/60x60')}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px"><span style="flex:1;min-width:0"><b>${esc(i.title)}</b><small style="display:block;color:#64748b">${Number(i.quantity)||1} × ${money(i.price)}</small></span><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');return `<article style="border:1px solid #e2e8f0;border-radius:18px;padding:16px;background:white;box-shadow:0 5px 18px #0f172a08"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">${esc(o.order_number||o.id)}</strong><span style="font-size:11px;padding:5px 9px;border-radius:99px;background:#fff7ed;color:#c2410c;font-weight:800">${esc(o.status||'pending').toUpperCase()}</span></div><p style="font-size:11px;color:#64748b;margin-top:4px">Placed: ${esc(new Date(o.created_at||Date.now()).toLocaleString())}</p><div style="margin-top:10px">${itemRows}</div><div style="margin-top:12px;padding:12px;border-radius:12px;background:#f8fafc;font-size:12px;line-height:1.7"><b>Delivery address</b><br>${esc(o.address)}<br><b>Delivery PIN:</b> <span style="font-size:20px;font-weight:900;letter-spacing:5px;color:#c2410c">${/^\d{4}$/.test(String(o.delivery_pin||''))?esc(o.delivery_pin):'Pending sync'}</span><br><b>Contact:</b> ${esc(o.phone)}<br><b>Payment:</b> ${esc(o.payment_method||'Cash on Delivery')}<br><b>Estimated arrival:</b> ${esc(o.estimated_delivery_text||'25–40 minutes after order confirmation')} ${eta?`<br><b>Time remaining:</b> <span data-eta="${eta}" class="rk-history-countdown"></span>`:''}</div><div style="display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px"><strong style="font-size:18px">Total: ${money(o.total)}</strong></div></article>`}).join(''):'<div style="text-align:center;padding:55px 12px;color:#64748b">এখনও কোনো অর্ডার নেই। খাবার অর্ডার করলে সম্পূর্ণ বিবরণ এখানে দেখা যাবে।</div>';
+   box.innerHTML=items.length?items.map(o=>{const eta=Number(o.estimated_delivery_at)||0;const itemRows=(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f1f5f9"><img src="${esc(i.image||'https://placehold.co/60x60')}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px"><span style="flex:1;min-width:0"><b>${esc(i.title)}</b><small style="display:block;color:#64748b">${Number(i.quantity)||1} × ${money(i.price)}</small></span><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');return `<article data-rk-order-card="${esc(o.order_number||o.id)}" style="border:1px solid #e2e8f0;border-radius:18px;padding:16px;background:white;box-shadow:0 5px 18px #0f172a08"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">${esc(o.order_number||o.id)}</strong><span data-rk-order-status="${esc(o.order_number||o.id)}" style="font-size:11px;padding:5px 9px;border-radius:99px;background:#fff7ed;color:#c2410c;font-weight:800">${esc(o.status||'pending').toUpperCase()}</span></div><p style="font-size:11px;color:#64748b;margin-top:4px">Placed: ${esc(new Date(o.created_at||Date.now()).toLocaleString())}</p><div style="margin-top:10px">${itemRows}</div><div style="margin-top:12px;padding:12px;border-radius:12px;background:#f8fafc;font-size:12px;line-height:1.7"><b>Delivery address</b><br>${esc(o.address)}<br><b>Delivery PIN:</b> <span data-rk-order-pin="${esc(o.order_number||o.id)}" style="font-size:20px;font-weight:900;letter-spacing:5px;color:#c2410c">${/^\d{4}$/.test(String(o.delivery_pin||''))?esc(o.delivery_pin):'Pending sync'}</span><br><b>Contact:</b> ${esc(o.phone)}<br><b>Payment:</b> ${esc(o.payment_method||'Cash on Delivery')}<br><b>Estimated arrival:</b> ${esc(o.estimated_delivery_text||'25–40 minutes after order confirmation')} ${eta?`<br><b>Time remaining:</b> <span data-eta="${eta}" class="rk-history-countdown"></span>`:''}</div><div style="display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px"><strong style="font-size:18px">Total: ${money(o.total)}</strong></div></article>`}).join(''):'<div style="text-align:center;padding:55px 12px;color:#64748b">এখনও কোনো অর্ডার নেই। খাবার অর্ডার করলে সম্পূর্ণ বিবরণ এখানে দেখা যাবে।</div>';
    panel.style.display='block';document.body.style.overflow='hidden';
    const tick=()=>box.querySelectorAll('[data-eta]').forEach(el=>{let n=Math.max(0,Math.floor((Number(el.dataset.eta)-Date.now())/1000));el.textContent=n?`${Math.floor(n/60)} মিনিট ${n%60} সেকেন্ড`:'আনুমানিক সময় শেষ — আপডেটের জন্য দোকানের সঙ্গে যোগাযোগ করুন';});tick();if(window.rkHistoryTimer)clearInterval(window.rkHistoryTimer);window.rkHistoryTimer=setInterval(()=>{if(!document.getElementById('rkOrderHistoryPanel')||document.getElementById('rkOrderHistoryPanel').style.display==='none'){clearInterval(window.rkHistoryTimer);return}tick()},1000);
  };
@@ -2889,6 +2889,62 @@ html:not(.site-dark-root), body:not(.site-dark) { color-scheme:light; }
     if(e.key==='rkFoodieTheme'&&typeof window.setSiteTheme==='function')
       window.setSiteTheme(e.newValue==='dark'?'dark':'light');
   });
+})();
+</script>
+
+
+<script id="rk-customer-order-realtime-sync">
+(function(){
+ 'use strict';
+ const KEY='rkFoodieOrderHistoryV1';
+ let channel=null,privateChannels=[],poll=null,busy=false;
+ const client=()=>window.RKFoodieSupabase;
+ const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x:[]}catch(_){return[]}};
+ const write=rows=>{try{localStorage.setItem(KEY,JSON.stringify(rows.slice(0,100)))}catch(e){console.warn('RK Foodie history sync storage:',e)}};
+ const escStatus=s=>String(s||'pending').replace(/_/g,' ').toUpperCase();
+ function paint(order){
+   const key=String(order.order_number||order.id||'');
+   document.querySelectorAll('[data-rk-order-card]').forEach(card=>{
+     if(card.dataset.rkOrderCard!==key)return;
+     const status=card.querySelector('[data-rk-order-status]');
+     const pin=card.querySelector('[data-rk-order-pin]');
+     if(status){status.textContent=escStatus(order.status);if(order.status==='delivered'){status.style.background='#dcfce7';status.style.color='#166534'}else if(order.status==='picked_up'){status.style.background='#dbeafe';status.style.color='#1d4ed8'}else{status.style.background='#fff7ed';status.style.color='#c2410c'}}
+     if(pin&&/^\d{4}$/.test(String(order.delivery_pin||'')))pin.textContent=String(order.delivery_pin);
+   });
+ }
+ async function refreshOne(order){
+   const c=client();if(!c||!order?.order_number||!order?.tracking_token)return;
+   const {data,error}=await c.rpc('get_customer_order_details',{p_order_number:order.order_number,p_tracking_token:order.tracking_token});
+   if(error){console.warn('RK Foodie order status refresh:',order.order_number,error.message);return}
+   if(!data)return;
+   const updated={...order,...data};
+   const rows=read();const idx=rows.findIndex(x=>String(x.order_number)===String(order.order_number));
+   if(idx>=0){rows[idx]={...rows[idx],...data};write(rows)}
+   paint(updated);
+ }
+ async function refreshAll(){if(busy)return;busy=true;try{const rows=read();for(const row of rows)await refreshOne(row)}finally{busy=false}}
+ function stop(){if(poll){clearInterval(poll);poll=null}const c=client();if(channel&&c){c.removeChannel(channel);channel=null}if(c&&privateChannels.length){privateChannels.forEach(ch=>c.removeChannel(ch));privateChannels=[]}}
+ function start(){stop();const c=client();if(!c)return;const rows=read();refreshAll();
+   // Private Broadcast topic is keyed by the order's unguessable tracking token; it does not expose public order rows.
+   rows.forEach(order=>{if(!order?.tracking_token)return;const privateChannel=c.channel('rk-order-status:'+order.tracking_token,{config:{private:true}})
+     .on('broadcast',{event:'order_status'},()=>refreshOne(order))
+     .subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')console.warn('RK Foodie private order channel unavailable; secure status polling remains active.')});
+     privateChannels.push(privateChannel);
+   });
+   // Postgres Changes is an additional fast path when the project's orders SELECT RLS policy allows it.
+   channel=c.channel('rk-customer-order-status-'+Math.random().toString(36).slice(2,9))
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'orders'},payload=>{
+      const orderNo=payload?.new?.order_number;if(!orderNo)return;
+      const match=read().find(x=>String(x.order_number)===String(orderNo));if(match)refreshOne(match);
+    }).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')console.warn('RK Foodie Postgres Changes unavailable; private channel/polling remains active.')});
+   // Secure RPC polling is a fallback so status still refreshes if a Realtime channel is temporarily unavailable.
+   poll=setInterval(()=>{if(document.getElementById('rkOrderHistoryPanel')?.style.display!=='none')refreshAll();else stop()},9000);
+ }
+ const originalOpen=window.openOrderHistory;
+ window.openOrderHistory=function(){if(typeof originalOpen==='function')originalOpen();start()};
+ const originalClose=window.closeOrderHistory;
+ window.closeOrderHistory=function(){stop();if(typeof originalClose==='function')originalClose()};
+ window.addEventListener('pagehide',stop);
 })();
 </script>
 
