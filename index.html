@@ -755,8 +755,6 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   /* Keep the mobile home header clean; cart/history/likes remain available in the side menu. */
   .rk-header-actions{display:none!important}
   .rk-header-action{min-width:40px;justify-content:center}
-  /* Remove the duplicate cart shortcut from the phone bottom navigation. */
-  .md\:hidden.fixed.bottom-0 > button:nth-child(3){display:none!important}
 }
 </style>
 
@@ -1040,8 +1038,12 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         </button>
         <button onclick="toggleCart(true)" class="flex flex-col items-center text-gray-500 hover:text-navy relative">
             <i class="fa-solid fa-bag-shopping text-lg"></i>
-            <span class="text-[10px] font-medium mt-0.5">Your Order</span>
+            <span class="text-[10px] font-medium mt-0.5">Cart</span>
             <span id="mobileCartBadge" class="absolute -top-1 right-2 bg-brandOrange text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </button>
+        <button onclick="openOrderHistory()" class="flex flex-col items-center text-gray-500 hover:text-navy">
+            <i class="fa-solid fa-receipt text-lg"></i>
+            <span class="text-[10px] font-medium mt-0.5">Your Ordered</span>
         </button>
     </div>
 
@@ -2499,11 +2501,21 @@ function closeSuccessModal() {
    }
    const activeCart=(typeof cart!=='undefined'&&Array.isArray(cart))?cart:[];
    if(!activeCart.length){alert('আপনার কার্ট খালি রয়েছে!');return}
+   const client=window.RKFoodieSupabase;
+   if(!client||typeof client.from!=='function'){
+     alert('Supabase সংযোগ পাওয়া যাচ্ছে না। অর্ডার নেওয়া হয়নি। ইন্টারনেট সংযোগ ও Supabase সেটিংস পরীক্ষা করে আবার চেষ্টা করুন।');
+     return;
+   }
+
+   // Reserve a tab synchronously from the checkout click. It is navigated to WhatsApp only
+   // after Supabase confirms the order; failed inserts never get sent as confirmed orders.
+   let waWindow=null;
+   try{waWindow=window.open('about:blank','_blank')}catch(_){waWindow=null}
+
    // Always request a fresh high-accuracy GPS fix at order time; no stale or null coordinates are accepted.
-   let gps=window.RKCustomerLocation||{};
    let customerLat=NaN,customerLng=NaN;
-   if(!navigator.geolocation){alert('এই ব্রাউজারে GPS সাপোর্ট নেই। GPS চালু করে HTTPS ওয়েবসাইট থেকে আবার চেষ্টা করুন।');return;}
-   if(!window.isSecureContext&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){alert('GPS ব্যবহারের জন্য ওয়েবসাইটটি HTTPS-এ খুলুন।');return;}
+   if(!navigator.geolocation){if(waWindow)waWindow.close();alert('এই ব্রাউজারে GPS সাপোর্ট নেই। GPS চালু করে HTTPS ওয়েবসাইট থেকে আবার চেষ্টা করুন।');return;}
+   if(!window.isSecureContext&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){if(waWindow)waWindow.close();alert('GPS ব্যবহারের জন্য ওয়েবসাইটটি HTTPS-এ খুলুন।');return;}
    try{
      const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:25000,maximumAge:0}));
      customerLat=Number(position.coords.latitude);customerLng=Number(position.coords.longitude);
@@ -2511,9 +2523,10 @@ function closeSuccessModal() {
      if(typeof window.rkEnsureCheckoutMap==='function')await window.rkEnsureCheckoutMap();
      if(typeof window.rkSetCheckoutCoordinates==='function')window.rkSetCheckoutCoordinates(customerLat,customerLng,'gps',Number(position.coords.accuracy)||null);
      else {const latInput=document.getElementById('customer_lat'),lngInput=document.getElementById('customer_lng');if(latInput)latInput.value=customerLat.toFixed(7);if(lngInput)lngInput.value=customerLng.toFixed(7);}
-     gps=window.RKCustomerLocation||gps;if(gps){gps.lat=customerLat;gps.lng=customerLng;gps.source='gps';gps.accuracy=Number(position.coords.accuracy)||null;}
-   }catch(gpsError){alert('আপনার GPS লোকেশন পাওয়া যায়নি। Location permission Allow করে আবার অর্ডার করুন।');if(typeof window.toggleCart==='function')window.toggleCart(true);if(typeof window.rkEnsureCheckoutMap==='function')window.rkEnsureCheckoutMap();return;}
-   if(!Number.isFinite(customerLat)||!Number.isFinite(customerLng)){alert('সঠিক GPS লোকেশন ছাড়া অর্ডার করা যাবে না।');return;}
+     const gps=window.RKCustomerLocation||(window.RKCustomerLocation={});gps.lat=customerLat;gps.lng=customerLng;gps.source='gps';gps.accuracy=Number(position.coords.accuracy)||null;
+   }catch(gpsError){if(waWindow)waWindow.close();alert('আপনার GPS লোকেশন পাওয়া যায়নি। Location permission Allow করে আবার অর্ডার করুন।');if(typeof window.toggleCart==='function')window.toggleCart(true);if(typeof window.rkEnsureCheckoutMap==='function')window.rkEnsureCheckoutMap();return;}
+   if(!Number.isFinite(customerLat)||!Number.isFinite(customerLng)){if(waWindow)waWindow.close();alert('সঠিক GPS লোকেশন ছাড়া অর্ডার করা যাবে না।');return;}
+
    window.rkOrderSubmitting=true;
    const submitButtons=[...document.querySelectorAll('[onclick*="submitOrderViaWhatsApp"]')];
    submitButtons.forEach(button=>{button.disabled=true;button.dataset.rkSubmitWasDisabled='false';button.style.opacity='.65'});
@@ -2524,29 +2537,32 @@ function closeSuccessModal() {
      const orderId=(window.crypto&&typeof window.crypto.randomUUID==='function')?window.crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}));
      const createdAt=new Date(),etaAt=new Date(createdAt.getTime()+25*60000);
      const trackingToken=(window.crypto&&window.crypto.getRandomValues?Array.from(window.crypto.getRandomValues(new Uint8Array(24)),b=>b.toString(16).padStart(2,'0')).join(''):(String(Date.now())+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2))).slice(0,48);
-     const deliveryPin=String(window.crypto&&window.crypto.getRandomValues
-       ?(1000+(new Uint16Array(window.crypto.getRandomValues(new Uint16Array(1)).buffer)[0]%9000))
-       :(1000+Math.floor(Math.random()*9000)));
+     const pinBytes=new Uint16Array(1);if(window.crypto&&window.crypto.getRandomValues)window.crypto.getRandomValues(pinBytes);
+     const deliveryPin=String(1000+(window.crypto&&window.crypto.getRandomValues?(pinBytes[0]%9000):Math.floor(Math.random()*9000)));
      const orderPayload={id:orderId,order_number:orderNumber,tracking_token:trackingToken,customer_name:name,phone,address,payment_method:paymentMethod,items:cartItems.map(({image,...i})=>i),total:grandTotal,status:'pending',customer_lat:customerLat,customer_lng:customerLng,delivery_pin:deliveryPin};
      const historyOrder={...orderPayload,items:cartItems,created_at:createdAt.toISOString(),estimated_delivery_at:etaAt.getTime(),estimated_delivery_text:etaAt.toLocaleTimeString('bn-IN',{hour:'2-digit',minute:'2-digit'}),sync_status:'pending'};
-     let message=`🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর)*\n🧾 *অর্ডার নম্বর:* ${orderNumber}\n👤 *নাম:* ${name}\n*যোগাযোগ নম্বর:* ${phone}\n📍 *ডেলিভারি ঠিকানা:* ${address}\n🗺️ *GPS:* ${customerLat.toFixed(7)}, ${customerLng.toFixed(7)}\n💳 *পেমেন্ট:* ${paymentMethod}\n⏱️ *আনুমানিক ডেলিভারি:* ${historyOrder.estimated_delivery_text}\n------------------------------\n🍽️ *অর্ডারের তালিকা:*\n`;
-     cartItems.forEach((i,n)=>message+=`${n+1}. ${i.title} × ${i.quantity} — ${money(i.price*i.quantity)}\n`);
-     message+=`------------------------------\n💰 *মোট:* ${money(grandTotal)}\nধন্যবাদ! আপনার অর্ডারটি RK Foodie-তে পাঠানো হয়েছে।`;
-     // Open WhatsApp while the original click gesture is still active.
-     const wa=window.open(`https://wa.me/919907406500?text=${encodeURIComponent(message)}`,'_blank');
-     if(!wa)alert('WhatsApp খুলতে পপ-আপ ব্লক হয়েছে। ব্রাউজারে pop-ups অনুমতি দিন।');
-     if(!historySaved)console.warn('RK Foodie: local order history could not be saved.');
-     const client=window.RKFoodieSupabase;
-     if(!client||typeof client.from!=='function')throw new Error('Supabase সংযোগ সেট করা নেই। অর্ডার সার্ভারে সেভ করা যায়নি।');
-     // Wait for Supabase confirmation before presenting the order as successfully placed.
+
+     // IMPORTANT: Supabase insert must succeed before WhatsApp is opened or order is confirmed.
      const {error:insertError}=await client.from('orders').insert(orderPayload);
      if(insertError)throw insertError;
-     historyOrder.sync_status='synced';delete historyOrder.sync_error;const historySaved=saveHistory(historyOrder);if(!historySaved)console.warn('RK Foodie: server order saved but local history could not be saved.');
+
+     historyOrder.sync_status='synced';delete historyOrder.sync_error;
+     const historySaved=saveHistory(historyOrder);
+     if(!historySaved)console.warn('RK Foodie: order is saved in Supabase, but local order history could not be saved.');
+
+     let message=`🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর)*\n🧾 *অর্ডার নম্বর:* ${orderNumber}\n👤 *নাম:* ${name}\n*যোগাযোগ নম্বর:* ${phone}\n📍 *ডেলিভারি ঠিকানা:* ${address}\n🗺️ *GPS:* ${customerLat.toFixed(7)}, ${customerLng.toFixed(7)}\n💳 *পেমেন্ট:* ${paymentMethod}\n⏱️ *আনুমানিক ডেলিভারি:* ${historyOrder.estimated_delivery_text}\n------------------------------\n🍽️ *অর্ডারের তালিকা:*\n`;
+     cartItems.forEach((i,n)=>message+=`${n+1}. ${i.title} × ${i.quantity} — ${money(i.price*i.quantity)}\n`);
+     message+=`------------------------------\n💰 *মোট:* ${money(grandTotal)}\nধন্যবাদ! অর্ডারটি RK Foodie-তে সেভ হয়েছে।`;
+     if(waWindow&&!waWindow.closed){try{waWindow.location.href=`https://wa.me/919907406500?text=${encodeURIComponent(message)}`;}catch(waError){console.warn('RK Foodie: order saved, but WhatsApp could not be opened.',waError);}}
+     else {console.info('RK Foodie: order saved; WhatsApp popup was blocked or closed by the browser.');}
+
      if(typeof window.showOrderSuccessModal==='function')window.showOrderSuccessModal(historyOrder);
      console.info('RK Foodie order synced:',orderNumber);
+     if(!historySaved)alert('অর্ডার Supabase-এ সেভ হয়েছে। তবে এই ডিভাইসে Your Ordered তালিকা সেভ হয়নি; আবার পেজ খুললে সার্ভার থেকে অর্ডার দেখতে Admin Panel প্রয়োজন হবে।');
    } catch(orderError) {
+     if(waWindow){try{waWindow.close()}catch(_){}}
      console.error('RK Foodie order creation failed:',orderError);
-     alert('অর্ডার Supabase-এ সেভ হয়নি, তাই অর্ডার কনফার্ম করা হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।\nকারণ: '+String(orderError?.message||orderError));
+     alert('অর্ডার Supabase-এ সেভ হয়নি, তাই অর্ডার কনফার্ম করা হয়নি এবং WhatsApp-এও পাঠানো হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।\nকারণ: '+String(orderError?.message||orderError));
    } finally {
      window.rkOrderSubmitting=false;
      submitButtons.forEach(button=>{button.disabled=false;button.style.opacity=''});
