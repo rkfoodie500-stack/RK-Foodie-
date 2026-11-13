@@ -1960,9 +1960,45 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   }
 
   const googleButton = $('rkGoogleSignIn');
+  const authClient = () => window.RKFoodieSupabase && window.RKFoodieSupabase.auth;
+  function showGateMessage(message, isOk = false) {
+    const alertBox = $('rkGateAlert');
+    if (!alertBox) return;
+    alertBox.textContent = message;
+    alertBox.classList.toggle('ok', !!isOk);
+    alertBox.style.display = 'block';
+  }
+  function showCustomerGate() {
+    if (gate) gate.hidden = false;
+    document.body.style.overflow = 'hidden';
+    $('rkLoginPane').hidden = false;
+    if (form) form.hidden = true;
+    $('rkAccountPane').hidden = true;
+  }
+  async function startGoogleSignIn() {
+    const auth = authClient();
+    if (!auth || typeof auth.signInWithOAuth !== 'function') {
+      showGateMessage('Google sign-in চালু করতে Supabase client এবং Google provider সেটআপ প্রয়োজন।');
+      return;
+    }
+    googleButton.disabled = true;
+    googleButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Connecting to Google…';
+    try {
+      const { error } = await auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + window.location.pathname }
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('RK Foodie Google sign-in failed:', error);
+      showGateMessage('Google login চালু হয়নি। Supabase Authentication-এ Google provider, Client ID/Secret এবং Redirect URL পরীক্ষা করুন।');
+      googleButton.disabled = false;
+      googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
+    }
+  }
   if (googleButton) {
     googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
-    googleButton.addEventListener('click', enterWebsite);
+    googleButton.addEventListener('click', startGoogleSignIn);
   }
   const previewButton = $('rkPreviewSite');
   if (previewButton) previewButton.addEventListener('click', enterWebsite);
@@ -1974,12 +2010,18 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   if (settingsAction) settingsAction.addEventListener('click', openProfileEditor);
   const orderEdit = $('rkOrderEditProfile');
   if (orderEdit) orderEdit.addEventListener('click', openProfileEditor);
+  async function signOutGoogle() {
+    const auth = authClient();
+    if (auth && typeof auth.signOut === 'function') {
+      const { error } = await auth.signOut();
+      if (error) { console.error('RK Foodie sign-out failed:', error); alert('Sign out করা যায়নি। আবার চেষ্টা করুন।'); return; }
+    }
+    showCustomerGate();
+  }
   const signOut = $('rkSettingsSignOut');
-  if (signOut) signOut.addEventListener('click', () => {
-    alert('Google login is disabled. Your saved profile stays on this device. You can clear or edit it from your profile.');
-  });
+  if (signOut) signOut.addEventListener('click', signOutGoogle);
   const signOut2 = $('rkSignOut');
-  if (signOut2) signOut2.addEventListener('click', enterWebsite);
+  if (signOut2) signOut2.addEventListener('click', signOutGoogle);
 
   const avatarInput = $('rkAvatarFile');
   if (avatarInput) avatarInput.addEventListener('change', () => {
@@ -2041,7 +2083,34 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
   updateProfileCards();
   fillProfileForm();
-  // Welcome screen is kept, but both the Google-icon button and Continue button enter as guest.
+
+  // Restore the Supabase session on every app open. Supabase persists the session
+  // in local storage, so an authenticated customer goes straight to the food menu.
+  (async function restoreGoogleSession() {
+    const auth = authClient();
+    if (!auth || typeof auth.getSession !== 'function') {
+      showCustomerGate();
+      return;
+    }
+    try {
+      const { data, error } = await auth.getSession();
+      if (error) throw error;
+      if (data && data.session) {
+        enterWebsite();
+      } else {
+        showCustomerGate();
+      }
+      if (typeof auth.onAuthStateChange === 'function') {
+        auth.onAuthStateChange((_event, session) => {
+          if (session) enterWebsite();
+          else showCustomerGate();
+        });
+      }
+    } catch (error) {
+      console.error('RK Foodie session restore failed:', error);
+      showCustomerGate();
+    }
+  })();
 })();
 </script>
 
@@ -3027,6 +3096,75 @@ html:not(.site-dark-root), body:not(.site-dark) { color-scheme:light; }
 <div id="rkFoodieConfirmAnimationHost" aria-hidden="true">
  <iframe id="rkFoodieConfirmAnimationFrame" title="RK Foodie order confirmation animation" allow="fullscreen"></iframe>
 </div>
+
+<style id="rk-foodie-dark-mode-complete-fix">
+body.site-dark,html.site-dark-root{background:#080f1b!important;color:#e8edf5!important}
+body.site-dark main,body.site-dark footer,body.site-dark header,
+body.site-dark section,body.site-dark article,body.site-dark aside,
+body.site-dark .rk-liked-shell,body.site-dark .rk-final-shell,
+body.site-dark .rk-success-card,body.site-dark .rk-address-card,
+body.site-dark .rk-related-card,body.site-dark .rk-sheet-item,
+body.site-dark .rk-cart-row,body.site-dark .rk-profile-top,
+body.site-dark .rk-preview,body.site-dark .rk-order-sheet,
+body.site-dark #siteSettingsDrawer,body.site-dark #siteMenuOverlay,
+body.site-dark #rkCustomerGate .rk-panel,
+body.site-dark #rkFinalCheckout .rk-final-card,
+body.site-dark #rkOrderHistoryPanel article,
+body.site-dark #rkLikedFoodsPanel .rk-liked-card,
+body.site-dark #rkProductTrackingModal section{
+  border-color:#34445b!important;
+}
+body.site-dark main .bg-white,body.site-dark main .bg-gray-50,
+body.site-dark main .bg-gray-100,body.site-dark main .bg-slate-50,
+body.site-dark main .bg-slate-100,body.site-dark main .bg-orange-50,
+body.site-dark main .bg-amber-50,body.site-dark main .bg-blue-50,
+body.site-dark main .bg-emerald-50,body.site-dark main .bg-green-50,
+body.site-dark [style*="background:#fff"],body.site-dark [style*="background: #fff"],
+body.site-dark [style*="background:white"],body.site-dark [style*="background: white"],
+body.site-dark [style*="background-color: white"],
+body.site-dark [style*="background-color: #fff"]{
+  background:#111c2c!important;color:#e8edf5!important;
+}
+body.site-dark .text-black,body.site-dark .text-gray-900,
+body.site-dark .text-gray-800,body.site-dark .text-gray-700,
+body.site-dark .text-gray-600,body.site-dark .text-slate-900,
+body.site-dark .text-slate-800,body.site-dark .text-slate-700,
+body.site-dark .text-slate-600,body.site-dark .text-navy,
+body.site-dark main h1,body.site-dark main h2,body.site-dark main h3,
+body.site-dark main h4,body.site-dark main p,body.site-dark main label,
+body.site-dark main strong,body.site-dark main li,
+body.site-dark footer p,body.site-dark footer h2,
+body.site-dark #siteSettingsDrawer h2,body.site-dark #siteSettingsDrawer p{
+  color:#e8edf5!important;
+}
+body.site-dark .text-gray-500,body.site-dark .text-gray-400,
+body.site-dark .text-slate-500,body.site-dark .text-slate-400,
+body.site-dark .rk-muted,body.site-dark small{color:#aab8cc!important}
+body.site-dark input,body.site-dark textarea,body.site-dark select{
+  background:#0b1422!important;color:#f8fafc!important;border-color:#40506a!important;
+}
+body.site-dark input::placeholder,body.site-dark textarea::placeholder{color:#91a0b5!important}
+body.site-dark button.bg-white,body.site-dark .site-setting-row,
+body.site-dark .site-menu-button,body.site-dark .rk-secondary{
+  background:#1b2a40!important;color:#e8edf5!important;border-color:#40506a!important;
+}
+body.site-dark .border-gray-100,body.site-dark .border-gray-200,
+body.site-dark .border-slate-100,body.site-dark .border-slate-200,
+body.site-dark .border,body.site-dark [class*="border-"]{border-color:#34445b!important}
+body.site-dark #rkCustomerGate .rk-title,
+body.site-dark #rkCustomerGate .rk-brand h1,
+body.site-dark #rkCustomerGate .rk-panel h1,
+body.site-dark #rkCustomerGate .rk-panel h2,
+body.site-dark #rkCustomerGate .rk-panel p{color:#e8edf5!important}
+body.site-dark #rkCustomerGate #rkGoogleSignIn{background:#172338!important;color:#f8fafc!important;border-color:#40506a!important}
+body.site-dark #siteSettingsDrawer{background:#111c2c!important;color:#e8edf5!important}
+body.site-dark #rkLikedFoodsPanel .rk-liked-header{background:#111c2c!important}
+body.site-dark .rk-preview{background:#172338!important;color:#d7e0ed!important}
+body.site-dark .rk-address-card,body.site-dark .rk-related-card{background:#172338!important;color:#e8edf5!important}
+body.site-dark .bg-white .text-orange-600,body.site-dark .text-orange-600{color:#ff9b52!important}
+body.site-dark .shadow-sm,body.site-dark .shadow-md,body.site-dark .shadow-lg{box-shadow:0 8px 28px rgba(0,0,0,.22)!important}
+</style>
+
 <script id="rk-foodie-confirm-animation-controller">
 (function(){
  'use strict';
@@ -3066,6 +3204,120 @@ html:not(.site-dark-root), body:not(.site-dark) { color-scheme:light; }
  window.addEventListener('message',event=>{
    if(event.source===frame.contentWindow&&event.data&&event.data.type==='RK_FOODIE_CONFIRM_ANIMATION_DONE')finishAnimation();
  });
+})();
+</script>
+
+
+<!-- RK Foodie mobile navigation: close the current in-site screen before leaving the website. -->
+<script id="rk-foodie-mobile-back-navigation">
+(function () {
+  'use strict';
+  const panelIds = [
+    'rkOrderSuccessModal','rkFinalCheckout','rkProductTrackingModal',
+    'rkOrderHistoryPanel','rkLikedFoodsPanel','foodDetailsView',
+    'rkOrderSheet','cartDrawer','siteSettingsDrawer'
+  ];
+  let lastOpen = '';
+  let syncing = false;
+  const visible = el => {
+    if (!el || el.hidden) return false;
+    const s = getComputedStyle(el);
+    return s.display !== 'none' && s.visibility !== 'hidden' &&
+      (el.classList.contains('is-open') || el.classList.contains('is-visible') ||
+       (el.id === 'foodDetailsView' && !el.classList.contains('hidden')) ||
+       (el.id === 'cartDrawer' && !el.classList.contains('drawer-closed')) ||
+       (el.id === 'rkFinalCheckout' && !el.classList.contains('hidden')) ||
+       (el.id === 'rkOrderSuccessModal' && !el.classList.contains('hidden')));
+  };
+  function currentPanel() {
+    for (const id of panelIds) {
+      const el = document.getElementById(id);
+      if (visible(el)) return id;
+    }
+    return '';
+  }
+  function pushPanelState() {
+    if (syncing) return;
+    const now = currentPanel();
+    if (now && now !== lastOpen) {
+      lastOpen = now;
+      history.pushState({ rkFoodieScreen: now }, '', location.href);
+    } else if (!now) {
+      lastOpen = '';
+    }
+  }
+  function closePanel(id) {
+    switch (id) {
+      case 'rkOrderSuccessModal':
+        if (typeof window.closeSuccessModal === 'function') window.closeSuccessModal();
+        else document.getElementById(id)?.classList.add('hidden');
+        break;
+      case 'rkFinalCheckout':
+        if (typeof window.closeFinalCheckout === 'function') window.closeFinalCheckout();
+        else document.getElementById(id)?.classList.add('hidden');
+        break;
+      case 'rkProductTrackingModal':
+        if (typeof window.closeProductTracking === 'function') window.closeProductTracking();
+        else document.getElementById(id)?.classList.remove('is-open');
+        break;
+      case 'rkOrderHistoryPanel':
+        if (typeof window.closeOrderHistory === 'function') window.closeOrderHistory();
+        else document.getElementById(id)?.classList.remove('is-open');
+        break;
+      case 'rkLikedFoodsPanel':
+        if (typeof window.closeLikedFoods === 'function') window.closeLikedFoods();
+        else document.getElementById(id)?.classList.remove('is-open');
+        break;
+      case 'foodDetailsView':
+        if (typeof window.closeFoodDetails === 'function') window.closeFoodDetails(true);
+        else document.getElementById(id)?.classList.add('hidden');
+        break;
+      case 'rkOrderSheet':
+        if (typeof window.closeOrderSheet === 'function') window.closeOrderSheet();
+        break;
+      case 'cartDrawer':
+        if (typeof window.toggleCart === 'function') window.toggleCart(false);
+        else document.getElementById(id)?.classList.add('drawer-closed');
+        break;
+      case 'siteSettingsDrawer':
+        if (typeof window.toggleSiteMenu === 'function') window.toggleSiteMenu(false);
+        break;
+    }
+    lastOpen = '';
+  }
+  document.addEventListener('click', () => {
+    setTimeout(pushPanelState, 80);
+    setTimeout(pushPanelState, 320);
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (!syncing) pushPanelState();
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    panelIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el, { attributes: true, attributeFilter: ['class','style','hidden','aria-hidden'] });
+    });
+    if (!history.state || !history.state.rkFoodieRoot) {
+      history.replaceState({ rkFoodieRoot: true }, '', location.href);
+    }
+  }, { once: true });
+  window.addEventListener('popstate', () => {
+    syncing = true;
+    const open = currentPanel() || lastOpen;
+    if (open) {
+      closePanel(open);
+      setTimeout(() => { syncing = false; lastOpen = currentPanel(); }, 80);
+    } else {
+      // Keep the browser on the website's home/menu instead of exiting the app.
+      history.pushState({ rkFoodieRoot: true }, '', location.href);
+      syncing = false;
+    }
+  });
+  window.addEventListener('pageshow', () => {
+    if (!history.state || !history.state.rkFoodieRoot) {
+      history.replaceState({ rkFoodieRoot: true }, '', location.href);
+    }
+  });
 })();
 </script>
 
