@@ -3321,5 +3321,27 @@ body.site-dark .shadow-sm,body.site-dark .shadow-md,body.site-dark .shadow-lg{bo
 })();
 </script>
 
+    <script type="module">
+  import { PushNotifications } from '@capacitor/push-notifications';
+
+  async function registerPush() {
+    let permStatus = await PushNotifications.checkPermissions();
+    if (permStatus.receive === 'prompt') {
+      permStatus = await PushNotifications.requestPermissions();
+    }
+    if (permStatus.receive !== 'granted') {
+      return;
+    }
+    PushNotifications.register();
+
+    PushNotifications.addListener('pushNotificationReceived', (notification) => {
+      alert('নতুন নোটিফিকেশন: ' + notification.title);
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    registerPush();
+  });
+</script>
 </body>
 </html>
