@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Animation with Extended Confetti & Sound</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* প্রথম ধাপ: পুরো স্ক্রিন সবুজ ব্যাকগ্রাউন্ড */
+        .circle-wrapper {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background-color: #00c853;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: shrinkToCircle 0.8s cubic-bezier(0.77, 0, 0.175, 1) 0.6s forwards;
+            z-index: 2;
+        }
+
+        /* টিক মার্ক */
+        .checkmark {
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            animation: fadeOutCheck 0.3s ease 0.5s forwards;
+        }
+
+        /* কন্টেন্ট কন্টেইনার */
+        .content-container {
+            position: absolute;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            animation: showContent 0.3s ease 1.3s forwards;
+            z-index: 1;
+        }
+
+        .circle-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        /* সবুজ গোল বল */
+        .floating-circle {
+            width: 75px;
+            height: 75px;
+            background-color: #00c853;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: scale(0);
+            animation: popUpCircle 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.3s forwards;
+            box-shadow: 0 10px 25px rgba(0, 200, 83, 0.3);
+            position: relative;
+            z-index: 3;
+        }
+
+        .floating-circle span {
+            color: white;
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        /* অ্যামাউন্ট টেক্সট (+25) */
+        .amount {
+            font-size: 44px;
+            font-weight: 700;
+            color: #000000;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideUp 0.4s ease 1.5s forwards;
+        }
+
+        /* নাম ও নীল ভেরিফাই টিক */
+        .name-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 6px;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideUp 0.4s ease 1.7s forwards;
+        }
+
+        .name {
+            font-size: 17px;
+            color: #7b818c;
+            font-weight: 500;
+        }
+
+        .verify-badge {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 15px;
+            height: 15px;
+            background-color: #0095ff;
+            border-radius: 50%;
+            color: white;
+            font-size: 9.5px;
+            font-weight: bold;
+        }
+
+        /* প্রফেশনাল পার্টিকেল অ্যানিমেশন (Confetti) */
+        .confetti-particle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Keyframes */
+        @keyframes shrinkToCircle {
+            0% {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+            100% {
+                width: 75px;
+                height: 75px;
+                border-radius: 50%;
+                transform: translateY(-95px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeOutCheck {
+            to { opacity: 0; }
+        }
+
+        @keyframes showContent {
+            to { opacity: 1; }
+        }
+
+        @keyframes popUpCircle {
+            0% { transform: scale(0) translateY(30px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- সবুজ ব্যাকগ্রাউন্ড -->
+    <div class="circle-wrapper">
+        <div class="checkmark">✓</div>
+    </div>
+
+    <!-- মূল কন্টেন্ট -->
+    <div class="content-container">
+        <div class="circle-box" id="circleBox">
+            <div class="floating-circle">
+                <span>✓</span>
+            </div>
+        </div>
+        <div class="amount">+25</div>
+        <div class="name-container">
+            <span class="name">Rk Foodie</span>
+            <span class="verify-badge">✓</span>
+        </div>
+    </div>
+
+    <script>
+        // প্রফেশনাল সাউন্ড ইফেক্ট (Web Audio API - ২ সেকেন্ড স্থায়ী)
+        function playSuccessSound() {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            const osc1 = ctx.createOscillator();
+            const gain1 = ctx.createGain();
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(523.25, ctx.currentTime); 
+            osc1.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.4);
+
+            gain1.gain.setValueAtTime(0.6, ctx.currentTime);
+            gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.0);
+
+            osc1.connect(gain1);
+            gain1.connect(ctx.destination);
+
+            const osc2 = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.type = 'triangle';
+            osc2.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15); 
+            osc2.frequency.exponentialRampToValueAtTime(1318.51, ctx.currentTime + 0.6);
+
+            gain2.gain.setValueAtTime(0.5, ctx.currentTime + 0.15);
+            gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
+
+            osc2.connect(gain2);
+            gain2.connect(ctx.destination);
+
+            osc1.start(ctx.currentTime);
+            osc2.start(ctx.currentTime + 0.15);
+
+            osc1.stop(ctx.currentTime + 2.0);
+            osc2.stop(ctx.currentTime + 2.2);
+        }
+
+        // দীর্ঘস্থায়ী ও স্পষ্ট কনফেটি অ্যানিমেশন (প্রায় ২ সেকেন্ড ব্যপ্ত)
+        function triggerConfetti() {
+            const circleBox = document.getElementById('circleBox');
+            const colors = ['#00c853', '#0095ff', '#ffbc00', '#ff4081', '#7c4dff', '#00e5ff'];
+
+            // মোট ৪০টি পার্টিকেল তৈরি করা হলো যাতে চারপাশ সুন্দরভাবে ভরে যায়
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti-particle';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // ডান ও বাঁ দিকে ছড়িয়ে পড়ার কোণ ও দূরত্ব বাড়ানো হয়েছে
+                const angle = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 75 + 15); 
+                const distance = Math.random() * 150 + 80; 
+                const x = Math.sin(angle * Math.PI / 180) * distance;
+                const y = -Math.cos(angle * Math.PI / 180) * distance;
+
+                circleBox.appendChild(particle);
+
+                // অ্যানিমেশনের সময়কাল ২ সেকেন্ড করা হয়েছে
+                particle.animate([
+                    { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                    { transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(0.4)`, opacity: 0 }
+                ], {
+                    duration: 1800 + Math.random() * 400, // প্রায় ২ সেকেন্ড
+                    easing: 'cubic-bezier(0.08, 0.82, 0.17, 1)',
+                    fill: 'forwards'
+                });
+            }
+        }
+
+        // সঠিক সময়ে সাউন্ড এবং কনফেটি ট্রিগার করা
+        setTimeout(() => {
+            playSuccessSound();
+            triggerConfetti();
+        }, 1300);
+    </script>
+</body>
+</html>
