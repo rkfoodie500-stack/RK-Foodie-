@@ -36,11 +36,24 @@ async function connectWhatsApp() {
     });
 
     sock.ev.on("creds.update", saveCreds);
-    sock.ev.on("connection.update", ({ connection, lastDisconnect, qr }) => {
-      if (qr) {
-        console.log("\nScan this QR code using WhatsApp -> Linked devices -> Link a device:\n");
-        qrcode.generate(qr, { small: true });
-      }
+    sock.ev.on("connection.update", async ({ connection, lastDisconnect, qr }) => {
+    // আপনার হোয়াটসঅ্যাপ নম্বর এখানে দিন (যেমন: 919907406500 - দেশের কোড সহ)
+    const phoneNumber = "919907406500";
+
+    if (qr && !sock.authState.creds.registered) {
+        try {
+            // পেয়ারিং কোড নেওয়ার আগে ৩ সেকেন্ড অপেক্ষা করা
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            const code = await sock.requestPairingCode(phoneNumber);
+            console.log(`========================================`);
+            console.log(`আপনার হোয়াটসঅ্যাপ পেয়ারিং কোডটি হলো: ${code}`);
+            console.log(`========================================`);
+        } catch (err) {
+            console.error("পেয়ারিং কোড নিতে সমস্যা হয়েছে:", err);
+        }
+    }
+
+
       if (connection === "open") {
         connectionReady = true;
         console.log("WhatsApp gateway connected.");
