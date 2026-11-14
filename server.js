@@ -37,8 +37,8 @@ async function connectWhatsApp() {
 
     sock.ev.on("creds.update", saveCreds);
     sock.ev.on("connection.update", async ({ connection, lastDisconnect, qr }) => {
-    // আপনার হোয়াটসঅ্যাপ নম্বর এখানে দিন (যেমন: 919907406500 - দেশের কোড সহ)
-    const phoneNumber = "919907406500";
+    // আপনার হোয়াটসঅ্যাপ নম্বর এখানে দিন (যেমন: +919907406500 - দেশের কোড সহ)
+    const phoneNumber = "+919907406500";
 
     if (qr && !sock.authState.creds.registered) {
         try {
