@@ -597,10 +597,37 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   body.site-dark #rkCheckoutMap{border-color:#40506a}
 </style>
 
+
+<style id="rk-whatsapp-otp-styles">
+  #rkCustomerGate .rk-wa-divider{display:flex;align-items:center;gap:12px;margin:18px 0 8px;color:#94a3b8;font-size:10px;font-weight:800;letter-spacing:.14em}
+  #rkCustomerGate .rk-wa-divider:before,#rkCustomerGate .rk-wa-divider:after{content:"";height:1px;background:#e5eaf1;flex:1}
+  #rkCustomerGate .rk-wa-login{width:100%;margin-top:4px}
+  #rkCustomerGate .rk-wa-heading{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;color:#172033;margin:0 0 12px}
+  #rkCustomerGate .rk-wa-heading i{font-size:20px;color:#16a34a}
+  #rkCustomerGate .rk-wa-label{display:block;font-size:11px!important;font-weight:750!important;color:#475569!important;margin:10px 0 6px}
+  #rkCustomerGate .rk-wa-phone-row{display:grid;grid-template-columns:minmax(118px,.8fr) minmax(0,1.5fr);gap:8px}
+  #rkCustomerGate .rk-wa-phone-row select,#rkCustomerGate .rk-wa-phone-row input,#rkCustomerGate .rk-wa-otp{width:100%;min-width:0;border:1px solid #dce2ea;border-radius:12px;background:#fff;color:#172033;padding:12px 10px;font:inherit;font-size:14px;outline:none}
+  #rkCustomerGate .rk-wa-phone-row input:focus,#rkCustomerGate .rk-wa-phone-row select:focus,#rkCustomerGate .rk-wa-otp:focus{border-color:#22c55e;box-shadow:0 0 0 3px #22c55e1c}
+  #rkCustomerGate .rk-wa-send{background:#16a34a;color:#fff;border:0;box-shadow:0 8px 18px #16a34a25;margin-top:12px}
+  #rkCustomerGate .rk-wa-send:hover{background:#15803d}
+  #rkCustomerGate .rk-wa-otp{font-size:22px;letter-spacing:.55em;text-align:center;font-weight:800;padding:13px}
+  #rkCustomerGate .rk-wa-hint{font-size:10px;color:#64748b;margin:6px 0}
+  #rkCustomerGate .rk-wa-verify{background:#172b45;color:#fff;margin-top:8px}
+  #rkCustomerGate .rk-wa-resend{display:block;margin:10px auto 0;color:#64748b;font-size:11px;font-weight:700;text-decoration:underline}
+  #rkCustomerGate .rk-wa-privacy{font-size:9px;color:#94a3b8;line-height:1.5;text-align:center;margin:12px 0 0}
+  #rkCustomerGate .rk-wa-login [hidden]{display:none!important}
+  @media(min-width:761px){#rkCustomerGate .rk-wa-heading{font-size:12px}#rkCustomerGate .rk-wa-phone-row select,#rkCustomerGate .rk-wa-phone-row input{padding:9px 10px;font-size:12px}#rkCustomerGate .rk-wa-otp{padding:9px;font-size:18px}}
+  @media(max-width:380px){#rkCustomerGate .rk-wa-phone-row{grid-template-columns:112px minmax(0,1fr)}#rkCustomerGate .rk-wa-phone-row select,#rkCustomerGate .rk-wa-phone-row input{font-size:13px;padding:11px 8px}}
+  body.site-dark #rkCustomerGate .rk-wa-heading{color:#e8edf5}
+  body.site-dark #rkCustomerGate .rk-wa-divider:before,body.site-dark #rkCustomerGate .rk-wa-divider:after{background:#34445b}
+  body.site-dark #rkCustomerGate .rk-wa-phone-row select,body.site-dark #rkCustomerGate .rk-wa-phone-row input,body.site-dark #rkCustomerGate .rk-wa-otp{background:#0b1422;color:#f8fafc;border-color:#40506a}
+  body.site-dark #rkCustomerGate .rk-wa-label{color:#cbd5e1!important}
+</style>
+
 </head>
 <body class="bg-gray-50 text-slate-800 antialiased pb-20 md:pb-6">
 
-    <!-- RK Foodie Customer Login/Profile Gate. Google OAuth is the only sign-in method. -->
+    <!-- RK Foodie Customer Login/Profile Gate. Google OAuth and WhatsApp OTP are available. -->
     <section id="rkCustomerGate" aria-label="RK Foodie customer account">
       <div class="rk-shell"><div class="rk-panel">
         <div class="rk-brand"><div class="rk-brand-mark"><img src="assets/image-1.webp" alt="RK Foodie chef logo"></div><div><h1>RK Foodie</h1><p>Good food, delivered with care</p></div></div>
@@ -613,11 +640,35 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         <div class="rk-content">
           <div class="rk-eyebrow" id="rkGateEyebrow">Your food journey starts here</div>
           <h2 class="rk-title" id="rkGateTitle">Welcome to RK Foodie</h2>
-          <p class="rk-muted" id="rkGateDescription">Continue without login, or create a profile to save your delivery address.</p>
+          <p class="rk-muted" id="rkGateDescription">Continue with Google or verify your WhatsApp number to access RK Foodie.</p>
           <div class="rk-steps" aria-hidden="true"><span class="rk-step active" id="rkStep1"></span><span class="rk-step" id="rkStep2"></span><span class="rk-step" id="rkStep3"></span></div>
           <div id="rkGateAlert" class="rk-alert" role="status" aria-live="polite"></div>
           <div id="rkLoginPane">
             <button class="rk-btn rk-primary rk-wide" id="rkGoogleSignIn" type="button"><i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie</button>
+            <div class="rk-wa-divider"><span>OR</span></div>
+            <div id="rkWhatsAppLogin" class="rk-wa-login">
+              <div class="rk-wa-heading"><i class="fa-brands fa-whatsapp"></i><span>Continue with WhatsApp</span></div>
+              <label class="rk-wa-label" for="rkWaPhone">WhatsApp phone number</label>
+              <div class="rk-wa-phone-row">
+                <select id="rkWaCountry" aria-label="Country calling code">
+                  <option value="91" selected>India (+91)</option>
+                  <option value="1">US / Canada (+1)</option>
+                  <option value="44">UK (+44)</option>
+                  <option value="880">Bangladesh (+880)</option>
+                  <option value="971">UAE (+971)</option>
+                </select>
+                <input id="rkWaPhone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="15" placeholder="9876543210" aria-label="Phone number">
+              </div>
+              <button class="rk-btn rk-wa-send rk-wide" id="rkWaSendOtp" type="button"><i class="fa-brands fa-whatsapp"></i> Send OTP via WhatsApp</button>
+              <div id="rkWaOtpStep" hidden>
+                <label class="rk-wa-label" for="rkWaOtp">Enter 4-digit OTP</label>
+                <input id="rkWaOtp" class="rk-wa-otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4" pattern="[0-9]{4}" placeholder="••••">
+                <p class="rk-wa-hint">The code is valid for 5 minutes.</p>
+                <button class="rk-btn rk-wa-verify rk-wide" id="rkWaVerifyOtp" type="button">Verify &amp; Login</button>
+                <button class="rk-wa-resend" id="rkWaChangePhone" type="button">Change phone number</button>
+              </div>
+              <p class="rk-wa-privacy">Your number is used only for account sign-in and order updates.</p>
+            </div>
             <div class="rk-preview" id="rkSetupNote" hidden><strong>Google sign-in setup needed</strong><br/>Add your Supabase Project URL and public publishable key, then enable Google under Supabase Authentication → Sign In / Providers and add your Google OAuth Client ID and Secret. Set the authorized redirect URL in Google Cloud and Supabase. You can preview the website without signing in.</div>
             <button class="rk-btn rk-secondary rk-wide" id="rkPreviewSite" type="button" hidden>Preview website without login</button>
           </div>
@@ -640,7 +691,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             <button class="rk-btn rk-secondary rk-wide" id="rkEditProfile" type="button">Edit profile / address</button>
             <button class="rk-btn rk-secondary rk-wide" id="rkSignOut" type="button">Sign out</button>
           </div>
-          <p class="rk-muted" style="font-size:10px;margin:18px 0 0;text-align:center">Your profile and delivery address are saved locally on this device. No Google login required.</p>
+          <p class="rk-muted" style="font-size:10px;margin:18px 0 0;text-align:center">Your customer profile and delivery details are saved for your RK Foodie account.</p>
         </div>
       </div></div>
     </section>
@@ -2011,6 +2062,16 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   const orderEdit = $('rkOrderEditProfile');
   if (orderEdit) orderEdit.addEventListener('click', openProfileEditor);
   async function signOutGoogle() {
+    try {
+      const waSession = JSON.parse(localStorage.getItem('rkFoodieWhatsAppSessionV1') || 'null');
+      if (waSession && waSession.token && window.RKFoodieSupabase?.functions) {
+        await window.RKFoodieSupabase.functions.invoke('customer-session', {
+          body: { action: 'logout' },
+          headers: { 'x-rk-session': waSession.token }
+        });
+      }
+    } catch (e) { console.warn('RK Foodie WhatsApp logout could not reach server:', e); }
+    localStorage.removeItem('rkFoodieWhatsAppSessionV1');
     const auth = authClient();
     if (auth && typeof auth.signOut === 'function') {
       const { error } = await auth.signOut();
@@ -2087,6 +2148,31 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   // Restore the Supabase session on every app open. Supabase persists the session
   // in local storage, so an authenticated customer goes straight to the food menu.
   (async function restoreGoogleSession() {
+    // Restore the custom WhatsApp customer session first, then fall back to Google OAuth.
+    const waKey = 'rkFoodieWhatsAppSessionV1';
+    let waSession = null;
+    try { waSession = JSON.parse(localStorage.getItem(waKey) || 'null'); } catch (_) {}
+    if (waSession && waSession.token && waSession.expires_at && Date.parse(waSession.expires_at) > Date.now()) {
+      try {
+        const client = window.RKFoodieSupabase;
+        if (client && client.functions) {
+          const { data, error } = await client.functions.invoke('customer-session', {
+            body: { action: 'check' },
+            headers: { 'x-rk-session': waSession.token }
+          });
+          if (!error && data && data.valid && data.user) {
+            const oldProfile = readProfile();
+            const restored = { ...oldProfile, phone: data.user.phone || oldProfile.phone || '', full_name: data.user.name || oldProfile.full_name || 'RK Foodie Customer' };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(restored));
+            profile = restored;
+            enterWebsite();
+            return;
+          }
+        }
+      } catch (e) { console.warn('RK Foodie WhatsApp session restore failed:', e); }
+    }
+    if (waSession) localStorage.removeItem(waKey);
+
     const auth = authClient();
     if (!auth || typeof auth.getSession !== 'function') {
       showCustomerGate();
@@ -2095,11 +2181,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     try {
       const { data, error } = await auth.getSession();
       if (error) throw error;
-      if (data && data.session) {
-        enterWebsite();
-      } else {
-        showCustomerGate();
-      }
+      if (data && data.session) enterWebsite();
+      else showCustomerGate();
       if (typeof auth.onAuthStateChange === 'function') {
         auth.onAuthStateChange((_event, session) => {
           if (session) enterWebsite();
@@ -2114,6 +2197,101 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 })();
 </script>
 
+
+
+<script id="rk-whatsapp-otp-logic">
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const client = () => window.RKFoodieSupabase;
+  const alertBox = $('rkGateAlert');
+  const sendBtn = $('rkWaSendOtp');
+  const verifyBtn = $('rkWaVerifyOtp');
+  const otpStep = $('rkWaOtpStep');
+  const phoneInput = $('rkWaPhone');
+  const countryInput = $('rkWaCountry');
+  const otpInput = $('rkWaOtp');
+  const SESSION_KEY = 'rkFoodieWhatsAppSessionV1';
+  const PROFILE_KEY = 'rkFoodieGuestProfileV1';
+
+  function message(text, ok){
+    if(!alertBox) return;
+    alertBox.textContent = text;
+    alertBox.classList.toggle('ok', !!ok);
+    alertBox.style.display = 'block';
+  }
+  function setBusy(button, busy, label){
+    if(!button) return;
+    button.disabled = busy;
+    if(!button.dataset.originalText) button.dataset.originalText = button.innerHTML;
+    button.innerHTML = busy ? '<i class="fa-solid fa-spinner fa-spin"></i> Please wait…' : (label || button.dataset.originalText);
+  }
+  function normalizedPhone(){
+    const country = String(countryInput?.value || '91').replace(/\D/g,'');
+    const local = String(phoneInput?.value || '').replace(/\D/g,'');
+    const digits = (country + local).replace(/^0+/, '');
+    if(digits.length < 8 || digits.length > 15) throw new Error('Enter a valid phone number including its country code.');
+    return digits;
+  }
+  if(sendBtn) sendBtn.addEventListener('click', async function(){
+    try{
+      const supabase = client();
+      if(!supabase?.functions) throw new Error('Supabase client is not ready. Please reload the page.');
+      const phone = normalizedPhone();
+      setBusy(sendBtn, true);
+      const {data,error} = await supabase.functions.invoke('send-whatsapp-otp',{body:{phone}});
+      if(error) throw error;
+      if(!data?.success) throw new Error(data?.error || 'Could not send the OTP.');
+      otpStep.hidden = false;
+      otpInput.value = '';
+      otpInput.focus();
+      message('OTP sent to +'+phone+'. Check your WhatsApp messages.', true);
+    }catch(e){ message(e.message || 'OTP could not be sent. Please try again.'); }
+    finally{ setBusy(sendBtn, false, '<i class="fa-brands fa-whatsapp"></i> Send OTP via WhatsApp'); }
+  });
+  if(verifyBtn) verifyBtn.addEventListener('click', async function(){
+    try{
+      const supabase = client();
+      if(!supabase?.functions) throw new Error('Supabase client is not ready. Please reload the page.');
+      const phone = normalizedPhone();
+      const otp = String(otpInput?.value || '').replace(/\D/g,'');
+      if(!/^\d{4}$/.test(otp)) throw new Error('Enter the 4-digit OTP.');
+      setBusy(verifyBtn, true);
+      const {data,error} = await supabase.functions.invoke('verify-whatsapp-otp',{body:{phone,otp}});
+      if(error) throw error;
+      if(!data?.success || !data?.token || !data?.user) throw new Error(data?.error || 'OTP verification failed.');
+      localStorage.setItem(SESSION_KEY, JSON.stringify({token:data.token,expires_at:data.expires_at,user:data.user}));
+      let old = {};
+      try{ old = JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}') || {}; }catch(_){}
+      const profile = {...old,phone:data.user.phone,full_name:data.user.name || old.full_name || 'RK Foodie Customer'};
+      localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));
+      const name = $('rkAccountName');
+      const phoneLabel = $('rkAccountPhone');
+      const savedAddress = $('rkSavedAddress');
+      if(name) name.textContent = profile.full_name;
+      if(phoneLabel) phoneLabel.textContent = '+'+data.user.phone;
+      if(savedAddress) savedAddress.textContent = [profile.address_line,profile.city,profile.state,profile.pincode].filter(Boolean).join(', ') || 'No delivery address saved yet. You can add it from Edit profile / address.';
+      $('rkLoginPane').hidden = true;
+      $('rkProfileForm').hidden = true;
+      $('rkAccountPane').hidden = false;
+      message('WhatsApp number verified. You are now logged in.',true);
+      // Keep the existing account flow and its Continue button.
+      if(typeof window.rkUpdateCustomerProfileCards === 'function') window.rkUpdateCustomerProfileCards();
+      setTimeout(()=>{ const enter=$('rkEnterSite'); if(enter) enter.click(); },250);
+    }catch(e){ message(e.message || 'OTP verification failed. Please try again.'); }
+    finally{ setBusy(verifyBtn, false, 'Verify & Login'); }
+  });
+  const changeBtn = $('rkWaChangePhone');
+  if(changeBtn) changeBtn.addEventListener('click',()=>{
+    otpStep.hidden = true;
+    otpInput.value = '';
+    phoneInput.focus();
+    message('You can change the phone number and request a new OTP.');
+  });
+  if(phoneInput) phoneInput.addEventListener('input',()=>{ phoneInput.value=phoneInput.value.replace(/[^\d\s-]/g,'').slice(0,18); });
+  if(otpInput) otpInput.addEventListener('input',()=>{ otpInput.value=otpInput.value.replace(/\D/g,'').slice(0,4); });
+})();
+</script>
 
 <script id="rk-order-cart-enhancements">
 (function(){
