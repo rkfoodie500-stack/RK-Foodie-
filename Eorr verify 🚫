@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Verification Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* প্রথম ধাপ: পুরো স্ক্রিন লাল ব্যাকগ্রাউন্ড */
+        .circle-wrapper {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ff3b30;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: shrinkToCircle 0.8s cubic-bezier(0.77, 0, 0.175, 1) 0.6s forwards;
+            z-index: 2;
+        }
+
+        /* ক্রস মার্ক */
+        .checkmark {
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            animation: fadeOutCheck 0.3s ease 0.5s forwards;
+        }
+
+        /* কন্টেন্ট কন্টেইনার */
+        .content-container {
+            position: absolute;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            animation: showContent 0.3s ease 1.3s forwards;
+            z-index: 1;
+        }
+
+        .circle-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        /* লাল গোল বল */
+        .floating-circle {
+            width: 75px;
+            height: 75px;
+            background-color: #ff3b30;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: scale(0);
+            animation: popUpCircle 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.3s forwards;
+            box-shadow: 0 10px 25px rgba(255, 59, 48, 0.3);
+            position: relative;
+            z-index: 3;
+        }
+
+        .floating-circle span {
+            color: white;
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        /* -25 এর পরিবর্তে Error টেক্সট */
+        .amount {
+            font-size: 38px;
+            font-weight: 700;
+            color: #ff3b30;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideUp 0.4s ease 1.5s forwards;
+            letter-spacing: 1px;
+        }
+
+        /* নাম ও লাল ক্রস টিক */
+        .name-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 6px;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideUp 0.4s ease 1.7s forwards;
+        }
+
+        .name {
+            font-size: 17px;
+            color: #7b818c;
+            font-weight: 500;
+        }
+
+        .error-badge {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 15px;
+            height: 15px;
+            background-color: #ff3b30;
+            border-radius: 50%;
+            color: white;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        /* এরর পার্টিকেল অ্যানিমেশন */
+        .confetti-particle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Keyframes */
+        @keyframes shrinkToCircle {
+            0% {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+            100% {
+                width: 75px;
+                height: 75px;
+                border-radius: 50%;
+                transform: translateY(-95px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeOutCheck {
+            to { opacity: 0; }
+        }
+
+        @keyframes showContent {
+            to { opacity: 1; }
+        }
+
+        @keyframes popUpCircle {
+            0% { transform: scale(0) translateY(30px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- লাল ব্যাকগ্রাউন্ড -->
+    <div class="circle-wrapper">
+        <div class="checkmark">✕</div>
+    </div>
+
+    <!-- মূল কন্টেন্ট -->
+    <div class="content-container">
+        <div class="circle-box" id="circleBox">
+            <div class="floating-circle">
+                <span>✕</span>
+            </div>
+        </div>
+        <!-- পরিবর্তিত অংশ: Error টেক্সট -->
+        <div class="amount">Error</div>
+        <div class="name-container">
+            <span class="name">Rk Foodie</span>
+            <span class="error-badge">✕</span>
+        </div>
+    </div>
+
+    <script>
+        // এরর সাউন্ড ইফেক্ট
+        function playErrorSound() {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(300, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.4);
+
+            gain.gain.setValueAtTime(0.5, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.6);
+        }
+
+        // এরর পার্টিকেল বা ডাস্ট ইফেক্ট
+        function triggerErrorConfetti() {
+            const circleBox = document.getElementById('circleBox');
+            const colors = ['#ff3b30', '#c62828', '#e57373', '#7b818c'];
+
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti-particle';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 75 + 15); 
+                const distance = Math.random() * 120 + 50; 
+                const x = Math.sin(angle * Math.PI / 180) * distance;
+                const y = -Math.cos(angle * Math.PI / 180) * distance;
+
+                circleBox.appendChild(particle);
+
+                particle.animate([
+                    { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                    { transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(0.2)`, opacity: 0 }
+                ], {
+                    duration: 1200 + Math.random() * 300,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+                    fill: 'forwards'
+                });
+            }
+        }
+
+        setTimeout(() => {
+            playErrorSound();
+            triggerErrorConfetti();
+        }, 1300);
+    </script>
+</body>
+</html>
