@@ -1994,12 +1994,21 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     updateProfileCards();
     syncCheckoutDetails();
   }
+  function resetGoogleSignInButton() {
+    nativeGoogleSignInPending = false;
+    if (googleButton) {
+      googleButton.disabled = false;
+      googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
+    }
+  }
   function showCustomerGate() {
     if (gate) gate.hidden = false;
     document.body.style.overflow = 'hidden';
     if ($('rkLoginPane')) $('rkLoginPane').hidden = false;
     if (form) form.hidden = true;
     if ($('rkAccountPane')) $('rkAccountPane').hidden = true;
+    // Always restore the sign-in control when returning to the login screen.
+    resetGoogleSignInButton();
   }
   async function loadProfileForUser(user) {
     if (!user || !user.id) throw new Error('Google account information is missing.');
@@ -2162,6 +2171,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     profileLoadGeneration++;
     currentUser = null;
     profile = {};
+    resetGoogleSignInButton();
     showCustomerGate();
   }
   const signOut = $('rkSettingsSignOut');
