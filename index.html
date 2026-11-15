@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RK Foodie | Food Menu тАв Labpur (2027)</title>
+    <title>RK Foodie | Food Menu • Labpur (2027)</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -35,7 +35,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -46,6 +46,21 @@
             background-color: #f8fafc;
             -webkit-tap-highlight-color: transparent;
         }
+        /* Use scripts with real Bengali/Devanagari glyph coverage; keep icon fonts intact. */
+        html[lang="bn"] body,
+        html[lang="bn"] body button,
+        html[lang="bn"] body input,
+        html[lang="bn"] body textarea,
+        html[lang="bn"] body select,
+        html[lang="bn"] #rkCustomerGate { font-family:'Noto Sans Bengali','Poppins',sans-serif; }
+        html[lang="hi"] body,
+        html[lang="hi"] body button,
+        html[lang="hi"] body input,
+        html[lang="hi"] body textarea,
+        html[lang="hi"] body select,
+        html[lang="hi"] #rkCustomerGate { font-family:'Noto Sans Devanagari','Poppins',sans-serif; }
+        html[lang="en"] body,
+        html[lang="en"] #rkCustomerGate { font-family:'Poppins',sans-serif; }
         .font-script {
             font-family: 'Satisfy', cursive;
         }
@@ -713,10 +728,10 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       <div class="rk-shell"><div class="rk-panel">
         <div class="rk-brand"><div class="rk-brand-mark"><img src="assets/image-1.webp" alt="RK Foodie chef logo"></div><div><h1>RK Foodie</h1><p>Good food, delivered with care</p></div></div>
         <aside class="rk-hero" aria-label="RK Foodie welcome illustration">
-          <div class="rk-hero-kicker"><span class="rk-chef-line">Fresh Food</span><span>Happy Mood тЩб</span></div>
+          <div class="rk-hero-kicker"><span class="rk-chef-line">Fresh Food</span><span>Happy Mood ♡</span></div>
           <img class="rk-hero-mascot" src="assets/image-2.webp" alt="RK Foodie chef mascot and Google sign-in illustration">
-          <div class="rk-hero-features"><span><b>тЬУ</b> Guest access</span><span><b>тЖп</b> Fast access</span><span><b>тЩб</b> Easy ordering</span></div>
-          <p class="rk-hero-tagline">Eat Good ┬╖ Live Good</p>
+          <div class="rk-hero-features"><span><b>✓</b> Guest access</span><span><b>↯</b> Fast access</span><span><b>♡</b> Easy ordering</span></div>
+          <p class="rk-hero-tagline">Eat Good · Live Good</p>
         </aside>
         <div class="rk-content">
           <div class="rk-eyebrow" id="rkGateEyebrow">Your food journey starts here</div>
@@ -729,7 +744,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
               <img class="rk-login-full-art" src="assets/rk-foodie-login-full.png" alt="RK Foodie full welcome and Google sign-in artwork">
               <button class="rk-btn rk-primary rk-wide" id="rkGoogleSignIn" type="button" aria-label="Continue to RK Foodie with Google"><i class="fa-brands fa-google" aria-hidden="true"></i><span class="rk-login-button-accessible-text">Continue to RK Foodie</span></button>
             </div>
-            <div class="rk-preview" id="rkSetupNote" hidden><strong>Google sign-in setup needed</strong><br/>Add your Supabase Project URL and public publishable key, then enable Google under Supabase Authentication тЖТ Sign In / Providers and add your Google OAuth Client ID and Secret. Set the authorized redirect URL in Google Cloud and Supabase. You can preview the website without signing in.</div>
+            <div class="rk-preview" id="rkSetupNote" hidden><strong>Google sign-in setup needed</strong><br/>Add your Supabase Project URL and public publishable key, then enable Google under Supabase Authentication → Sign In / Providers and add your Google OAuth Client ID and Secret. Set the authorized redirect URL in Google Cloud and Supabase. You can preview the website without signing in.</div>
             <button class="rk-btn rk-secondary rk-wide" id="rkPreviewSite" type="button" hidden>Preview website without login</button>
           </div>
           <form id="rkProfileForm" hidden>
@@ -767,13 +782,13 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         <div class="rk-menu-shortcuts" aria-label="Order shortcuts">
           <div class="rk-menu-shortcuts-label">QUICK ACCESS</div>
           <button type="button" class="rk-menu-shortcut rk-menu-orders" onclick="toggleSiteMenu(false);setTimeout(()=>openOrderHistory(),160)">
-            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-receipt"></i></span><span class="rk-menu-shortcut-copy"><strong>Your Ordered</strong><small>ржЕрж░рзНржбрж╛рж░ ржУ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЖржкржбрзЗржЯ</small></span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
+            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-receipt"></i></span><span class="rk-menu-shortcut-copy"><strong>Your Ordered</strong><small>অর্ডার ও ডেলিভারি আপডেট</small></span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
           </button>
           <button type="button" class="rk-menu-shortcut rk-menu-cart" onclick="toggleSiteMenu(false);setTimeout(()=>toggleCart(true),160)">
-            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-bag-shopping"></i></span><span class="rk-menu-shortcut-copy"><strong>Cart</strong><small>ржЖржкржирж╛рж░ ржмрж╛ржЫрж╛ржЗ ржХрж░рж╛ ржЦрж╛ржмрж╛рж░</small></span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
+            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-bag-shopping"></i></span><span class="rk-menu-shortcut-copy"><strong>Cart</strong><small>আপনার বাছাই করা খাবার</small></span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
           </button>
           <button type="button" class="rk-menu-shortcut rk-menu-liked" onclick="toggleSiteMenu(false);setTimeout(()=>openLikedFoods(),160)">
-            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-heart"></i></span><span class="rk-menu-shortcut-copy"><strong>Like</strong><small>ржЖржкржирж╛рж░ ржкржЫржирзНржжрзЗрж░ ржЦрж╛ржмрж╛рж░</small></span><span id="rkMenuLikedBadge" class="rk-menu-liked-count">0</span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
+            <span class="rk-menu-shortcut-icon"><i class="fa-solid fa-heart"></i></span><span class="rk-menu-shortcut-copy"><strong>Like</strong><small>আপনার পছন্দের খাবার</small></span><span id="rkMenuLikedBadge" class="rk-menu-liked-count">0</span><i class="fa-solid fa-chevron-right rk-menu-shortcut-arrow"></i>
           </button>
         </div>
         <div class="h-px bg-gray-200 my-5"></div>
@@ -783,9 +798,9 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         <div class="h-px bg-gray-200 my-5"></div>
         <button class="site-setting-row" onclick="toggleLanguageMenu()"><span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-language"></i></span><span data-i18n="language">Language</span><span class="ml-auto text-xs opacity-70" id="currentLanguageLabel">English</span><i class="fa-solid fa-chevron-down text-xs opacity-60"></i></button>
         <div id="siteLanguageSubmenu" class="site-submenu" hidden>
-            <button type="button" data-language="en" aria-pressed="true" onclick="setSiteLanguage('en')">ЁЯЗмЁЯЗз English</button>
-            <button type="button" data-language="bn" aria-pressed="false" onclick="setSiteLanguage('bn')">ржмрж╛ржВрж▓рж╛ (Bengali)</button>
-            <button type="button" data-language="hi" aria-pressed="false" onclick="setSiteLanguage('hi')">ЁЯЗоЁЯЗ│ рд╣рд┐рдиреНрджреА (Hindi)</button>
+            <button type="button" data-language="en" aria-pressed="true" onclick="setSiteLanguage('en')">🇬🇧 English</button>
+            <button type="button" data-language="bn" aria-pressed="false" onclick="setSiteLanguage('bn')">বাংলা (Bengali)</button>
+            <button type="button" data-language="hi" aria-pressed="false" onclick="setSiteLanguage('hi')">🇮🇳 हिन्दी (Hindi)</button>
         </div>
         <section id="rkSettingsProfileCard" class="mt-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-label="Your profile">
             <div class="flex items-center justify-between gap-2 mb-3">
@@ -847,7 +862,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                 <i class="fa-solid fa-receipt text-lg text-navy"></i><span class="font-semibold text-xs sm:text-sm">Your Ordered</span>
               </button>
               <button type="button" onclick="toggleCart(true)" class="rk-header-action relative bg-navy hover:bg-navy-900 text-white p-2.5 px-3 sm:px-4 rounded-xl flex items-center gap-2 transition shadow-md active:scale-95" aria-label="Cart">
-                <i class="fa-solid fa-bag-shopping text-lg text-brandOrange"></i><span class="font-semibold text-xs sm:text-sm">Cart ЁЯЫНя╕П</span>
+                <i class="fa-solid fa-bag-shopping text-lg text-brandOrange"></i><span class="font-semibold text-xs sm:text-sm">Cart 🛍️</span>
                 <span id="cartBadge" class="absolute -top-2 -right-2 bg-brandOrange text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
               </button>
               <button type="button" onclick="openLikedFoods()" class="rk-header-action relative bg-rose-50 hover:bg-rose-100 text-rose-600 p-2.5 px-3 sm:px-4 rounded-xl flex items-center gap-2 transition shadow-sm border border-rose-100 active:scale-95" aria-label="Liked foods">
@@ -902,21 +917,21 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             <div class="relative z-10 max-w-lg space-y-3">
                 <div class="flex items-center gap-2 flex-wrap">
                     <span class="inline-block bg-brandOrange/20 border border-brandOrange/40 text-brandOrange text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        ЁЯЪА 2027 рж╕рзНржкрзЗрж╢рж╛рж▓ рж╕рж╛рж░рзНржнрж┐рж╕
+                        🚀 2027 স্পেশাল সার্ভিস
                     </span>
                 </div>
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug">
-                    ржЖржкржирж╛рж░ ржкржЫржирзНржжрзЗрж░ ржЦрж╛ржмрж╛рж░ ржПржЦржи <span class="text-brandOrange underline decoration-wavy underline-offset-4">рж╕рж╣ржЬрзЗржЗ ржЕрж░рзНржбрж╛рж░ ржХрж░рзБржи!</span>
+                    আপনার পছন্দের খাবার এখন <span class="text-brandOrange underline decoration-wavy underline-offset-4">সহজেই অর্ডার করুন!</span>
                 </h1>
                 <p class="text-slate-300 text-xs sm:text-sm">
-                    рж▓рж╛ржнржкрзБрж░ ржмрж╛рж╕рж╕рзНржЯрзНржпрж╛ржирзНржб ржУ ржмрж╛ржЬрж╛рж░ ржПрж▓рж╛ржХрж╛рж░ рж╕рзЗрж░рж╛ рж░рзЗрж╕рзНржЯрзБрж░рзЗржирзНржЯрзЗрж░ ржмрж┐рж░рж┐рзЯрж╛ржирж┐, ржлрж╛рж╕рзНржЯржлрзБржб, ржХрзЗржХ ржУ ржорж┐рж╖рзНржЯрж┐ ржЖржкржирж╛рж░ ржжрж░ржЬрж╛рзЯ ржкрзМржБржЫрзЗ ржпрж╛ржмрзЗред
+                    লাভপুর বাসস্ট্যান্ড ও বাজার এলাকার সেরা রেস্টুরেন্টের বিরিয়ানি, ফাস্টফুড, কেক ও মিষ্টি আপনার দরজায় পৌঁছে যাবে।
                 </p>
                 
                 <!-- Search Box -->
                 <div class="pt-2">
                     <div class="relative">
                         <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="ржЦрж╛ржмрж╛рж░ ржмрж╛ рж░рзЗрж╕рзНржЯрзБрж░рзЗржирзНржЯрзЗрж░ ржирж╛ржо ржЦрзБржБржЬрзБржи..." 
+                        <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="খাবার বা রেস্টুরেন্টের নাম খুঁজুন..." 
                             class="w-full pl-10 pr-4 py-3 rounded-xl bg-white text-gray-800 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-brandOrange shadow-lg">
                     </div>
                 </div>
@@ -926,7 +941,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         <!-- Categories Horizontal Scroll -->
         <section class="space-y-2">
             <h2 class="text-base font-bold text-navy flex items-center gap-2">
-                <i class="fa-solid fa-border-all text-brandOrange"></i> ржХрзНржпрж╛ржЯрж╛ржЧрж░рж┐ ржмрзЗржЫрзЗ ржирж┐ржи
+                <i class="fa-solid fa-border-all text-brandOrange"></i> ক্যাটাগরি বেছে নিন
             </h2>
             <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2" id="categoryContainer">
                 <!-- Dynamically Generated Buttons -->
@@ -937,9 +952,9 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         <section class="space-y-4">
             <div class="flex items-center justify-between">
                 <h2 id="sectionTitle" class="text-lg font-bold text-navy flex items-center gap-2">
-                    <i class="fa-solid fa-fire text-brandOrange"></i> рж╕ржХрж▓ ржЦрж╛ржмрж╛рж░
+                    <i class="fa-solid fa-fire text-brandOrange"></i> সকল খাবার
                 </h2>
-                <span id="itemCount" class="text-xs font-medium text-gray-500">RK 5.0.0 ЁЯТР </span>
+                <span id="itemCount" class="text-xs font-medium text-gray-500">RK 5.0.0 💐 </span>
             </div>
 
             <!-- Food Grid -->
@@ -952,8 +967,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                 <div class="w-16 h-16 bg-orange-100 text-brandOrange rounded-full flex items-center justify-center mx-auto text-2xl">
                     <i class="fa-solid fa-bowl-rice"></i>
                 </div>
-                <p class="text-gray-600 font-medium">ржжрзБржГржЦрж┐ржд! ржПржЗ ржирж╛ржорзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржкрж╛ржУрзЯрж╛ ржпрж╛рзЯржирж┐ред</p>
-                <button onclick="resetSearch()" class="text-xs text-brandOrange font-bold underline">рж╕ржм ржЦрж╛ржмрж╛рж░ ржжрзЗржЦрзБржи</button>
+                <p class="text-gray-600 font-medium">দুঃখিত! এই নামে কোনো খাবার পাওয়া যায়নি।</p>
+                <button onclick="resetSearch()" class="text-xs text-brandOrange font-bold underline">সব খাবার দেখুন</button>
             </div>
         </section>
 
@@ -963,13 +978,13 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     <section id="foodDetailsView" class="fixed inset-0 z-[35] hidden overflow-y-auto bg-gray-50" aria-label="Food details" aria-modal="true" role="dialog">
       <header class="sticky top-0 z-10 flex items-center gap-3 border-b border-gray-200 bg-white/95 px-4 py-3 shadow-sm backdrop-blur">
         <button type="button" onclick="closeFoodDetails()" class="site-menu-button" aria-label="Back to home"><i class="fa-solid fa-arrow-left"></i></button>
-        <div class="min-w-0 flex-1"><p class="text-xs text-gray-500">RK Foodie</p><h2 class="font-bold text-navy">ржЦрж╛ржмрж╛рж░рзЗрж░ ржмрж┐рж╕рзНрждрж╛рж░рж┐ржд</h2></div>
+        <div class="min-w-0 flex-1"><p class="text-xs text-gray-500">RK Foodie</p><h2 class="font-bold text-navy">খাবারের বিস্তারিত</h2></div>
         <button type="button" onclick="toggleCart(true)" class="relative rounded-xl bg-navy px-3 py-2 text-white" aria-label="Open order cart"><i class="fa-solid fa-bag-shopping"></i><span id="detailsCartBadge" class="ml-2 text-xs font-bold">0</span></button>
       </header>
       <div class="mx-auto max-w-5xl space-y-7 px-4 py-5 md:py-8">
         <div id="foodDetailsMain"></div>
         <section class="space-y-3 pb-8">
-          <div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-navy">ржЖрж░ржУ ржЦрж╛ржмрж╛рж░ ржжрзЗржЦрзБржи</h3><button type="button" onclick="closeFoodDetails()" class="text-xs font-bold text-orange-600 underline">рж╣рзЛржо ржкрзЗржЬ</button></div>
+          <div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-navy">আরও খাবার দেখুন</h3><button type="button" onclick="closeFoodDetails()" class="text-xs font-bold text-orange-600 underline">হোম পেজ</button></div>
           <div id="foodDetailsRelated" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
         </section>
       </div>
@@ -980,16 +995,16 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     <section id="rkOrderSheet" class="rk-order-sheet" role="dialog" aria-modal="true" aria-labelledby="rkOrderSheetTitle" aria-hidden="true">
       <div class="rk-sheet-handle" aria-hidden="true"><span></span></div>
       <header class="rk-sheet-header">
-        <div><p class="rk-sheet-kicker">RK FOODIE тАв ORDER REVIEW</p><h2 id="rkOrderSheetTitle">Your selected food</h2><p class="rk-sheet-subtitle">ржкрж░рж┐ржорж╛ржг ржарж┐ржХ ржХрж░рзЗ ржЕрж░рзНржбрж╛рж░ ржПржЧрж┐ржпрж╝рзЗ ржирж┐ржи</p></div>
+        <div><p class="rk-sheet-kicker">RK FOODIE • ORDER REVIEW</p><h2 id="rkOrderSheetTitle">Your selected food</h2><p class="rk-sheet-subtitle">পরিমাণ ঠিক করে অর্ডার এগিয়ে নিন</p></div>
         <button type="button" class="rk-sheet-close" onclick="closeOrderSheet()" aria-label="Close order menu"><i class="fa-solid fa-xmark"></i></button>
       </header>
       <div id="rkOrderSheetItems" class="rk-sheet-items"></div>
       <div class="rk-sheet-footer">
-        <div class="rk-sheet-total"><span>ржЦрж╛ржмрж╛рж░рзЗрж░ ржжрж╛ржо</span><strong id="rkSheetFoodSubtotal">тВ╣0</strong></div>
-        <div class="rk-sheet-total"><span>ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЪрж╛рж░рзНржЬ</span><strong id="rkSheetDeliveryFee">тВ╣25</strong></div>
-        <div class="rk-sheet-total" style="border-top:1px solid #e5e7eb;padding-top:9px;margin-top:2px;color:#172554"><span>рж╕рж░рзНржмржорзЛржЯ</span><strong id="rkSheetGrandTotal">тВ╣25</strong></div>
+        <div class="rk-sheet-total"><span>খাবারের দাম</span><strong id="rkSheetFoodSubtotal">₹0</strong></div>
+        <div class="rk-sheet-total"><span>ডেলিভারি চার্জ</span><strong id="rkSheetDeliveryFee">₹25</strong></div>
+        <div class="rk-sheet-total" style="border-top:1px solid #e5e7eb;padding-top:9px;margin-top:2px;color:#172554"><span>সর্বমোট</span><strong id="rkSheetGrandTotal">₹25</strong></div>
         <button type="button" id="rkBuyNowButton" class="rk-buy-now-button" onclick="proceedToCheckout()"><i class="fa-solid fa-gift"></i><span>Buy Now</span><i class="fa-solid fa-arrow-right"></i></button>
-        <p class="rk-sheet-footnote"><i class="fa-solid fa-shield-halved"></i> ржЕрж░рзНржбрж╛рж░ ржирж┐рж╢рзНржЪрж┐ржд ржХрж░рж╛рж░ ржЖржЧрзЗ ржЖржкржирж╛рж░ ржарж┐ржХрж╛ржирж╛ ржУ ржкрзЗржорзЗржирзНржЯ ржпрж╛ржЪрж╛ржЗ ржХрж░рзБржи</p>
+        <p class="rk-sheet-footnote"><i class="fa-solid fa-shield-halved"></i> অর্ডার নিশ্চিত করার আগে আপনার ঠিকানা ও পেমেন্ট যাচাই করুন</p>
       </div>
     </section>
 
@@ -1014,18 +1029,18 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 </style>
 <section id="rkFinalCheckout" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="rkFinalCheckoutTitle">
  <div class="rk-final-shell">
-  <header class="rk-final-header"><button type="button" class="rk-final-back" onclick="closeFinalCheckout()" aria-label="Back to order review"><i class="fa-solid fa-arrow-left"></i></button><div class="flex-1 min-w-0"><p class="text-[10px] uppercase tracking-[.18em] font-black text-orange-600">RK FOODIE ┬╖ CHECKOUT</p><h2 id="rkFinalCheckoutTitle" class="text-xl font-black text-slate-900">ржЕрж░рзНржбрж╛рж░ ржирж┐рж╢рзНржЪрж┐ржд ржХрж░рзБржи</h2><p class="text-xs text-slate-500 mt-1">ржЕрж░рзНржбрж╛рж░ ржжрзЗржУржпрж╝рж╛рж░ ржЖржЧрзЗ рж╕ржм рждржерзНржп ржорж┐рж▓рж┐ржпрж╝рзЗ ржирж┐ржи</p></div><div class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-600 grid place-items-center"><i class="fa-solid fa-receipt text-lg"></i></div></header>
+  <header class="rk-final-header"><button type="button" class="rk-final-back" onclick="closeFinalCheckout()" aria-label="Back to order review"><i class="fa-solid fa-arrow-left"></i></button><div class="flex-1 min-w-0"><p class="text-[10px] uppercase tracking-[.18em] font-black text-orange-600">RK FOODIE · CHECKOUT</p><h2 id="rkFinalCheckoutTitle" class="text-xl font-black text-slate-900">অর্ডার নিশ্চিত করুন</h2><p class="text-xs text-slate-500 mt-1">অর্ডার দেওয়ার আগে সব তথ্য মিলিয়ে নিন</p></div><div class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-600 grid place-items-center"><i class="fa-solid fa-receipt text-lg"></i></div></header>
   <main class="rk-final-content">
-   <section class="rk-final-card rk-final-wide"><p class="text-[10px] font-black uppercase tracking-[.15em] text-slate-400 mb-3">ржЖржкржирж╛рж░ ржирж┐рж░рзНржмрж╛ржЪрж┐ржд ржЦрж╛ржмрж╛рж░</p><div id="rkFinalFeaturedFood" class="rk-final-food"></div><div id="rkFinalOrderItems" class="mt-4"></div></section>
-   <section class="rk-final-card"><div class="flex items-center gap-2 mb-3"><span class="w-9 h-9 rounded-xl bg-orange-50 text-orange-600 grid place-items-center"><i class="fa-solid fa-user-check"></i></span><div><h3 class="font-extrabold text-slate-900">ржХрж╛рж╕рзНржЯржорж╛рж░ ржбрж┐ржЯрзЗрж▓рж╕</h3><p class="text-[11px] text-slate-500">ржЖржкржирж╛рж░ рж╕рзЗржн ржХрж░рж╛ ржкрзНрж░рзЛржлрж╛ржЗрж▓ ржЕржирзБржпрж╛ржпрж╝рзА</p></div></div><div id="rkFinalCustomerDetails"></div><p class="text-[11px] text-slate-500 mt-3">рждржерзНржп ржкрж░рж┐ржмрж░рзНрждржи ржХрж░рждрзЗ ржЖржЧрзЗрж░ ржХрж╛рж░рзНржЯрзЗрж░ ржарж┐ржХрж╛ржирж╛ ржлрж░рзНржорзЗ ржлрж┐рж░рзЗ ржпрж╛ржиред</p></section>
-   <section class="rk-final-card"><p class="text-[10px] font-black uppercase tracking-[.15em] text-slate-400 mb-3">ржкрзЗржорзЗржирзНржЯ рж╕рж╛рж░рж╛ржВрж╢</p><div class="flex justify-between text-sm text-slate-600 mb-2"><span>ржЦрж╛ржмрж╛рж░рзЗрж░ ржжрж╛ржо</span><strong id="rkFinalFoodSubtotal">тВ╣0</strong></div><div class="flex justify-between text-sm text-slate-600 mb-3"><span>ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЪрж╛рж░рзНржЬ</span><strong id="rkFinalDeliveryFee">тВ╣25</strong></div><div class="rk-final-total"><div><p class="text-xs font-bold text-orange-800">Total Amount</p><p class="text-[10px] text-orange-700 mt-1">ржЦрж╛ржмрж╛рж░рзЗрж░ ржжрж╛ржо + ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЪрж╛рж░рзНржЬ</p></div><strong id="rkFinalTotal" class="text-2xl font-black text-slate-900">тВ╣25</strong></div><div class="flex justify-between items-center text-xs text-slate-500 mt-4"><span>ржкрзЗржорзЗржирзНржЯ ржкржжрзНржзрждрж┐</span><strong id="rkFinalPayment" class="text-slate-800">Cash on Delivery</strong></div><p class="text-[10px] leading-relaxed text-slate-400 mt-3"><i class="fa-solid fa-lock mr-1"></i> Continue ржЪрж╛ржкрж▓рзЗ ржЕрж░рзНржбрж╛рж░ржЯрж┐ WhatsApp-ржП ржкрж╛ржарж╛ржирзЛ ржПржмржВ ржЙржкрж▓ржмрзНржз ржерж╛ржХрж▓рзЗ Supabase-ржП рж╕ржВрж░ржХрзНрж╖ржгрзЗрж░ ржкрзНрж░ржХрзНрж░рж┐ржпрж╝рж╛ рж╢рзБрж░рзБ рж╣ржмрзЗред</p></section>
-   <section class="rk-final-card rk-final-wide"><button type="button" id="rkFinalContinueButton" class="rk-final-continue" onclick="confirmFinalCheckout()"><i class="fa-solid fa-bag-shopping"></i><span>Continue</span><i class="fa-solid fa-arrow-right"></i></button><p class="text-center text-[10px] text-slate-400 mt-3">ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░рзЗрж░ рждржерзНржп ржпрж╛ржЪрж╛ржЗ ржХрж░рзЗ ржПржЧрж┐ржпрж╝рзЗ ржпрж╛ржи</p></section>
+   <section class="rk-final-card rk-final-wide"><p class="text-[10px] font-black uppercase tracking-[.15em] text-slate-400 mb-3">আপনার নির্বাচিত খাবার</p><div id="rkFinalFeaturedFood" class="rk-final-food"></div><div id="rkFinalOrderItems" class="mt-4"></div></section>
+   <section class="rk-final-card"><div class="flex items-center gap-2 mb-3"><span class="w-9 h-9 rounded-xl bg-orange-50 text-orange-600 grid place-items-center"><i class="fa-solid fa-user-check"></i></span><div><h3 class="font-extrabold text-slate-900">কাস্টমার ডিটেলস</h3><p class="text-[11px] text-slate-500">আপনার সেভ করা প্রোফাইল অনুযায়ী</p></div></div><div id="rkFinalCustomerDetails"></div><p class="text-[11px] text-slate-500 mt-3">তথ্য পরিবর্তন করতে আগের কার্টের ঠিকানা ফর্মে ফিরে যান।</p></section>
+   <section class="rk-final-card"><p class="text-[10px] font-black uppercase tracking-[.15em] text-slate-400 mb-3">পেমেন্ট সারাংশ</p><div class="flex justify-between text-sm text-slate-600 mb-2"><span>খাবারের দাম</span><strong id="rkFinalFoodSubtotal">₹0</strong></div><div class="flex justify-between text-sm text-slate-600 mb-3"><span>ডেলিভারি চার্জ</span><strong id="rkFinalDeliveryFee">₹25</strong></div><div class="rk-final-total"><div><p class="text-xs font-bold text-orange-800">Total Amount</p><p class="text-[10px] text-orange-700 mt-1">খাবারের দাম + ডেলিভারি চার্জ</p></div><strong id="rkFinalTotal" class="text-2xl font-black text-slate-900">₹25</strong></div><div class="flex justify-between items-center text-xs text-slate-500 mt-4"><span>পেমেন্ট পদ্ধতি</span><strong id="rkFinalPayment" class="text-slate-800">Cash on Delivery</strong></div><p class="text-[10px] leading-relaxed text-slate-400 mt-3"><i class="fa-solid fa-lock mr-1"></i> Continue চাপলে অর্ডারটি WhatsApp-এ পাঠানো এবং উপলব্ধ থাকলে Supabase-এ সংরক্ষণের প্রক্রিয়া শুরু হবে।</p></section>
+   <section class="rk-final-card rk-final-wide"><button type="button" id="rkFinalContinueButton" class="rk-final-continue" onclick="confirmFinalCheckout()"><i class="fa-solid fa-bag-shopping"></i><span>Continue</span><i class="fa-solid fa-arrow-right"></i></button><p class="text-center text-[10px] text-slate-400 mt-3">আপনার অর্ডারের তথ্য যাচাই করে এগিয়ে যান</p></section>
   </main>
  </div>
 </section>
 <script id="rk-final-checkout-logic">
 (function(){
- const $=id=>document.getElementById(id); const money=n=>'тВ╣'+(Number(n)||0).toLocaleString('en-IN');
+ const $=id=>document.getElementById(id); const money=n=>'₹'+(Number(n)||0).toLocaleString('en-IN');
  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
  const DELIVERY_FEE=25;
  function getCart(){return typeof cart!=='undefined'&&Array.isArray(cart)?cart:[]}
@@ -1033,23 +1048,23 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
  function currentTotal(){return currentSubtotal()+DELIVERY_FEE}
  function renderFinal(){
   const items=getCart();const featured=items[0];
-  $('rkFinalFeaturedFood').innerHTML=featured?`<img src="${esc(featured.image||'https://placehold.co/200x200/fff0e2/9a4d16?text=Food')}" alt="${esc(featured.title)}" onerror="this.src='https://placehold.co/200x200/fff0e2/9a4d16?text=Food'"><div class="min-w-0"><h3 class="text-lg font-black text-slate-900">${esc(featured.title||'ржЦрж╛ржмрж╛рж░')}</h3><p class="text-xs text-slate-500 mt-1">${esc(featured.restaurant||'RK Foodie')}</p><p class="text-xs text-slate-500 mt-1">ржкрж░рж┐ржорж╛ржг: ${Number(featured.quantity)||1} ржЯрж┐</p><p class="text-lg font-black text-orange-600 mt-2">${money((Number(featured.price)||0)*(Number(featured.quantity)||1))}</p></div>`:'<p class="text-sm text-slate-500">ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржирж┐рж░рзНржмрж╛ржЪржи ржХрж░рж╛ рж╣ржпрж╝ржирж┐ред</p>';
-  $('rkFinalOrderItems').innerHTML=items.slice(1).map(i=>`<div class="rk-final-item"><img src="${esc(i.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food')}" alt="${esc(i.title)}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="flex-1 min-w-0"><p class="text-sm font-extrabold text-slate-800">${esc(i.title||'ржЦрж╛ржмрж╛рж░')}</p><p class="text-[11px] text-slate-500 mt-1">${Number(i.quantity)||1} ├Ч ${money(i.price)}</p></div><strong class="text-sm font-black text-slate-900">${money((Number(i.price)||0)*(Number(i.quantity)||1))}</strong></div>`).join('');
-  const name=$('custName')?.value.trim()||$('rkOrderProfileName')?.textContent||'ржкрзНрж░рзЛржлрж╛ржЗрж▓рзЗ ржирж╛ржо ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐';
-  const phone=$('custPhone')?.value.trim()||$('rkOrderProfilePhone')?.textContent||'ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐';
-  const address=$('custAddress')?.value.trim()||$('rkOrderProfileAddress')?.textContent||'ржарж┐ржХрж╛ржирж╛ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐';
+  $('rkFinalFeaturedFood').innerHTML=featured?`<img src="${esc(featured.image||'https://placehold.co/200x200/fff0e2/9a4d16?text=Food')}" alt="${esc(featured.title)}" onerror="this.src='https://placehold.co/200x200/fff0e2/9a4d16?text=Food'"><div class="min-w-0"><h3 class="text-lg font-black text-slate-900">${esc(featured.title||'খাবার')}</h3><p class="text-xs text-slate-500 mt-1">${esc(featured.restaurant||'RK Foodie')}</p><p class="text-xs text-slate-500 mt-1">পরিমাণ: ${Number(featured.quantity)||1} টি</p><p class="text-lg font-black text-orange-600 mt-2">${money((Number(featured.price)||0)*(Number(featured.quantity)||1))}</p></div>`:'<p class="text-sm text-slate-500">কোনো খাবার নির্বাচন করা হয়নি।</p>';
+  $('rkFinalOrderItems').innerHTML=items.slice(1).map(i=>`<div class="rk-final-item"><img src="${esc(i.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food')}" alt="${esc(i.title)}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="flex-1 min-w-0"><p class="text-sm font-extrabold text-slate-800">${esc(i.title||'খাবার')}</p><p class="text-[11px] text-slate-500 mt-1">${Number(i.quantity)||1} × ${money(i.price)}</p></div><strong class="text-sm font-black text-slate-900">${money((Number(i.price)||0)*(Number(i.quantity)||1))}</strong></div>`).join('');
+  const name=$('custName')?.value.trim()||$('rkOrderProfileName')?.textContent||'প্রোফাইলে নাম পাওয়া যায়নি';
+  const phone=$('custPhone')?.value.trim()||$('rkOrderProfilePhone')?.textContent||'মোবাইল নম্বর পাওয়া যায়নি';
+  const address=$('custAddress')?.value.trim()||$('rkOrderProfileAddress')?.textContent||'ঠিকানা পাওয়া যায়নি';
   const email=$('rkSettingsProfileEmail')?.textContent||'';
   const landmark=$('rkSettingsProfileAddress')?.textContent||'';
   const pinMatch=address.match(/(?:^|[, ]|PIN(?:\s*code)?\s*:?)\s*(\d{6})(?:$|[, ])/i);
-  $('rkFinalCustomerDetails').innerHTML=`<div class="rk-final-customer-row"><i class="fa-solid fa-user"></i><div><p class="text-[10px] text-slate-400">ржирж╛ржо</p><strong>${esc(name)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-phone"></i><div><p class="text-[10px] text-slate-400">ржорзЛржмрж╛ржЗрж▓</p><strong>${esc(phone)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-envelope"></i><div><p class="text-[10px] text-slate-400">ржЗржорзЗрж▓</p><strong class="break-all">${esc(email||'Google account ржерзЗржХрзЗ ржЗржорзЗрж▓ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐')}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-location-dot"></i><div><p class="text-[10px] text-slate-400">ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛</p><strong>${esc(address)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-map-pin"></i><div><p class="text-[10px] text-slate-400">PIN ржХрзЛржб</p><strong>${esc(pinMatch?pinMatch[1]:'рж╕рзЗржн ржХрж░рж╛ ржарж┐ржХрж╛ржирж╛ ржерзЗржХрзЗ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐')}</strong></div></div>`;
+  $('rkFinalCustomerDetails').innerHTML=`<div class="rk-final-customer-row"><i class="fa-solid fa-user"></i><div><p class="text-[10px] text-slate-400">নাম</p><strong>${esc(name)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-phone"></i><div><p class="text-[10px] text-slate-400">মোবাইল</p><strong>${esc(phone)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-envelope"></i><div><p class="text-[10px] text-slate-400">ইমেল</p><strong class="break-all">${esc(email||'Google account থেকে ইমেল পাওয়া যায়নি')}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-location-dot"></i><div><p class="text-[10px] text-slate-400">ডেলিভারি ঠিকানা</p><strong>${esc(address)}</strong></div></div><div class="rk-final-customer-row"><i class="fa-solid fa-map-pin"></i><div><p class="text-[10px] text-slate-400">PIN কোড</p><strong>${esc(pinMatch?pinMatch[1]:'সেভ করা ঠিকানা থেকে পাওয়া যায়নি')}</strong></div></div>`;
   $('rkFinalFoodSubtotal').textContent=money(currentSubtotal());
   $('rkFinalDeliveryFee').textContent=money(DELIVERY_FEE);
-  $('rkFinalTotal').textContent=money(currentTotal());const payment=document.querySelector('input[name="payment"]:checked');$('rkFinalPayment').textContent=payment?(payment.value==='Cash on Delivery'?'ржХрзНржпрж╛рж╢ ржЕржи ржбрзЗрж▓рж┐ржнрж╛рж░рж┐':payment.value):'ржХрзНржпрж╛рж╢ ржЕржи ржбрзЗрж▓рж┐ржнрж╛рж░рж┐';
+  $('rkFinalTotal').textContent=money(currentTotal());const payment=document.querySelector('input[name="payment"]:checked');$('rkFinalPayment').textContent=payment?(payment.value==='Cash on Delivery'?'ক্যাশ অন ডেলিভারি':payment.value):'ক্যাশ অন ডেলিভারি';
  }
  window.renderRKFinalCheckout=renderFinal;
  window.closeFinalCheckout=function(){const modal=$('rkFinalCheckout');if(!modal)return;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';};
- window.openFinalCheckout=function(){if(!getCart().length){alert('ржкрзНрж░ржержорзЗ ржХрж╛рж░рзНржЯрзЗ ржЦрж╛ржмрж╛рж░ ржпрзЛржЧ ржХрж░рзБржиред');return;}renderFinal();const modal=$('rkFinalCheckout');modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';};
- window.confirmFinalCheckout=function(){const name=$('custName')?.value.trim(),phone=$('custPhone')?.value.trim(),address=$('custAddress')?.value.trim(),digits=(phone||'').replace(/\D/g,'');if(!name||!phone||digits.length<10||digits.length>15||!address){window.closeFinalCheckout();if(typeof window.toggleCart==='function')window.toggleCart(true);const target=!name?$('custName'):!phone||digits.length<10||digits.length>15?$('custPhone'):$('custAddress');target?.focus();alert(!name?'ржЕрж░рзНржбрж╛рж░ рж╕ржорзНржкрзВрж░рзНржг ржХрж░рждрзЗ ржЖржкржирж╛рж░ ржирж╛ржо рж▓рж┐ржЦрзБржиред':!phone||digits.length<10||digits.length>15?'рж╕ржарж┐ржХ ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░ рж▓рж┐ржЦрзБржи (рззрзжтАУрззрзлржЯрж┐ рж╕ржВржЦрзНржпрж╛)ред':'ржЕрж░рзНржбрж╛рж░ рж╕ржорзНржкрзВрж░рзНржг ржХрж░рждрзЗ рж╕ржорзНржкрзВрж░рзНржг ржарж┐ржХрж╛ржирж╛ рж▓рж┐ржЦрзБржиред');return;}window.closeFinalCheckout();if(typeof window.submitOrderViaWhatsApp==='function')window.submitOrderViaWhatsApp();};
+ window.openFinalCheckout=function(){if(!getCart().length){alert('প্রথমে কার্টে খাবার যোগ করুন।');return;}renderFinal();const modal=$('rkFinalCheckout');modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';};
+ window.confirmFinalCheckout=function(){const name=$('custName')?.value.trim(),phone=$('custPhone')?.value.trim(),address=$('custAddress')?.value.trim(),digits=(phone||'').replace(/\D/g,'');if(!name||!phone||digits.length<10||digits.length>15||!address){window.closeFinalCheckout();if(typeof window.toggleCart==='function')window.toggleCart(true);const target=!name?$('custName'):!phone||digits.length<10||digits.length>15?$('custPhone'):$('custAddress');target?.focus();alert(!name?'অর্ডার সম্পূর্ণ করতে আপনার নাম লিখুন।':!phone||digits.length<10||digits.length>15?'সঠিক মোবাইল নম্বর লিখুন (১০–১৫টি সংখ্যা)।':'অর্ডার সম্পূর্ণ করতে সম্পূর্ণ ঠিকানা লিখুন।');return;}window.closeFinalCheckout();if(typeof window.submitOrderViaWhatsApp==='function')window.submitOrderViaWhatsApp();};
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('rkFinalCheckout')?.classList.contains('is-open'))window.closeFinalCheckout();});
 })();
 </script>
@@ -1083,35 +1098,35 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             <section class="rounded-xl border border-orange-200 bg-white p-3 space-y-3" aria-label="Customer and delivery details">
                 <div class="flex items-center justify-between gap-2">
                     <div>
-                        <h4 class="font-bold text-sm text-slate-800">ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рждржерзНржп</h4>
-                        <p class="text-xs text-slate-500">ржЕрж░рзНржбрж╛рж░ ржжрж┐рждрзЗ ржирж╛ржо, ржорзЛржмрж╛ржЗрж▓ ржУ рж╕ржорзНржкрзВрж░рзНржг ржарж┐ржХрж╛ржирж╛ ржжрж┐ржи</p>
+                        <h4 class="font-bold text-sm text-slate-800">ডেলিভারি তথ্য</h4>
+                        <p class="text-xs text-slate-500">অর্ডার দিতে নাম, মোবাইল ও সম্পূর্ণ ঠিকানা দিন</p>
                     </div>
-                    <button id="rkOrderEditProfile" type="button" class="text-xs font-bold text-orange-600 underline">ржкрзНрж░рзЛржлрж╛ржЗрж▓ рждрзИрж░рж┐ / ржПржбрж┐ржЯ</button>
+                    <button id="rkOrderEditProfile" type="button" class="text-xs font-bold text-orange-600 underline">প্রোফাইল তৈরি / এডিট</button>
                 </div>
                 <div class="space-y-1">
-                    <label for="custName" class="block text-xs font-semibold text-slate-700">ржЖржкржирж╛рж░ ржирж╛ржо *</label>
-                    <input id="custName" name="customer_name" type="text" required maxlength="80" autocomplete="name" placeholder="ржкрзБрж░рзЛ ржирж╛ржо рж▓рж┐ржЦрзБржи" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:border-orange-500 focus:outline-none">
+                    <label for="custName" class="block text-xs font-semibold text-slate-700">আপনার নাম *</label>
+                    <input id="custName" name="customer_name" type="text" required maxlength="80" autocomplete="name" placeholder="পুরো নাম লিখুন" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:border-orange-500 focus:outline-none">
                 </div>
                 <div class="space-y-1">
-                    <label for="custPhone" class="block text-xs font-semibold text-slate-700">ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░ *</label>
-                    <input id="custPhone" name="customer_phone" type="tel" required inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+91 ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:border-orange-500 focus:outline-none">
+                    <label for="custPhone" class="block text-xs font-semibold text-slate-700">মোবাইল নম্বর *</label>
+                    <input id="custPhone" name="customer_phone" type="tel" required inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+91 মোবাইল নম্বর" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 focus:border-orange-500 focus:outline-none">
                 </div>
                 <div class="space-y-1">
-                    <label for="custAddress" class="block text-xs font-semibold text-slate-700">рж╕ржорзНржкрзВрж░рзНржг ржбрзЗрж▓рж┐ржнрж╛рж░рж┐рж░ ржарж┐ржХрж╛ржирж╛ *</label>
+                    <label for="custAddress" class="block text-xs font-semibold text-slate-700">সম্পূর্ণ ডেলিভারির ঠিকানা *</label>
 <textarea id="custAddress" name="customer_address" required rows="3" maxlength="500" autocomplete="street-address"></textarea>
 
 <!-- Use Current Location Button -->
 <button type="button" id="getCurrentLocationBtn" onclick="fetchCurrentLocation()" class="w-full my-2 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-700 font-bold text-xs hover:bg-emerald-100 transition shadow-sm">
     <i class="fa-solid fa-location-crosshairs text-base"></i>
-    <span>ЁЯУН ржЖржорж╛рж░ ржмрж░рзНрждржорж╛ржи ржЬрж┐ржкрж┐ржПрж╕ рж▓рзЛржХрзЗрж╢ржи ржмрзНржпржмрж╣рж╛рж░ ржХрж░рзБржи</span>
+    <span>📍 আমার বর্তমান জিপিএস লোকেশন ব্যবহার করুন</span>
 </button>
 <div class="rk-gps-card mt-3">
   <div class="flex items-center justify-between gap-2 mb-2">
-    <strong class="text-xs font-extrabold text-slate-800">ЁЯЧ║я╕П ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж▓рзЛржХрзЗрж╢ржи ржарж┐ржХ ржХрж░рзБржи</strong>
-    <span class="text-[10px] text-slate-500">ржкрж┐ржиржЯрж┐ ржЯрзЗржирзЗ рж╕рж░рж╛ржи</span>
+    <strong class="text-xs font-extrabold text-slate-800">🗺️ ডেলিভারি লোকেশন ঠিক করুন</strong>
+    <span class="text-[10px] text-slate-500">পিনটি টেনে সরান</span>
   </div>
-  <div id="rkCheckoutMap" role="application" aria-label="ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж▓рзЛржХрзЗрж╢ржи ржорзНржпрж╛ржк"></div>
-  <p id="rkLocationStatus" class="rk-gps-status" role="status">GPS ржмрж╛ржЯржирзЗ ржЪрж╛ржк ржжрж┐ржи ржЕржержмрж╛ ржорзНржпрж╛ржкрзЗ ржЯрзНржпрж╛ржк ржХрж░рзЗ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржкрж┐ржи рж╕рзЗржЯ ржХрж░рзБржиред</p>
+  <div id="rkCheckoutMap" role="application" aria-label="ডেলিভারি লোকেশন ম্যাপ"></div>
+  <p id="rkLocationStatus" class="rk-gps-status" role="status">GPS বাটনে চাপ দিন অথবা ম্যাপে ট্যাপ করে ডেলিভারি পিন সেট করুন।</p>
   <input type="hidden" id="customer_lat" name="customer_lat" value="">
   <input type="hidden" id="customer_lng" name="customer_lng" value="">
 </div>
@@ -1122,26 +1137,26 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                         <img id="rkOrderProfileAvatar" src="https://placehold.co/96x96/fff0e2/9a4d16?text=Photo" alt="Profile photo" class="h-9 w-9 rounded-full border border-orange-100 object-cover">
                         <div class="min-w-0">
                             <p id="rkOrderProfileName" class="font-bold text-slate-800">Guest checkout</p>
-                            <p id="rkOrderProfilePhone">ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░ ржжрзЗржУржпрж╝рж╛ рж╣ржпрж╝ржирж┐</p>
+                            <p id="rkOrderProfilePhone">মোবাইল নম্বর দেওয়া হয়নি</p>
                         </div>
                     </div>
-                    <p id="rkOrderProfileAddress" class="mt-2">ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛ ржПржЦрж╛ржирзЗ ржжрзЗржЦрж╛ржирзЛ рж╣ржмрзЗред</p>
+                    <p id="rkOrderProfileAddress" class="mt-2">ডেলিভারি ঠিকানা এখানে দেখানো হবে।</p>
                 </div>
             </section>
 
             <!-- Price Summary -->
             <div class="space-y-1.5 text-sm bg-white p-3 rounded-xl border border-gray-200">
                 <div class="flex justify-between text-gray-600">
-                    <span>ржЦрж╛ржмрж╛рж░рзЗрж░ ржжрж╛ржо:</span>
-                    <span id="subtotalPrice" class="font-semibold text-gray-800">тВ╣0</span>
+                    <span>খাবারের দাম:</span>
+                    <span id="subtotalPrice" class="font-semibold text-gray-800">₹0</span>
                 </div>
                 <div class="flex justify-between text-gray-600">
-                    <span>ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЪрж╛рж░рзНржЬ:</span>
-                    <span id="rkCartDeliveryFee" class="font-semibold text-gray-800">тВ╣25</span>
+                    <span>ডেলিভারি চার্জ:</span>
+                    <span id="rkCartDeliveryFee" class="font-semibold text-gray-800">₹25</span>
                 </div>
                 <div class="border-t border-gray-100 pt-1.5 flex justify-between text-base font-bold text-navy">
-                    <span>рж╕рж░рзНржмржорзЛржЯ ржжрзЗрзЯ ржорзВрж▓рзНржп:</span>
-                    <span id="grandTotalPrice" class="text-brandOrange text-lg">тВ╣0</span>
+                    <span>সর্বমোট দেয় মূল্য:</span>
+                    <span id="grandTotalPrice" class="text-brandOrange text-lg">₹0</span>
                 </div>
             </div>
 
@@ -1154,11 +1169,11 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-20 flex justify-around py-2 px-4 shadow-lg">
         <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center text-brandOrange">
             <i class="fa-solid fa-house text-lg"></i>
-            <span class="text-[10px] font-medium mt-0.5">рж╣рзЛржо</span>
+            <span class="text-[10px] font-medium mt-0.5">হোম</span>
         </button>
         <button onclick="document.getElementById('searchInput').focus(); window.scrollTo({top: 150, behavior: 'smooth'})" class="flex flex-col items-center text-gray-500 hover:text-navy">
             <i class="fa-solid fa-magnifying-glass text-lg"></i>
-            <span class="text-[10px] font-medium mt-0.5">ржЦрзБржБржЬрзБржи</span>
+            <span class="text-[10px] font-medium mt-0.5">খুঁজুন</span>
         </button>
         <button onclick="toggleCart(true)" class="flex flex-col items-center text-gray-500 hover:text-navy relative">
             <i class="fa-solid fa-bag-shopping text-lg"></i>
@@ -1179,8 +1194,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                     <img src="assets/image-7.webp" alt="RK Foodie logo" class="w-full h-full object-contain">
                 </div>
             </div>
-            <p class="text-xs text-slate-300">Serving Labpur with Love тЭдя╕П | рж▓рж╛ржнржкрзБрж░, ржмрзАрж░ржнрзВржо, ржкрж╢рзНржЪрж┐ржоржмржЩрзНржЧ</p>
-            <p class="text-[11px] text-slate-400">ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж╕ржоржпрж╝: рж╕ржХрж╛рж▓ рззрзж:рзжрзж - рж░рж╛ржд рзп:рзйрзж | рж╣рзЗрж▓рзНржкрж▓рж╛ржЗржи: +91 9907406500</p>
+            <p class="text-xs text-slate-300">Serving Labpur with Love ❤️ | লাভপুর, বীরভূম, পশ্চিমবঙ্গ</p>
+            <p class="text-[11px] text-slate-400">ডেলিভারি সময়: সকাল ১০:০০ - রাত ৯:৩০ | হেল্পলাইন: +91 9907406500</p>
             <div class="text-[10px] text-slate-500 pt-2 border-t border-slate-800">
                 &copy; 2027 RK Foodie. All rights reserved. Designed for Labpur (2027 Edition).
             </div>
@@ -1232,67 +1247,67 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         function setSiteTheme(theme) { window.setSiteTheme(theme); }
         function toggleLanguageMenu() { const menu=document.getElementById('siteLanguageSubmenu'); menu.hidden=!menu.hidden; }
         const RK_I18N = {
-          en: {settings:'Settings',personalize:'Personalize your experience',appearance:'Appearance',lightMode:'Light mode',darkMode:'Dark mode',language:'Language',menuNote:'Fresh food, delivered with care.',cart:'Your Order',specialService:'ЁЯЪА 2027 Special Service',favoriteFood:'Your favorite food, now',intro:'Enjoy biryani, fast food, cakes and sweets from the best restaurants around Labpur Bus Stand and Market, delivered to your door.',chooseCategory:'Choose a category',allFood:'All food',items:'items',notFound:'Sorry! No food found with this name.',viewAll:'View all food',yourCart:'Your Order',foodPrice:'Food price:',totalPrice:'Grand total:',deliveryAddress:'Delivery address',paymentMethod:'Payment method:',cash:'Cash on Delivery',onlineUPI:'Online UPI',confirmWhatsApp:'Confirm order on WhatsApp',whatsappNote:'When you tap the order button, your order details will be sent directly to our WhatsApp.',home:'Home',search:'Search',serving:'Serving Labpur with Love тЭдя╕П | Labpur, Birbhum, West Bengal',deliveryTime:'Delivery hours: 10:00 AM тАУ 9:30 PM | Helpline: +91 90000 00000',requiredFields:'Please enter your name, mobile number, and full address.',emptyCart:'Your cart is empty!'},
-          bn: {settings:'рж╕рзЗржЯрж┐ржВрж╕',personalize:'ржЖржкржирж╛рж░ ржкржЫржирзНржжржорждрзЛ рж╕рж╛ржЬрж╛ржи',appearance:'ржжрзЗржЦрж╛ржирзЛрж░ ржзрж░ржи',lightMode:'рж▓рж╛ржЗржЯ ржорзЛржб',darkMode:'ржбрж╛рж░рзНржХ ржорзЛржб',language:'ржнрж╛рж╖рж╛',menuNote:'ржпрждрзНржирзЗрж░ рж╕ржЩрзНржЧрзЗ ржЯрж╛ржЯржХрж╛ ржЦрж╛ржмрж╛рж░ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ред',cart:'ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░',specialService:'ЁЯЪА рзирзжрзирзн рж╕рзНржкрзЗрж╢рж╛рж▓ рж╕рж╛рж░рзНржнрж┐рж╕',favoriteFood:'ржЖржкржирж╛рж░ ржкржЫржирзНржжрзЗрж░ ржЦрж╛ржмрж╛рж░ ржПржЦржи',intro:'рж▓рж╛ржнржкрзБрж░ ржмрж╛рж╕рж╕рзНржЯрзНржпрж╛ржирзНржб ржУ ржмрж╛ржЬрж╛рж░ ржПрж▓рж╛ржХрж╛рж░ рж╕рзЗрж░рж╛ рж░рзЗрж╕рзНржЯрзБрж░рзЗржирзНржЯрзЗрж░ ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐, ржлрж╛рж╕рзНржЯржлрзБржб, ржХрзЗржХ ржУ ржорж┐рж╖рзНржЯрж┐ ржХрзЛржирзЛ ржмрж╛ржбрж╝рждрж┐ ржЪрж╛рж░рзНржЬ ржЫрж╛ржбрж╝рж╛ржЗ ржкрж╛ржи ржЖржкржирж╛рж░ ржжрж░ржЬрж╛ржпрж╝ред',chooseCategory:'ржХрзНржпрж╛ржЯрж╛ржЧрж░рж┐ ржмрзЗржЫрзЗ ржирж┐ржи',allFood:'рж╕ржХрж▓ ржЦрж╛ржмрж╛рж░',items:'ржЯрж┐ ржЖржЗржЯрзЗржо',notFound:'ржжрзБржГржЦрж┐ржд! ржПржЗ ржирж╛ржорзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐ред',viewAll:'рж╕ржм ржЦрж╛ржмрж╛рж░ ржжрзЗржЦрзБржи',yourCart:'ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░',foodPrice:'ржЦрж╛ржмрж╛рж░рзЗрж░ ржжрж╛ржо:',totalPrice:'рж╕рж░рзНржмржорзЛржЯ ржорзВрж▓рзНржп:',deliveryAddress:'ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛ ржжрж┐ржи',paymentMethod:'ржкрзЗржорзЗржирзНржЯ ржорзЗржержб:',cash:'ржХрзНржпрж╛рж╢ ржЕржи ржбрзЗрж▓рж┐ржнрж╛рж░рж┐',onlineUPI:'ржЕржирж▓рж╛ржЗржи UPI',confirmWhatsApp:'рж╣рзЛржпрж╝рж╛ржЯрж╕ржЕрзНржпрж╛ржкрзЗ ржЕрж░рзНржбрж╛рж░ ржХржиржлрж╛рж░рзНржо ржХрж░рзБржи',whatsappNote:'ржЕрж░рзНржбрж╛рж░ ржмрж╛ржЯржирзЗ ржЪрж╛ржк ржжрж┐рж▓рзЗ ржЕрж░рзНржбрж╛рж░рзЗрж░ рждржерзНржп рж╕рж░рж╛рж╕рж░рж┐ ржЖржорж╛ржжрзЗрж░ рж╣рзЛржпрж╝рж╛ржЯрж╕ржЕрзНржпрж╛ржкрзЗ ржЪрж▓рзЗ ржпрж╛ржмрзЗред',home:'рж╣рзЛржо',search:'ржЦрзБржБржЬрзБржи',serving:'ржнрж╛рж▓рзЛржмрж╛рж╕рж╛ржпрж╝ рж▓рж╛ржнржкрзБрж░рзЗрж░ рж╕рзЗржмрж╛ тЭдя╕П | рж▓рж╛ржнржкрзБрж░, ржмрзАрж░ржнрзВржо, ржкрж╢рзНржЪрж┐ржоржмржЩрзНржЧ',deliveryTime:'ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж╕ржоржпрж╝: рж╕ржХрж╛рж▓ рззрзжржЯрж╛ тАУ рж░рж╛ржд рзп:рзйрзж | рж╣рзЗрж▓рзНржкрж▓рж╛ржЗржи: +91 90000 00000',requiredFields:'ржЕржирзБржЧрзНрж░рж╣ ржХрж░рзЗ ржирж╛ржо, ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░ ржУ рж╕ржорзНржкрзВрж░рзНржг ржарж┐ржХрж╛ржирж╛ рж▓рж┐ржЦрзБржиред',emptyCart:'ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯрзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржирзЗржЗ!'},
-          hi: {settings:'рд╕реЗрдЯрд┐рдВрдЧреНрд╕',personalize:'рдЕрдкрдиреЗ рдЕрдиреБрднрд╡ рдХреЛ рдЕрдиреБрдХреВрд▓ рдмрдирд╛рдПрдВ',appearance:'рджрд┐рдЦрд╛рд╡рдЯ',lightMode:'рд▓рд╛рдЗрдЯ рдореЛрдб',darkMode:'рдбрд╛рд░реНрдХ рдореЛрдб',language:'рднрд╛рд╖рд╛',menuNote:'рддрд╛рдЬрд╝рд╛ рдЦрд╛рдирд╛, рдзреНрдпрд╛рди рд╕реЗ рдЖрдкрдХреЗ рдШрд░ рддрдХред',cart:'рдЖрдкрдХрд╛ рдСрд░реНрдбрд░',specialService:'ЁЯЪА 2027 рд╡рд┐рд╢реЗрд╖ рд╕реЗрд╡рд╛',favoriteFood:'рдЖрдкрдХрд╛ рдкрд╕рдВрджреАрджрд╛ рдЦрд╛рдирд╛ рдЕрдм',intro:'рд▓рд╛рднрдкреБрд░ рдмрд╕ рд╕реНрдЯреИрдВрдб рдФрд░ рдмрд╛рдЬрд╝рд╛рд░ рдХреЗ рдЖрд╕рдкрд╛рд╕ рдХреЗ рдЕрдЪреНрдЫреЗ рд░реЗрд╕реНрдЯреЛрд░реЗрдВрдЯ рд╕реЗ рдмрд┐рд░рдпрд╛рдиреА, рдлрд╛рд╕реНрдЯ рдлреВрдб, рдХреЗрдХ рдФрд░ рдорд┐рдард╛рдЗрдпрд╛рдБ рдШрд░ рдкрд░ рдкрд╛рдПрдБред',chooseCategory:'рд╢реНрд░реЗрдгреА рдЪреБрдиреЗрдВ',allFood:'рд╕рднреА рднреЛрдЬрди',items:'рдЖрдЗрдЯрдо',notFound:'рдХреНрд╖рдорд╛ рдХрд░реЗрдВ! рдЗрд╕ рдирд╛рдо рдХрд╛ рдХреЛрдИ рднреЛрдЬрди рдирд╣реАрдВ рдорд┐рд▓рд╛ред',viewAll:'рд╕рднреА рднреЛрдЬрди рджреЗрдЦреЗрдВ',yourCart:'рдЖрдкрдХрд╛ рдСрд░реНрдбрд░',foodPrice:'рдЦрд╛рдиреЗ рдХреА рдХреАрдордд:',totalPrice:'рдХреБрд▓ рдХреАрдордд:',deliveryAddress:'рдбрд┐рд▓реАрд╡рд░реА рдХрд╛ рдкрддрд╛',paymentMethod:'рднреБрдЧрддрд╛рди рдХрд╛ рддрд░реАрдХрд╛:',cash:'рдбрд┐рд▓реАрд╡рд░реА рдкрд░ рдирдХрдж',onlineUPI:'рдСрдирд▓рд╛рдЗрди UPI',confirmWhatsApp:'WhatsApp рдкрд░ рдСрд░реНрдбрд░ рдХреА рдкреБрд╖реНрдЯрд┐ рдХрд░реЗрдВ',whatsappNote:'рдСрд░реНрдбрд░ рдмрдЯрди рджрдмрд╛рдиреЗ рдкрд░ рдЖрдкрдХреЗ рдСрд░реНрдбрд░ рдХрд╛ рд╡рд┐рд╡рд░рдг рд╕реАрдзреЗ рд╣рдорд╛рд░реЗ WhatsApp рдкрд░ рднреЗрдЬрд╛ рдЬрд╛рдПрдЧрд╛ред',home:'рд╣реЛрдо',search:'рдЦреЛрдЬреЗрдВ',serving:'рдкреНрдпрд╛рд░ рдХреЗ рд╕рд╛рде рд▓рд╛рднрдкреБрд░ рдХреА рд╕реЗрд╡рд╛ тЭдя╕П | рд▓рд╛рднрдкреБрд░, рдмреАрд░рднреВрдо, рдкрд╢реНрдЪрд┐рдо рдмрдВрдЧрд╛рд▓',deliveryTime:'рдбрд┐рд▓реАрд╡рд░реА рд╕рдордп: рд╕реБрдмрд╣ 10 рдмрдЬреЗ тАУ рд░рд╛рдд 9:30 | рд╣реЗрд▓реНрдкрд▓рд╛рдЗрди: +91 90000 00000',requiredFields:'рдХреГрдкрдпрд╛ рдЕрдкрдирд╛ рдирд╛рдо, рдореЛрдмрд╛рдЗрд▓ рдирдВрдмрд░ рдФрд░ рдкреВрд░рд╛ рдкрддрд╛ рджрд░реНрдЬ рдХрд░реЗрдВред',emptyCart:'рдЖрдкрдХрд╛ рдХрд╛рд░реНрдЯ рдЦрд╛рд▓реА рд╣реИ!'}
+          en: {settings:'Settings',personalize:'Personalize your experience',appearance:'Appearance',lightMode:'Light mode',darkMode:'Dark mode',language:'Language',menuNote:'Fresh food, delivered with care.',cart:'Your Order',specialService:'🚀 2027 Special Service',favoriteFood:'Your favorite food, now',intro:'Enjoy biryani, fast food, cakes and sweets from the best restaurants around Labpur Bus Stand and Market, delivered to your door.',chooseCategory:'Choose a category',allFood:'All food',items:'items',notFound:'Sorry! No food found with this name.',viewAll:'View all food',yourCart:'Your Order',foodPrice:'Food price:',totalPrice:'Grand total:',deliveryAddress:'Delivery address',paymentMethod:'Payment method:',cash:'Cash on Delivery',onlineUPI:'Online UPI',confirmWhatsApp:'Confirm order on WhatsApp',whatsappNote:'When you tap the order button, your order details will be sent directly to our WhatsApp.',home:'Home',search:'Search',serving:'Serving Labpur with Love ❤️ | Labpur, Birbhum, West Bengal',deliveryTime:'Delivery hours: 10:00 AM – 9:30 PM | Helpline: +91 90000 00000',requiredFields:'Please enter your name, mobile number, and full address.',emptyCart:'Your cart is empty!'},
+          bn: {settings:'সেটিংস',personalize:'আপনার পছন্দমতো সাজান',appearance:'দেখানোর ধরন',lightMode:'লাইট মোড',darkMode:'ডার্ক মোড',language:'ভাষা',menuNote:'যত্নের সঙ্গে টাটকা খাবার ডেলিভারি।',cart:'আপনার অর্ডার',specialService:'🚀 ২০২৭ স্পেশাল সার্ভিস',favoriteFood:'আপনার পছন্দের খাবার এখন',intro:'লাভপুর বাসস্ট্যান্ড ও বাজার এলাকার সেরা রেস্টুরেন্টের বিরিয়ানি, ফাস্টফুড, কেক ও মিষ্টি কোনো বাড়তি চার্জ ছাড়াই পান আপনার দরজায়।',chooseCategory:'ক্যাটাগরি বেছে নিন',allFood:'সকল খাবার',items:'টি আইটেম',notFound:'দুঃখিত! এই নামে কোনো খাবার পাওয়া যায়নি।',viewAll:'সব খাবার দেখুন',yourCart:'আপনার অর্ডার',foodPrice:'খাবারের দাম:',totalPrice:'সর্বমোট মূল্য:',deliveryAddress:'ডেলিভারি ঠিকানা দিন',paymentMethod:'পেমেন্ট মেথড:',cash:'ক্যাশ অন ডেলিভারি',onlineUPI:'অনলাইন UPI',confirmWhatsApp:'হোয়াটসঅ্যাপে অর্ডার কনফার্ম করুন',whatsappNote:'অর্ডার বাটনে চাপ দিলে অর্ডারের তথ্য সরাসরি আমাদের হোয়াটসঅ্যাপে চলে যাবে।',home:'হোম',search:'খুঁজুন',serving:'ভালোবাসায় লাভপুরের সেবা ❤️ | লাভপুর, বীরভূম, পশ্চিমবঙ্গ',deliveryTime:'ডেলিভারি সময়: সকাল ১০টা – রাত ৯:৩০ | হেল্পলাইন: +91 90000 00000',requiredFields:'অনুগ্রহ করে নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা লিখুন।',emptyCart:'আপনার কার্টে কোনো খাবার নেই!'},
+          hi: {settings:'सेटिंग्स',personalize:'अपने अनुभव को अनुकूल बनाएं',appearance:'दिखावट',lightMode:'लाइट मोड',darkMode:'डार्क मोड',language:'भाषा',menuNote:'ताज़ा खाना, ध्यान से आपके घर तक।',cart:'आपका ऑर्डर',specialService:'🚀 2027 विशेष सेवा',favoriteFood:'आपका पसंदीदा खाना अब',intro:'लाभपुर बस स्टैंड और बाज़ार के आसपास के अच्छे रेस्टोरेंट से बिरयानी, फास्ट फूड, केक और मिठाइयाँ घर पर पाएँ।',chooseCategory:'श्रेणी चुनें',allFood:'सभी भोजन',items:'आइटम',notFound:'क्षमा करें! इस नाम का कोई भोजन नहीं मिला।',viewAll:'सभी भोजन देखें',yourCart:'आपका ऑर्डर',foodPrice:'खाने की कीमत:',totalPrice:'कुल कीमत:',deliveryAddress:'डिलीवरी का पता',paymentMethod:'भुगतान का तरीका:',cash:'डिलीवरी पर नकद',onlineUPI:'ऑनलाइन UPI',confirmWhatsApp:'WhatsApp पर ऑर्डर की पुष्टि करें',whatsappNote:'ऑर्डर बटन दबाने पर आपके ऑर्डर का विवरण सीधे हमारे WhatsApp पर भेजा जाएगा।',home:'होम',search:'खोजें',serving:'प्यार के साथ लाभपुर की सेवा ❤️ | लाभपुर, बीरभूम, पश्चिम बंगाल',deliveryTime:'डिलीवरी समय: सुबह 10 बजे – रात 9:30 | हेल्पलाइन: +91 90000 00000',requiredFields:'कृपया अपना नाम, मोबाइल नंबर और पूरा पता दर्ज करें।',emptyCart:'आपका कार्ट खाली है!'}
         };
         // One translation engine: a stable source string is kept once per element.
         const RK_TRANSLATIONS = {
-          'рж╣рзЛржо ржбрзЗрж▓рж┐ржнрж╛рж░рж┐':['Home Delivery','рж╣рзЛржо ржбрзЗрж▓рж┐ржнрж╛рж░рж┐','рд╣реЛрдо рдбрд┐рд▓реАрд╡рд░реА'],
-          'Your Order':['Your Order','ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░','рдЖрдкрдХрд╛ рдСрд░реНрдбрд░'],
-          'ржХрж╛рж░рзНржЯ':['Your Order','ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░','рдЖрдкрдХрд╛ рдСрд░реНрдбрд░'],
-          'рж▓рж╛ржнржкрзБрж░ ржПрж▓рж╛ржХрж╛рж░ рж╕ржорж╕рзНржд ржЕрж░рзНржбрж╛рж░рзЗ':['For all orders in Labpur area','рж▓рж╛ржнржкрзБрж░ ржПрж▓рж╛ржХрж╛рж░ рж╕ржорж╕рзНржд ржЕрж░рзНржбрж╛рж░рзЗ','рд▓рд╛рднрдкреБрд░ рдХреНрд╖реЗрддреНрд░ рдХреЗ рд╕рднреА рдСрд░реНрдбрд░ рдкрд░'],
-                    'ЁЯЪА 2027 рж╕рзНржкрзЗрж╢рж╛рж▓ рж╕рж╛рж░рзНржнрж┐рж╕':['ЁЯЪА 2027 Special Service','ЁЯЪА рзирзжрзирзн рж╕рзНржкрзЗрж╢рж╛рж▓ рж╕рж╛рж░рзНржнрж┐рж╕','ЁЯЪА 2027 рд╡рд┐рд╢реЗрд╖ рд╕реЗрд╡рд╛'],
-          'ЁЯЪА рзирзжрзирзн рж╕рзНржкрзЗрж╢рж╛рж▓ рж╕рж╛рж░рзНржнрж┐рж╕':['ЁЯЪА 2027 Special Service','ЁЯЪА рзирзжрзирзн рж╕рзНржкрзЗрж╢рж╛рж▓ рж╕рж╛рж░рзНржнрж┐рж╕','ЁЯЪА 2027 рд╡рд┐рд╢реЗрд╖ рд╕реЗрд╡рд╛'],
-                    'ржЖржкржирж╛рж░ ржкржЫржирзНржжрзЗрж░ ржЦрж╛ржмрж╛рж░ ржПржЦржи':['Your favorite food, now','ржЖржкржирж╛рж░ ржкржЫржирзНржжрзЗрж░ ржЦрж╛ржмрж╛рж░ ржПржЦржи','рдЖрдкрдХрд╛ рдкрд╕рдВрджреАрджрд╛ рдЦрд╛рдирд╛ рдЕрдм'],
-                    'рж▓рж╛ржнржкрзБрж░ ржмрж╛рж╕рж╕рзНржЯрзНржпрж╛ржирзНржб ржУ ржмрж╛ржЬрж╛рж░ ржПрж▓рж╛ржХрж╛рж░ рж╕рзЗрж░рж╛ рж░рзЗрж╕рзНржЯрзБрж░рзЗржирзНржЯрзЗрж░ ржмрж┐рж░рж┐рзЯрж╛ржирж┐, ржлрж╛рж╕рзНржЯржлрзБржб, ржХрзЗржХ ржУ ржорж┐рж╖рзНржЯрж┐ ржЖржкржирж╛рж░ ржжрж░ржЬрж╛рзЯ ржкрзМржБржЫрзЗ ржпрж╛ржмрзЗред':['Enjoy biryani, fast food, cakes and sweets from the best restaurants around Labpur Bus Stand and Market, delivered to your door.','рж▓рж╛ржнржкрзБрж░ ржмрж╛рж╕рж╕рзНржЯрзНржпрж╛ржирзНржб ржУ ржмрж╛ржЬрж╛рж░ ржПрж▓рж╛ржХрж╛рж░ рж╕рзЗрж░рж╛ рж░рзЗрж╕рзНржЯрзБрж░рзЗржирзНржЯрзЗрж░ ржмрж┐рж░рж┐рзЯрж╛ржирж┐, ржлрж╛рж╕рзНржЯржлрзБржб, ржХрзЗржХ ржУ ржорж┐рж╖рзНржЯрж┐ ржЖржкржирж╛рж░ ржжрж░ржЬрж╛рзЯ ржкрзМржБржЫрзЗ ржпрж╛ржмрзЗред','рд▓рд╛рднрдкреБрд░ рдмрд╕ рд╕реНрдЯреИрдВрдб рдФрд░ рдмрд╛рдЬрд╝рд╛рд░ рдХреЗ рдЕрдЪреНрдЫреЗ рд░реЗрд╕реНрдЯреЛрд░реЗрдВрдЯ рд╕реЗ рдмрд┐рд░рдпрд╛рдиреА, рдлрд╛рд╕реНрдЯ рдлреВрдб, рдХреЗрдХ рдФрд░ рдорд┐рдард╛рдЗрдпрд╛рдБ рдШрд░ рдкрд░ рдкрд╛рдПрдБ.'],
-          'ржХрзНржпрж╛ржЯрж╛ржЧрж░рж┐ ржмрзЗржЫрзЗ ржирж┐ржи':['Choose a category','ржХрзНржпрж╛ржЯрж╛ржЧрж░рж┐ ржмрзЗржЫрзЗ ржирж┐ржи','рд╢реНрд░реЗрдгреА рдЪреБрдиреЗрдВ'],
-          'рж╕ржХрж▓ ржЦрж╛ржмрж╛рж░':['All food','рж╕ржХрж▓ ржЦрж╛ржмрж╛рж░','рд╕рднреА рднреЛрдЬрди'],
-          'рж╕ржм ржЦрж╛ржмрж╛рж░':['All food','рж╕ржм ржЦрж╛ржмрж╛рж░','рд╕рднреА рднреЛрдЬрди'],
-          'ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ ржУ ржорзЛржЧрж▓рж╛ржЗ':['Biryani & Mughlai','ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ ржУ ржорзЛржЧрж▓рж╛ржЗ','рдмрд┐рд░рдпрд╛рдиреА рдФрд░ рдореБрдЧрд╝рд▓рдИ'],
-          'ржлрж╛рж╕рзНржЯржлрзБржб ржУ ржмрж╛рж░рзНржЧрж╛рж░':['Fast food & burgers','ржлрж╛рж╕рзНржЯржлрзБржб ржУ ржмрж╛рж░рзНржЧрж╛рж░','рдлрд╛рд╕реНрдЯ рдлреВрдб рдФрд░ рдмрд░реНрдЧрд░'],
-          'ржХрзЗржХ ржУ ржмрзЗржХрж╛рж░рж┐':['Cakes & bakery','ржХрзЗржХ ржУ ржмрзЗржХрж╛рж░рж┐','рдХреЗрдХ рдФрд░ рдмреЗрдХрд░реА'],
-          'ржорж┐рж╖рзНржЯрж┐ ржУ рж╕рзНржирзНржпрж╛ржХрзНрж╕':['Sweets & snacks','ржорж┐рж╖рзНржЯрж┐ ржУ рж╕рзНржирзНржпрж╛ржХрзНрж╕','рдорд┐рдард╛рдИ рдФрд░ рд╕реНрдиреИрдХреНрд╕'],
-          'ржжрзБржГржЦрж┐ржд! ржПржЗ ржирж╛ржорзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржкрж╛ржУрзЯрж╛ ржпрж╛рзЯржирж┐ред':['Sorry! No food found with this name.','ржжрзБржГржЦрж┐ржд! ржПржЗ ржирж╛ржорзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржкрж╛ржУрзЯрж╛ ржпрж╛рзЯржирж┐ред','рдХреНрд╖рдорд╛ рдХрд░реЗрдВ! рдЗрд╕ рдирд╛рдо рдХрд╛ рдХреЛрдИ рдЦрд╛рдирд╛ рдирд╣реАрдВ рдорд┐рд▓рд╛ред'],
-          'ржжрзБржГржЦрж┐ржд! ржПржЗ ржирж╛ржорзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐ред':['Sorry! No food found with this name.','ржжрзБржГржЦрж┐ржд! ржПржЗ ржирж╛ржорзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐ред','рдХреНрд╖рдорд╛ рдХрд░реЗрдВ! рдЗрд╕ рдирд╛рдо рдХрд╛ рдХреЛрдИ рдЦрд╛рдирд╛ рдирд╣реАрдВ рдорд┐рд▓рд╛ред'],
-          'рж╕ржм ржЦрж╛ржмрж╛рж░ ржжрзЗржЦрзБржи':['View all food','рж╕ржм ржЦрж╛ржмрж╛рж░ ржжрзЗржЦрзБржи','рд╕рднреА рднреЛрдЬрди рджреЗрдЦреЗрдВ'],
-          'ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░':['Your Order','ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░','рдЖрдкрдХрд╛ рдСрд░реНрдбрд░'],
-          'ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░ ржХрж╛рж░рзНржЯ':['Your Order','ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░','рдЖрдкрдХрд╛ рдСрд░реНрдбрд░'],
-          'ржЦрж╛ржмрж╛рж░рзЗрж░ ржжрж╛ржо:':['Food price:','ржЦрж╛ржмрж╛рж░рзЗрж░ ржжрж╛ржо:','рдЦрд╛рдиреЗ рдХреА рдХреАрдордд:'],
-          'рж╕рж░рзНржмржорзЛржЯ ржжрзЗрзЯ ржорзВрж▓рзНржп:':['Grand total:','рж╕рж░рзНржмржорзЛржЯ ржжрзЗрзЯ ржорзВрж▓рзНржп:','рдХреБрд▓ рд░рд╛рд╢рд┐:'],
-          'рж╕рж░рзНржмржорзЛржЯ ржорзВрж▓рзНржп:':['Grand total:','рж╕рж░рзНржмржорзЛржЯ ржорзВрж▓рзНржп:','рдХреБрд▓ рд░рд╛рд╢рд┐:'],
-          'ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛ ржжрж┐ржи':['Delivery address','ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛ ржжрж┐ржи','рдбрд┐рд▓реАрд╡рд░реА рдХрд╛ рдкрддрд╛'],
-          'ржкрзЗржорзЗржирзНржЯ ржорзЗржержб:':['Payment method:','ржкрзЗржорзЗржирзНржЯ ржорзЗржержб:','рднреБрдЧрддрд╛рди рдХрд╛ рддрд░реАрдХрд╛:'],
-          'ржХрзНржпрж╛рж╢ ржЕржи ржбрзЗрж▓рж┐ржнрж╛рж░рж┐':['Cash on Delivery','ржХрзНржпрж╛рж╢ ржЕржи ржбрзЗрж▓рж┐ржнрж╛рж░рж┐','рдХреИрд╢ рдСрди рдбрд┐рд▓реАрд╡рд░реА'],
-          'ржЕржирж▓рж╛ржЗржи UPI':['Online UPI','ржЕржирж▓рж╛ржЗржи UPI','рдСрдирд▓рд╛рдЗрди UPI'],
-          'рж╣рзЛржпрж╝рж╛ржЯрж╕ржЕрзНржпрж╛ржкрзЗ ржЕрж░рзНржбрж╛рж░ ржХржиржлрж╛рж░рзНржо ржХрж░рзБржи':['Confirm order on WhatsApp','рж╣рзЛржпрж╝рж╛ржЯрж╕ржЕрзНржпрж╛ржкрзЗ ржЕрж░рзНржбрж╛рж░ ржХржиржлрж╛рж░рзНржо ржХрж░рзБржи','WhatsApp рдкрд░ рдСрд░реНрдбрд░ рдХреА рдкреБрд╖реНрдЯрд┐ рдХрд░реЗрдВ'],
-          'ржЕрж░рзНржбрж╛рж░ ржмрж╛ржЯржирзЗ ржЪрж╛ржк ржжрж┐рж▓рзЗ рж╕рж░рж╛рж╕рж░рж┐ ржЖржорж╛ржжрзЗрж░ рж╣рзЛржпрж╝рж╛ржЯрж╕ржЕрзНржпрж╛ржкрзЗ ржЕрж░рзНржбрж╛рж░рзЗрж░ ржбрж┐ржЯрзЗржЗрж▓рж╕ ржЪрж▓рзЗ ржпрж╛ржмрзЗред':['When you tap the order button, your order details will be sent directly to our WhatsApp.','ржЕрж░рзНржбрж╛рж░ ржмрж╛ржЯржирзЗ ржЪрж╛ржк ржжрж┐рж▓рзЗ рж╕рж░рж╛рж╕рж░рж┐ ржЖржорж╛ржжрзЗрж░ рж╣рзЛржпрж╝рж╛ржЯрж╕ржЕрзНржпрж╛ржкрзЗ ржЕрж░рзНржбрж╛рж░рзЗрж░ ржбрж┐ржЯрзЗржЗрж▓рж╕ ржЪрж▓рзЗ ржпрж╛ржмрзЗред','рдСрд░реНрдбрд░ рдмрдЯрди рджрдмрд╛рдиреЗ рдкрд░ рдЖрдкрдХреЗ рдСрд░реНрдбрд░ рдХрд╛ рд╡рд┐рд╡рд░рдг рд╕реАрдзреЗ рд╣рдорд╛рд░реЗ WhatsApp рдкрд░ рднреЗрдЬрд╛ рдЬрд╛рдПрдЧрд╛ред'],
-          'рж╣рзЛржо':['Home','рж╣рзЛржо','рд╣реЛрдо'],
-          'ржЦрзБржБржЬрзБржи':['Search','ржЦрзБржБржЬрзБржи','рдЦреЛрдЬреЗрдВ'],
-          'ржЪрж┐ржХрзЗржи ржжрж╛ржо ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ (Chicken Biryani)':['Chicken Dum Biryani','ржЪрж┐ржХрзЗржи ржжрж╛ржо ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ (Chicken Biryani)','рдЪрд┐рдХрди рджрдо рдмрд┐рд░рдпрд╛рдиреА'],
-          'рж╕рзНржкрзЗрж╢рж╛рж▓ ржЪрж┐ржХрзЗржи ржмрж╛рж░рзНржЧрж╛рж░ (Chicken Burger)':['Special Chicken Burger','рж╕рзНржкрзЗрж╢рж╛рж▓ ржЪрж┐ржХрзЗржи ржмрж╛рж░рзНржЧрж╛рж░ (Chicken Burger)','рд╕реНрдкреЗрд╢рд▓ рдЪрд┐рдХрди рдмрд░реНрдЧрд░'],
-          'ржЪрж┐ржХрзЗржи рж░рзЛрж▓ (Chicken Roll)':['Chicken Roll','ржЪрж┐ржХрзЗржи рж░рзЛрж▓ (Chicken Roll)','рдЪрд┐рдХрди рд░реЛрд▓'],
-          'ржЪржХрж▓рзЗржЯ ржЪрж┐ржкрж╕ ржХрзЗржХ (рзз ржкрж╛ржЙржирзНржб)':['Chocolate Chip Cake (1 lb)','ржЪржХрж▓рзЗржЯ ржЪрж┐ржкрж╕ ржХрзЗржХ (рзз ржкрж╛ржЙржирзНржб)','рдЪреЙрдХрд▓реЗрдЯ рдЪрд┐рдкреНрд╕ рдХреЗрдХ (1 рдкрд╛рдЙрдВрдб)'],
-          'ржкржирж┐рж░ ржкрж┐рзОржЬрж╛ (Veg Cheese Pizza)':['Paneer Pizza','ржкржирж┐рж░ ржкрж┐рзОржЬрж╛ (Veg Cheese Pizza)','рдкрдиреАрд░ рдкрд┐рдЬрд╝реНрдЬрд╝рд╛'],
-          'рж╕рзНржкрзЗрж╢рж╛рж▓ рж░рж╕ржЧрзЛрж▓рзНрж▓рж╛ (рззрзж ржкрж┐рж╕)':['Special Rasgulla (10 pcs)','рж╕рзНржкрзЗрж╢рж╛рж▓ рж░рж╕ржЧрзЛрж▓рзНрж▓рж╛ (рззрзж ржкрж┐рж╕)','рд╕реНрдкреЗрд╢рд▓ рд░рд╕рдЧреБрд▓реНрд▓рд╛ (10 рдкреАрд╕)'],
-          'ржлрзНрж░рж╛ржЗ ржЪрж╛ржЙржорж┐ржи (Chicken Chowmein)':['Chicken Chowmein','ржлрзНрж░рж╛ржЗ ржЪрж╛ржЙржорж┐ржи (Chicken Chowmein)','рдЪрд┐рдХрди рдЪрд╛рдЙрдореАрди'],
-          'ржоржЯржи ржХрж╖рж╛ (Mutton Kosha - 2 Pcs)':['Mutton Kosha (2 pcs)','ржоржЯржи ржХрж╖рж╛ (Mutton Kosha - 2 Pcs)','рдордЯрди рдХреЛрд╢рд╛ (2 рдкреАрд╕)'],
-          'рж░ржпрж╝рзНржпрж╛рж▓ ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ рж╣рж╛ржЙрж╕, рж▓рж╛ржнржкрзБрж░':['Royal Biryani House, Labpur','рж░ржпрж╝рзНржпрж╛рж▓ ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ рж╣рж╛ржЙрж╕, рж▓рж╛ржнржкрзБрж░','рд░реЙрдпрд▓ рдмрд┐рд░рдпрд╛рдиреА рд╣рд╛рдЙрд╕, рд▓рд╛рднрдкреБрд░'],
-          'рж▓рж╛ржнржкрзБрж░ ржлрж╛рж╕рзНржЯржлрзБржб рж╕рзЗржирзНржЯрж╛рж░':['Labpur Fast Food Center','рж▓рж╛ржнржкрзБрж░ ржлрж╛рж╕рзНржЯржлрзБржб рж╕рзЗржирзНржЯрж╛рж░','рд▓рд╛рднрдкреБрд░ рдлрд╛рд╕реНрдЯ рдлреВрдб рд╕реЗрдВрдЯрд░'],
-          'рж▓рж╛ржнржкрзБрж░ ржмрж╛рж╕рж╕рзНржЯрзНржпрж╛ржирзНржб рж╕рзНржЯрж▓':['Labpur Bus Stand Stall','рж▓рж╛ржнржкрзБрж░ ржмрж╛рж╕рж╕рзНржЯрзНржпрж╛ржирзНржб рж╕рзНржЯрж▓','рд▓рд╛рднрдкреБрд░ рдмрд╕ рд╕реНрдЯреИрдВрдб рд╕реНрдЯреЙрд▓'],
-          'рж▓рж╛ржнржкрзБрж░ ржмрзЗржХрж╛рж░рж┐ & рж╕рзБржЗржЯрж╕':['Labpur Bakery & Sweets','рж▓рж╛ржнржкрзБрж░ ржмрзЗржХрж╛рж░рж┐ & рж╕рзБржЗржЯрж╕','рд▓рд╛рднрдкреБрд░ рдмреЗрдХрд░реА рдФрд░ рдорд┐рдард╛рдИ'],
-          'рж▓рж╛ржнржкрзБрж░ рж╕рзБржЗржЯ рж╣рж╛ржЙрж╕':['Labpur Sweet House','рж▓рж╛ржнржкрзБрж░ рж╕рзБржЗржЯ рж╣рж╛ржЙрж╕','рд▓рд╛рднрдкреБрд░ рд╕реНрд╡реАрдЯ рд╣рд╛рдЙрд╕'],
-          'ржЖржЗржЯрзЗржо':['items','ржЖржЗржЯрзЗржо','рдЖрдЗрдЯрдо'],
-          'ржЯрж┐ ржЖржЗржЯрзЗржо':['items','ржЯрж┐ ржЖржЗржЯрзЗржо','рдЖрдЗрдЯрдо'],
-          'ржмрж╛ржВрж▓рж╛ (Bengali)':['Bengali','ржмрж╛ржВрж▓рж╛','рдмрдВрдЧрд╛рд▓реА'],
-          'ЁЯЗмЁЯЗз English':['English','ржЗржВрж░рзЗржЬрж┐','рдЕрдВрдЧреНрд░реЗрдЬрд╝реА'],
-          'ЁЯЗоЁЯЗ│ рд╣рд┐рдиреНрджреА (Hindi)':['Hindi','рж╣рж┐ржирзНржжрж┐','рд╣рд┐рдиреНрджреА'],
-          'FREE (тВ╣0)':['FREE (тВ╣0)','FREE (тВ╣0)','рдореБрдлрд╝реНрдд (тВ╣0)'],
-          'Serving Labpur with Love тЭдя╕П | рж▓рж╛ржнржкрзБрж░, ржмрзАрж░ржнрзВржо, ржкрж╢рзНржЪрж┐ржоржмржЩрзНржЧ':['Serving Labpur with Love тЭдя╕П | Labpur, Birbhum, West Bengal','ржнрж╛рж▓рзЛржмрж╛рж╕рж╛ржпрж╝ рж▓рж╛ржнржкрзБрж░рзЗрж░ рж╕рзЗржмрж╛ тЭдя╕П | рж▓рж╛ржнржкрзБрж░, ржмрзАрж░ржнрзВржо, ржкрж╢рзНржЪрж┐ржоржмржЩрзНржЧ','рдкреНрдпрд╛рд░ рдХреЗ рд╕рд╛рде рд▓рд╛рднрдкреБрд░ рдХреА рд╕реЗрд╡рд╛ тЭдя╕П | рд▓рд╛рднрдкреБрд░, рдмреАрд░рднреВрдо, рдкрд╢реНрдЪрд┐рдо рдмрдВрдЧрд╛рд▓'],
-          'ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж╕ржоржпрж╝: рж╕ржХрж╛рж▓ рззрзж:рзжрзж - рж░рж╛ржд рзп:рзйрзж | рж╣рзЗрж▓рзНржкрж▓рж╛ржЗржи: +91 9907406500':['Delivery hours: 10:00 AM тАУ 9:30 PM | Helpline: +91 9907406500','ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж╕ржоржпрж╝: рж╕ржХрж╛рж▓ рззрзж:рзжрзж - рж░рж╛ржд рзп:рзйрзж | рж╣рзЗрж▓рзНржкрж▓рж╛ржЗржи: +91 9907406500','рдбрд┐рд▓реАрд╡рд░реА рд╕рдордп: рд╕реБрдмрд╣ 10 рдмрдЬреЗ тАУ рд░рд╛рдд 9:30 | рд╣реЗрд▓реНрдкрд▓рд╛рдЗрди: +91 90000 00000'],
-          'ржнрзЗржЬ':['Veg','ржнрзЗржЬ','рд╢рд╛рдХрд╛рд╣рд╛рд░реА'], 'ржиржи-ржнрзЗржЬ':['Non-veg','ржиржи-ржнрзЗржЬ','рдорд╛рдВрд╕рд╛рд╣рд╛рд░реА'],
-          'ржжрж╛ржо':['Price','ржжрж╛ржо','рдХреАрдордд'],
-          'ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯрзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржирзЗржЗ!':['Your cart is empty!','ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯрзЗ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ ржирзЗржЗ!','рдЖрдкрдХрд╛ рдХрд╛рд░реНрдЯ рдЦрд╛рд▓реА рд╣реИ!']
+          'হোম ডেলিভারি':['Home Delivery','হোম ডেলিভারি','होम डिलीवरी'],
+          'Your Order':['Your Order','আপনার অর্ডার','आपका ऑर्डर'],
+          'কার্ট':['Your Order','আপনার অর্ডার','आपका ऑर्डर'],
+          'লাভপুর এলাকার সমস্ত অর্ডারে':['For all orders in Labpur area','লাভপুর এলাকার সমস্ত অর্ডারে','लाभपुर क्षेत्र के सभी ऑर्डर पर'],
+                    '🚀 2027 স্পেশাল সার্ভিস':['🚀 2027 Special Service','🚀 ২০২৭ স্পেশাল সার্ভিস','🚀 2027 विशेष सेवा'],
+          '🚀 ২০২৭ স্পেশাল সার্ভিস':['🚀 2027 Special Service','🚀 ২০২৭ স্পেশাল সার্ভিস','🚀 2027 विशेष सेवा'],
+                    'আপনার পছন্দের খাবার এখন':['Your favorite food, now','আপনার পছন্দের খাবার এখন','आपका पसंदीदा खाना अब'],
+                    'লাভপুর বাসস্ট্যান্ড ও বাজার এলাকার সেরা রেস্টুরেন্টের বিরিয়ানি, ফাস্টফুড, কেক ও মিষ্টি আপনার দরজায় পৌঁছে যাবে।':['Enjoy biryani, fast food, cakes and sweets from the best restaurants around Labpur Bus Stand and Market, delivered to your door.','লাভপুর বাসস্ট্যান্ড ও বাজার এলাকার সেরা রেস্টুরেন্টের বিরিয়ানি, ফাস্টফুড, কেক ও মিষ্টি আপনার দরজায় পৌঁছে যাবে।','लाभपुर बस स्टैंड और बाज़ार के अच्छे रेस्टोरेंट से बिरयानी, फास्ट फूड, केक और मिठाइयाँ घर पर पाएँ.'],
+          'ক্যাটাগরি বেছে নিন':['Choose a category','ক্যাটাগরি বেছে নিন','श्रेणी चुनें'],
+          'সকল খাবার':['All food','সকল খাবার','सभी भोजन'],
+          'সব খাবার':['All food','সব খাবার','सभी भोजन'],
+          'বিরিয়ানি ও মোগলাই':['Biryani & Mughlai','বিরিয়ানি ও মোগলাই','बिरयानी और मुग़लई'],
+          'ফাস্টফুড ও বার্গার':['Fast food & burgers','ফাস্টফুড ও বার্গার','फास्ट फूड और बर्गर'],
+          'কেক ও বেকারি':['Cakes & bakery','কেক ও বেকারি','केक और बेकरी'],
+          'মিষ্টি ও স্ন্যাক্স':['Sweets & snacks','মিষ্টি ও স্ন্যাক্স','मिठाई और स्नैक्स'],
+          'দুঃখিত! এই নামে কোনো খাবার পাওয়া যায়নি।':['Sorry! No food found with this name.','দুঃখিত! এই নামে কোনো খাবার পাওয়া যায়নি।','क्षमा करें! इस नाम का कोई खाना नहीं मिला।'],
+          'দুঃখিত! এই নামে কোনো খাবার পাওয়া যায়নি।':['Sorry! No food found with this name.','দুঃখিত! এই নামে কোনো খাবার পাওয়া যায়নি।','क्षमा करें! इस नाम का कोई खाना नहीं मिला।'],
+          'সব খাবার দেখুন':['View all food','সব খাবার দেখুন','सभी भोजन देखें'],
+          'আপনার অর্ডার':['Your Order','আপনার অর্ডার','आपका ऑर्डर'],
+          'আপনার অর্ডার কার্ট':['Your Order','আপনার অর্ডার','आपका ऑर्डर'],
+          'খাবারের দাম:':['Food price:','খাবারের দাম:','खाने की कीमत:'],
+          'সর্বমোট দেয় মূল্য:':['Grand total:','সর্বমোট দেয় মূল্য:','कुल राशि:'],
+          'সর্বমোট মূল্য:':['Grand total:','সর্বমোট মূল্য:','कुल राशि:'],
+          'ডেলিভারি ঠিকানা দিন':['Delivery address','ডেলিভারি ঠিকানা দিন','डिलीवरी का पता'],
+          'পেমেন্ট মেথড:':['Payment method:','পেমেন্ট মেথড:','भुगतान का तरीका:'],
+          'ক্যাশ অন ডেলিভারি':['Cash on Delivery','ক্যাশ অন ডেলিভারি','कैश ऑन डिलीवरी'],
+          'অনলাইন UPI':['Online UPI','অনলাইন UPI','ऑनलाइन UPI'],
+          'হোয়াটসঅ্যাপে অর্ডার কনফার্ম করুন':['Confirm order on WhatsApp','হোয়াটসঅ্যাপে অর্ডার কনফার্ম করুন','WhatsApp पर ऑर्डर की पुष्टि करें'],
+          'অর্ডার বাটনে চাপ দিলে সরাসরি আমাদের হোয়াটসঅ্যাপে অর্ডারের ডিটেইলস চলে যাবে।':['When you tap the order button, your order details will be sent directly to our WhatsApp.','অর্ডার বাটনে চাপ দিলে সরাসরি আমাদের হোয়াটসঅ্যাপে অর্ডারের ডিটেইলস চলে যাবে।','ऑर्डर बटन दबाने पर आपके ऑर्डर का विवरण सीधे हमारे WhatsApp पर भेजा जाएगा।'],
+          'হোম':['Home','হোম','होम'],
+          'খুঁজুন':['Search','খুঁজুন','खोजें'],
+          'চিকেন দাম বিরিয়ানি (Chicken Biryani)':['Chicken Dum Biryani','চিকেন দাম বিরিয়ানি (Chicken Biryani)','चिकन दम बिरयानी'],
+          'স্পেশাল চিকেন বার্গার (Chicken Burger)':['Special Chicken Burger','স্পেশাল চিকেন বার্গার (Chicken Burger)','स्पेशल चिकन बर्गर'],
+          'চিকেন রোল (Chicken Roll)':['Chicken Roll','চিকেন রোল (Chicken Roll)','चिकन रोल'],
+          'চকলেট চিপস কেক (১ পাউন্ড)':['Chocolate Chip Cake (1 lb)','চকলেট চিপস কেক (১ পাউন্ড)','चॉकलेट चिप्स केक (1 पाउंड)'],
+          'পনির পিৎজা (Veg Cheese Pizza)':['Paneer Pizza','পনির পিৎজা (Veg Cheese Pizza)','पनीर पिज़्ज़ा'],
+          'স্পেশাল রসগোল্লা (১০ পিস)':['Special Rasgulla (10 pcs)','স্পেশাল রসগোল্লা (১০ পিস)','स्पेशल रसगुल्ला (10 पीस)'],
+          'ফ্রাই চাউমিন (Chicken Chowmein)':['Chicken Chowmein','ফ্রাই চাউমিন (Chicken Chowmein)','चिकन चाउमीन'],
+          'মটন কষা (Mutton Kosha - 2 Pcs)':['Mutton Kosha (2 pcs)','মটন কষা (Mutton Kosha - 2 Pcs)','मटन कोशा (2 पीस)'],
+          'রয়্যাল বিরিয়ানি হাউস, লাভপুর':['Royal Biryani House, Labpur','রয়্যাল বিরিয়ানি হাউস, লাভপুর','रॉयल बिरयानी हाउस, लाभपुर'],
+          'লাভপুর ফাস্টফুড সেন্টার':['Labpur Fast Food Center','লাভপুর ফাস্টফুড সেন্টার','लाभपुर फास्ट फूड सेंटर'],
+          'লাভপুর বাসস্ট্যান্ড স্টল':['Labpur Bus Stand Stall','লাভপুর বাসস্ট্যান্ড স্টল','लाभपुर बस स्टैंड स्टॉल'],
+          'লাভপুর বেকারি & সুইটস':['Labpur Bakery & Sweets','লাভপুর বেকারি & সুইটস','लाभपुर बेकरी और मिठाई'],
+          'লাভপুর সুইট হাউস':['Labpur Sweet House','লাভপুর সুইট হাউস','लाभपुर स्वीट हाउस'],
+          'আইটেম':['items','আইটেম','आइटम'],
+          'টি আইটেম':['items','টি আইটেম','आइटम'],
+          'বাংলা (Bengali)':['Bengali','বাংলা','बंगाली'],
+          '🇬🇧 English':['English','ইংরেজি','अंग्रेज़ी'],
+          '🇮🇳 हिन्दी (Hindi)':['Hindi','হিন্দি','हिन्दी'],
+          'FREE (₹0)':['FREE (₹0)','FREE (₹0)','मुफ़्त (₹0)'],
+          'Serving Labpur with Love ❤️ | লাভপুর, বীরভূম, পশ্চিমবঙ্গ':['Serving Labpur with Love ❤️ | Labpur, Birbhum, West Bengal','ভালোবাসায় লাভপুরের সেবা ❤️ | লাভপুর, বীরভূম, পশ্চিমবঙ্গ','प्यार के साथ लाभपुर की सेवा ❤️ | लाभपुर, बीरभूम, पश्चिम बंगाल'],
+          'ডেলিভারি সময়: সকাল ১০:০০ - রাত ৯:৩০ | হেল্পলাইন: +91 9907406500':['Delivery hours: 10:00 AM – 9:30 PM | Helpline: +91 9907406500','ডেলিভারি সময়: সকাল ১০:০০ - রাত ৯:৩০ | হেল্পলাইন: +91 9907406500','डिलीवरी समय: सुबह 10 बजे – रात 9:30 | हेल्पलाइन: +91 90000 00000'],
+          'ভেজ':['Veg','ভেজ','शाकाहारी'], 'নন-ভেজ':['Non-veg','নন-ভেজ','मांसाहारी'],
+          'দাম':['Price','দাম','कीमत'],
+          'আপনার কার্টে কোনো খাবার নেই!':['Your cart is empty!','আপনার কার্টে কোনো খাবার নেই!','आपका कार्ट खाली है!']
         };
         let rkCurrentLanguage = 'en';
 
@@ -1303,43 +1318,81 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
           return entry ? entry[index] : source;
         }
 
+        // Translate text nodes (including labels that contain icons/other child elements),
+        // placeholders and dynamically-rendered UI. Keep each node's original source text
+        // so switching languages never translates a previous translation.
+        const rkTextSource = new WeakMap();
+        const rkAttributeSource = new WeakMap();
+        function rkTranslateTextNode(node, lang) {
+          if (!rkTextSource.has(node)) rkTextSource.set(node, node.nodeValue || '');
+          const original = rkTextSource.get(node) || '';
+          const trimmed = original.trim();
+          if (!trimmed) return;
+          const translated = translateText(trimmed, lang);
+          const leading = original.match(/^\s*/)?.[0] || '';
+          const trailing = original.match(/\s*$/)?.[0] || '';
+          const next = leading + translated + trailing;
+          if (node.nodeValue !== next) node.nodeValue = next;
+        }
+        function rkTranslateTree(root, lang) {
+          if (!root) return;
+          const doc = root.ownerDocument || document;
+          const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+              const parent = node.parentElement;
+              if (!parent || parent.closest('script,style,noscript,svg,[data-rk-no-translate]')) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+          const nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          nodes.forEach(node => rkTranslateTextNode(node, lang));
+          const elements = root.nodeType === 1 ? [root, ...root.querySelectorAll('*')] : [...root.querySelectorAll('*')];
+          elements.forEach(el => {
+            if (!el || !el.getAttribute) return;
+            const i18nKey = el.getAttribute('data-i18n');
+            const keyed = i18nKey && RK_I18N[lang] ? RK_I18N[lang][i18nKey] : null;
+            if (keyed && el.childElementCount === 0 && el.textContent !== keyed) el.textContent = keyed;
+            ['placeholder','aria-label','title'].forEach(attr => {
+              if (!el.hasAttribute(attr)) return;
+              let saved = rkAttributeSource.get(el);
+              if (!saved) { saved = {}; rkAttributeSource.set(el, saved); }
+              if (!(attr in saved)) saved[attr] = el.getAttribute(attr) || '';
+              const source = saved[attr];
+              const translated = translateText(source, lang);
+              if (el.getAttribute(attr) !== translated) el.setAttribute(attr, translated);
+            });
+          });
+        }
         function setSiteLanguage(lang) {
           if (!['en', 'bn', 'hi'].includes(lang)) return;
           rkCurrentLanguage = lang;
           document.documentElement.lang = lang;
-
-          document.querySelectorAll('body *').forEach(el => {
-            if (el.children.length !== 0) return;
-            if (!el.hasAttribute('data-rk-source-text')) {
-              el.setAttribute('data-rk-source-text', el.textContent || '');
-            }
-            const source = el.getAttribute('data-rk-source-text') || '';
-            const i18nKey = el.getAttribute('data-i18n');
-            const keyed = i18nKey && RK_I18N[lang] ? RK_I18N[lang][i18nKey] : null;
-            el.textContent = keyed || translateText(source, lang);
-          });
-
-          document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(el => {
-            if (!el.hasAttribute('data-rk-placeholder-source')) {
-              el.setAttribute('data-rk-placeholder-source', el.getAttribute('placeholder') || '');
-            }
-            const source = el.getAttribute('data-rk-placeholder-source') || '';
-            el.setAttribute('placeholder', translateText(source, lang));
-          });
+          rkTranslateTree(document.body, lang);
 
           document.querySelectorAll('[data-language]').forEach(button => {
             button.setAttribute('aria-pressed', button.dataset.language === lang ? 'true' : 'false');
           });
-
           const languageLabel = document.getElementById('currentLanguageLabel');
-          if (languageLabel) languageLabel.textContent = ({ en: 'English', bn: 'ржмрж╛ржВрж▓рж╛', hi: 'рд╣рд┐рдиреНрджреА' })[lang];
-
+          if (languageLabel) languageLabel.textContent = ({ en: 'English', bn: 'বাংলা', hi: 'हिन्दी' })[lang];
           const title = document.querySelector('title');
-          if (title) title.textContent = ({ en: 'RK Foodie | Food Delivery', bn: 'RK Foodie | ржЦрж╛ржмрж╛рж░ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐', hi: 'RK Foodie | рднреЛрдЬрди рдбрд┐рд▓реАрд╡рд░реА' })[lang];
-
+          if (title) title.textContent = ({ en: 'RK Foodie | Food Delivery', bn: 'RK Foodie | খাবার ডেলিভারি', hi: 'RK Foodie | भोजन डिलीवरी' })[lang];
           try { localStorage.setItem('rkFoodieLanguage', lang); } catch (error) {}
         }
-
+        // Re-apply the active language to menu cards, cart rows, modals and other UI
+        // created after the initial page load.
+        if (!window.__rkLanguageObserver && document.body) {
+          window.__rkLanguageObserver = new MutationObserver(records => {
+            if (!rkCurrentLanguage || rkCurrentLanguage === 'en') return;
+            records.forEach(record => {
+              record.addedNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) rkTranslateTextNode(node, rkCurrentLanguage);
+                else if (node.nodeType === Node.ELEMENT_NODE) rkTranslateTree(node, rkCurrentLanguage);
+              });
+            });
+          });
+          window.__rkLanguageObserver.observe(document.body, { childList:true, subtree:true });
+        }
         document.addEventListener('keydown', event => {
           if (event.key === 'Escape') toggleSiteMenu(false);
         });
@@ -1396,8 +1449,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         const foodItems = [
             {
                 id: 1,
-                title: "ржЪрж┐ржХрзЗржи ржжрж╛ржо ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ (Chicken Biryani)",
-                restaurant: "рж░ржпрж╝рзНржпрж╛рж▓ ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ рж╣рж╛ржЙрж╕, рж▓рж╛ржнржкрзБрж░",
+                title: "চিকেন দাম বিরিয়ানি (Chicken Biryani)",
+                restaurant: "রয়্যাল বিরিয়ানি হাউস, লাভপুর",
                 price: 150, // Updated price including delivery
                 category: "biryani",
                 isVeg: false,
@@ -1406,8 +1459,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             },
             {
                 id: 2,
-                title: "рж╕рзНржкрзЗрж╢рж╛рж▓ ржЪрж┐ржХрзЗржи ржмрж╛рж░рзНржЧрж╛рж░ (Chicken Burger)",
-                restaurant: "рж▓рж╛ржнржкрзБрж░ ржлрж╛рж╕рзНржЯржлрзБржб рж╕рзЗржирзНржЯрж╛рж░",
+                title: "স্পেশাল চিকেন বার্গার (Chicken Burger)",
+                restaurant: "লাভপুর ফাস্টফুড সেন্টার",
                 price: 95,
                 category: "fastfood",
                 isVeg: false,
@@ -1416,8 +1469,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             },
             {
                 id: 3,
-                title: "ржЪрж┐ржХрзЗржи рж░рзЛрж▓ (Chicken Roll)",
-                restaurant: "рж▓рж╛ржнржкрзБрж░ ржмрж╛рж╕рж╕рзНржЯрзНржпрж╛ржирзНржб рж╕рзНржЯрж▓",
+                title: "চিকেন রোল (Chicken Roll)",
+                restaurant: "লাভপুর বাসস্ট্যান্ড স্টল",
                 price: 65,
                 category: "fastfood",
                 isVeg: false,
@@ -1426,8 +1479,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             },
             {
                 id: 4,
-                title: "ржЪржХрж▓рзЗржЯ ржЪрж┐ржкрж╕ ржХрзЗржХ (рзз ржкрж╛ржЙржирзНржб)",
-                restaurant: "рж▓рж╛ржнржкрзБрж░ ржмрзЗржХрж╛рж░рж┐ & рж╕рзБржЗржЯрж╕",
+                title: "চকলেট চিপস কেক (১ পাউন্ড)",
+                restaurant: "লাভপুর বেকারি & সুইটস",
                 price: 350,
                 category: "cakes",
                 isVeg: true,
@@ -1436,8 +1489,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             },
             {
                 id: 5,
-                title: "ржкржирж┐рж░ ржкрж┐рзОржЬрж╛ (Veg Cheese Pizza)",
-                restaurant: "рж▓рж╛ржнржкрзБрж░ ржлрж╛рж╕рзНржЯржлрзБржб рж╕рзЗржирзНржЯрж╛рж░",
+                title: "পনির পিৎজা (Veg Cheese Pizza)",
+                restaurant: "লাভপুর ফাস্টফুড সেন্টার",
                 price: 180,
                 category: "fastfood",
                 isVeg: true,
@@ -1446,8 +1499,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             },
             {
                 id: 6,
-                title: "рж╕рзНржкрзЗрж╢рж╛рж▓ рж░рж╕ржЧрзЛрж▓рзНрж▓рж╛ (рззрзж ржкрж┐рж╕)",
-                restaurant: "рж▓рж╛ржнржкрзБрж░ рж╕рзБржЗржЯ рж╣рж╛ржЙрж╕",
+                title: "স্পেশাল রসগোল্লা (১০ পিস)",
+                restaurant: "লাভপুর সুইট হাউস",
                 price: 140,
                 category: "sweets",
                 isVeg: true,
@@ -1456,8 +1509,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             },
             {
                 id: 7,
-                title: "ржлрзНрж░рж╛ржЗ ржЪрж╛ржЙржорж┐ржи (Chicken Chowmein)",
-                restaurant: "рж▓рж╛ржнржкрзБрж░ ржмрж╛рж╕рж╕рзНржЯрзНржпрж╛ржирзНржб рж╕рзНржЯрж▓",
+                title: "ফ্রাই চাউমিন (Chicken Chowmein)",
+                restaurant: "লাভপুর বাসস্ট্যান্ড স্টল",
                 price: 85,
                 category: "fastfood",
                 isVeg: false,
@@ -1466,8 +1519,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             },
             {
                 id: 8,
-                title: "ржоржЯржи ржХрж╖рж╛ (Mutton Kosha - 2 Pcs)",
-                restaurant: "рж░ржпрж╝рзНржпрж╛рж▓ ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ рж╣рж╛ржЙрж╕, рж▓рж╛ржнржкрзБрж░",
+                title: "মটন কষা (Mutton Kosha - 2 Pcs)",
+                restaurant: "রয়্যাল বিরিয়ানি হাউস, লাভপুর",
                 price: 240,
                 category: "biryani",
                 isVeg: false,
@@ -1480,11 +1533,11 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
         // Categories Configuration
         const categories = [
-            { id: "all", name: "рж╕ржм ржЦрж╛ржмрж╛рж░", icon: "fa-border-all" },
-            { id: "biryani", name: "ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐ ржУ ржорзЛржЧрж▓рж╛ржЗ", icon: "fa-bowl-rice" },
-            { id: "fastfood", name: "ржлрж╛рж╕рзНржЯржлрзБржб ржУ ржмрж╛рж░рзНржЧрж╛рж░", icon: "fa-burger" },
-            { id: "cakes", name: "ржХрзЗржХ ржУ ржмрзЗржХрж╛рж░рж┐", icon: "fa-cake-candles" },
-            { id: "sweets", name: "ржорж┐рж╖рзНржЯрж┐ ржУ рж╕рзНржирзНржпрж╛ржХрзНрж╕", icon: "fa-candy-cane" }
+            { id: "all", name: "সব খাবার", icon: "fa-border-all" },
+            { id: "biryani", name: "বিরিয়ানি ও মোগলাই", icon: "fa-bowl-rice" },
+            { id: "fastfood", name: "ফাস্টফুড ও বার্গার", icon: "fa-burger" },
+            { id: "cakes", name: "কেক ও বেকারি", icon: "fa-cake-candles" },
+            { id: "sweets", name: "মিষ্টি ও স্ন্যাক্স", icon: "fa-candy-cane" }
         ];
 
         // State Variables
@@ -1539,7 +1592,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             const count = document.getElementById("itemCount");
             const countLabel = rkCurrentLanguage === 'en'
                 ? (items.length === 1 ? '1 item' : `${items.length} items`)
-                : rkCurrentLanguage === 'hi' ? `${items.length} рдЖрдЗрдЯрдо` : `${items.length}ржЯрж┐ ржЖржЗржЯрзЗржо`;
+                : rkCurrentLanguage === 'hi' ? `${items.length} आइटम` : `${items.length}টি আইটেম`;
             if (count) count.textContent = countLabel;
 
             if (!items.length) {
@@ -1560,7 +1613,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                     <article role="button" tabindex="0"
                         onclick="openFoodDetails(this.dataset.foodId)"
                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFoodDetails(this.dataset.foodId)}"
-                        data-food-id="${id}" aria-label="${title} - ржмрж┐рж╕рзНрждрж╛рж░рж┐ржд ржжрзЗржЦрзБржи"
+                        data-food-id="${id}" aria-label="${title} - বিস্তারিত দেখুন"
                         class="rk-food-card w-full text-left bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col focus:outline-none focus:ring-2 focus:ring-orange-400">
                         <div class="rk-food-card-media relative w-full overflow-hidden bg-gray-100">
                             <img src="${image}" alt="${title}" loading="lazy"
@@ -1575,7 +1628,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                         <div class="rk-food-card-copy min-w-0">
                             <p class="rk-food-card-restaurant">${restaurant}</p>
                             <h3 class="rk-food-card-title">${title}</h3>
-                            <p class="rk-food-card-price">тВ╣${price.toLocaleString('en-IN')}</p>
+                            <p class="rk-food-card-price">₹${price.toLocaleString('en-IN')}</p>
                         </div>
                     </article>`;
             }).join("");
@@ -1600,7 +1653,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                 <div class="rk-food-detail-copy">
                   <h1 class="text-2xl md:text-3xl font-extrabold leading-tight text-navy">${safeTitle}</h1>
                   <p class="text-sm text-gray-500"><i class="fa-solid fa-store mr-1 text-orange-500"></i>${safeRestaurant}</p>
-                  <p class="text-3xl font-extrabold text-orange-600">тВ╣${Number(item.price)||0}</p>
+                  <p class="text-3xl font-extrabold text-orange-600">₹${Number(item.price)||0}</p>
                   <p class="text-sm leading-6 text-gray-600">${rkFoodEscape(item.description || item.ingredients || '')}</p>
                   <div class="rk-food-action-row">
                     <button type="button" class="rk-food-order-button" data-food-id="${safeId}" onclick="orderFromFoodDetails(this.dataset.foodId)"><i class="fa-solid fa-bag-shopping"></i> Order now</button>
@@ -1615,7 +1668,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
               const relatedId = rkFoodEscape(food.id);
               return `<article class="rk-related-card hover:shadow-md transition">
                 <img role="button" tabindex="0" data-food-id="${relatedId}" onclick="openFoodDetails(this.dataset.foodId, false)" src="${rkFoodEscape(food.image || 'https://placehold.co/180x160/1B2B48/FFFFFF?text=Food')}" alt="${rkFoodEscape(food.title)}" onerror="this.onerror=null;this.src='https://placehold.co/180x160/1B2B48/FFFFFF?text=Food'">
-                <span class="min-w-0 flex-1" role="button" tabindex="0" data-food-id="${relatedId}" onclick="openFoodDetails(this.dataset.foodId, false)"><span class="block text-sm font-bold text-slate-800">${rkFoodEscape(food.title)}</span><span class="block text-xs text-gray-500 mt-1">${rkFoodEscape(food.restaurant)}</span><span class="block text-sm font-extrabold text-orange-600 mt-2">тВ╣${Number(food.price)||0}</span></span>
+                <span class="min-w-0 flex-1" role="button" tabindex="0" data-food-id="${relatedId}" onclick="openFoodDetails(this.dataset.foodId, false)"><span class="block text-sm font-bold text-slate-800">${rkFoodEscape(food.title)}</span><span class="block text-xs text-gray-500 mt-1">${rkFoodEscape(food.restaurant)}</span><span class="block text-sm font-extrabold text-orange-600 mt-2">₹${Number(food.price)||0}</span></span>
                 <button type="button" class="rk-heart-button" aria-label="Like food" data-food-id="${relatedId}" onclick="toggleFoodLike(this.dataset.foodId,this)"><i class="fa-regular fa-heart"></i></button>
               </article>`;
             }).join('');
@@ -1647,7 +1700,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             updateCartUI();
             document.getElementById('detailsCartBadge').textContent = cart.reduce((sum, food) => sum + food.quantity, 0);
             const notice = document.getElementById('foodDetailOrderNotice');
-            notice.textContent = `${item.title} ржЕрж░рзНржбрж╛рж░ ржХрж╛рж░рзНржЯрзЗ ржпрзЛржЧ рж╣ржпрж╝рзЗржЫрзЗред ржЙржкрж░рзЗрж░ ржмрзНржпрж╛ржЧ ржЖржЗржХржирзЗ ржЪрж╛ржк ржжрж┐ржпрж╝рзЗ ржЕрж░рзНржбрж╛рж░ рж╕ржорзНржкрзВрж░рзНржг ржХрж░рзБржиред`;
+            notice.textContent = `${item.title} অর্ডার কার্টে যোগ হয়েছে। উপরের ব্যাগ আইকনে চাপ দিয়ে অর্ডার সম্পূর্ণ করুন।`;
             notice.classList.remove('hidden');
         }
 
@@ -1709,8 +1762,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                         <div class="w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto text-2xl">
                             <i class="fa-solid fa-basket-shopping"></i>
                         </div>
-                        <p class="text-gray-500 font-medium text-sm">ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯ ржЦрж╛рж▓рж┐ рж░рзЯрзЗржЫрзЗ!</p>
-                        <button onclick="toggleCart(false)" class="text-xs bg-navy text-white px-4 py-2 rounded-xl font-semibold">ржЦрж╛ржмрж╛рж░ ржЕрж░рзНржбрж╛рж░ ржХрж░рзБржи</button>
+                        <p class="text-gray-500 font-medium text-sm">আপনার কার্ট খালি রয়েছে!</p>
+                        <button onclick="toggleCart(false)" class="text-xs bg-navy text-white px-4 py-2 rounded-xl font-semibold">খাবার অর্ডার করুন</button>
                     </div>
                 `;
                 footer.classList.add("hidden");
@@ -1722,8 +1775,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100 shadow-sm gap-2">
                     <div class="flex-1 min-w-0">
                         <h4 class="text-xs font-bold text-gray-800 truncate">${item.title}</h4>
-                        <p class="text-[11px] text-gray-400">тВ╣${item.price} ├Ч ${item.quantity}</p>
-                        <p class="text-xs font-extrabold text-navy mt-0.5">тВ╣${item.price * item.quantity}</p>
+                        <p class="text-[11px] text-gray-400">₹${item.price} × ${item.quantity}</p>
+                        <p class="text-xs font-extrabold text-navy mt-0.5">₹${item.price * item.quantity}</p>
                     </div>
 
                     <!-- Quantity Counter -->
@@ -1739,10 +1792,10 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             const foodSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const grandTotal = foodSubtotal + 25;
 
-            document.getElementById("subtotalPrice").innerText = `тВ╣${foodSubtotal}`;
+            document.getElementById("subtotalPrice").innerText = `₹${foodSubtotal}`;
             const deliveryEl = document.getElementById("rkCartDeliveryFee");
-            if (deliveryEl) deliveryEl.innerText = "тВ╣25";
-            document.getElementById("grandTotalPrice").innerText = `тВ╣${grandTotal}`;
+            if (deliveryEl) deliveryEl.innerText = "₹25";
+            document.getElementById("grandTotalPrice").innerText = `₹${grandTotal}`;
         }
 
         // Toggle Drawer
@@ -1807,24 +1860,24 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             };
 
             // Format Order Text for WhatsApp
-            let message = `ЁЯЫТ *ржирждрзБржи ржлрзБржб ржЕрж░рзНржбрж╛рж░ - RK Foodie (рж▓рж╛ржнржкрзБрж░ - 2027)*\n`;
+            let message = `🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর - 2027)*\n`;
             message += `------------------------------------\n`;
-            message += `ЁЯз╛ *ржЕрж░рзНржбрж╛рж░ ржиржорзНржмрж░:* ${orderNumber}\n`;
-            message += `ЁЯСд *ржЧрзНрж░рж╛рж╣ржХрзЗрж░ ржирж╛ржо:* ${name}\n`;
-            message += `*ржпрзЛржЧрж╛ржпрзЛржЧ ржиржорзНржмрж░:* ${phone}\n`;
-            message += `ЁЯУН *ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛:* ${address}\n`;
-            message += `ЁЯТ│ *ржкрзЗржорзЗржирзНржЯ ржкржжрзНржзрждрж┐:* ${paymentMethod}\n`;
+            message += `🧾 *অর্ডার নম্বর:* ${orderNumber}\n`;
+            message += `👤 *গ্রাহকের নাম:* ${name}\n`;
+            message += `*যোগাযোগ নম্বর:* ${phone}\n`;
+            message += `📍 *ডেলিভারি ঠিকানা:* ${address}\n`;
+            message += `💳 *পেমেন্ট পদ্ধতি:* ${paymentMethod}\n`;
             message += `------------------------------------\n`;
-            message += `ЁЯН╜я╕П *ржЕрж░рзНржбрж╛рж░ ржХрж░рж╛ ржЦрж╛ржмрж╛рж░рзЗрж░ рждрж╛рж▓рж┐ржХрж╛:*\n`;
+            message += `🍽️ *অর্ডার করা খাবারের তালিকা:*\n`;
 
             cart.forEach((item, index) => {
-                message += `${index + 1}. ${item.title} - ${item.quantity} ржкрж┐рж╕ (тВ╣${item.price * item.quantity})\n`;
+                message += `${index + 1}. ${item.title} - ${item.quantity} পিস (₹${item.price * item.quantity})\n`;
             });
 
             message += `------------------------------------\n`;
-            message += `ЁЯТ░ *рж╕рж░рзНржмржорзЛржЯ ржорзВрж▓рзНржп:* тВ╣${grandTotal}\n`;
+            message += `💰 *সর্বমোট মূল্য:* ₹${grandTotal}\n`;
             message += `------------------------------------\n`;
-            message += `ржзржирзНржпржмрж╛ржж! ржЕржирзБржЧрзНрж░рж╣ ржХрж░рзЗ ржЕрж░рзНржбрж╛рж░ржЯрж┐ ржХржиржлрж╛рж░рзНржо ржХрж░рзБржиред`;
+            message += `ধন্যবাদ! অনুগ্রহ করে অর্ডারটি কনফার্ম করুন।`;
 
             // Keep product-only order history separate from the cart and customer details.
             try {
@@ -1884,10 +1937,10 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       const safe = value => text(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       const categoryIcon = name => {
         const n = text(name).toLowerCase();
-        if (n.includes('biryani') || n.includes('ржмрж┐рж░рж┐ржпрж╝рж╛ржирж┐') || n.includes('ржмрж┐рж░рж┐рзЯрж╛ржирж┐')) return 'fa-bowl-rice';
-        if (n.includes('cake') || n.includes('bakery') || n.includes('ржХрзЗржХ') || n.includes('ржмрзЗржХрж╛рж░рж┐')) return 'fa-cake-candles';
-        if (n.includes('sweet') || n.includes('ржорж┐рж╖рзНржЯрж┐')) return 'fa-candy-cane';
-        if (n.includes('drink') || n.includes('beverage') || n.includes('ржкрж╛ржирзАржпрж╝') || n.includes('ржбрзНрж░рж┐ржВржХ')) return 'fa-glass-water';
+        if (n.includes('biryani') || n.includes('বিরিয়ানি') || n.includes('বিরিয়ানি')) return 'fa-bowl-rice';
+        if (n.includes('cake') || n.includes('bakery') || n.includes('কেক') || n.includes('বেকারি')) return 'fa-cake-candles';
+        if (n.includes('sweet') || n.includes('মিষ্টি')) return 'fa-candy-cane';
+        if (n.includes('drink') || n.includes('beverage') || n.includes('পানীয়') || n.includes('ড্রিংক')) return 'fa-glass-water';
         return 'fa-burger';
       };
       async function fetchRows(table, orderColumn) {
@@ -1913,7 +1966,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
         foodItems.splice(0, foodItems.length, ...mapped);
         const remoteNames = [...new Set(mapped.map(x => x.category).filter(Boolean))];
         const existing = categories.find(c => c.id === 'all');
-        categories.splice(0, categories.length, ...(existing ? [existing] : [{id:'all',name:'рж╕ржм ржЦрж╛ржмрж╛рж░',icon:'fa-border-all'}]), ...remoteNames.map(name => ({id:name,name,icon:categoryIcon(name)})));
+        categories.splice(0, categories.length, ...(existing ? [existing] : [{id:'all',name:'সব খাবার',icon:'fa-border-all'}]), ...remoteNames.map(name => ({id:name,name,icon:categoryIcon(name)})));
         currentCategory = 'all';
         renderCategories();
         renderFoodGrid(foodItems);
@@ -2163,7 +2216,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     }
     if (googleButton) {
       googleButton.disabled = true;
-      googleButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Connecting to GoogleтАж';
+      googleButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Connecting to Google…';
     }
     try {
       if (window.RKAndroidGoogleAuth && typeof window.RKAndroidGoogleAuth.signInWithGoogle === 'function') {
@@ -2235,7 +2288,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   if (skipProfile) skipProfile.addEventListener('click', async () => {
     // Persist only the Google identity + skip flag. Never copy unsaved form values
     // or replace an address already saved for this account.
-    if (skipProfile) { skipProfile.disabled = true; skipProfile.textContent = 'Opening food menuтАж'; }
+    if (skipProfile) { skipProfile.disabled = true; skipProfile.textContent = 'Opening food menu…'; }
     if (currentUser && currentUser.id) {
       const identity = googleIdentity(currentUser);
       const minimal = {
@@ -2331,7 +2384,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       return;
     }
     const saveButton = $('rkSaveProfile');
-    if (saveButton) { saveButton.disabled = true; saveButton.textContent = 'Saving securelyтАж'; }
+    if (saveButton) { saveButton.disabled = true; saveButton.textContent = 'Saving securely…'; }
     try {
       const payload = { id: currentUser.id, ...saved, setup_skipped: false, updated_at: new Date().toISOString() };
       const { data, error } = await client.from('customer_profiles').upsert(payload, { onConflict: 'id' }).select('*').single();
@@ -2415,7 +2468,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 <script id="rk-order-cart-enhancements">
 (function(){
   const CART_STORAGE_KEY = 'rkFoodieSavedCartV1';
-  const money = value => 'тВ╣' + (Number(value)||0).toLocaleString('en-IN');
+  const money = value => '₹' + (Number(value)||0).toLocaleString('en-IN');
   const totalItems = () => cart.reduce((sum,item)=>sum+(Number(item.quantity)||0),0);
   const DELIVERY_FEE = 25;
   const totalPrice = () => cart.reduce((sum,item)=>sum+((Number(item.price)||0)*(Number(item.quantity)||0)),0);
@@ -2429,7 +2482,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   }
   function renderSheet(){
     const box=document.getElementById('rkOrderSheetItems');if(!box)return;
-    if(!cart.length){box.innerHTML='<div class="rk-sheet-empty"><i class="fa-solid fa-basket-shopping"></i><p class="font-bold text-sm">ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯ ржПржЦржи ржЦрж╛рж▓рж┐</p><p class="text-xs mt-1">ржЦрж╛ржмрж╛рж░рзЗрж░ ржмрж┐рж╕рзНрждрж╛рж░рж┐ржд ржерзЗржХрзЗ Add to Cart ржЪрж╛ржкрзБржиред</p></div>';}
+    if(!cart.length){box.innerHTML='<div class="rk-sheet-empty"><i class="fa-solid fa-basket-shopping"></i><p class="font-bold text-sm">আপনার কার্ট এখন খালি</p><p class="text-xs mt-1">খাবারের বিস্তারিত থেকে Add to Cart চাপুন।</p></div>';}
     else box.innerHTML=cart.map(item=>`<article class="rk-sheet-item">
       <img class="rk-sheet-item-img" src="${item.image||'https://placehold.co/120x120/fff0e2/9a4d16?text=Food'}" alt="${String(item.title||'Food').replace(/"/g,'&quot;')}" onerror="this.src='https://placehold.co/120x120/fff0e2/9a4d16?text=Food'">
       <div class="rk-sheet-item-info"><h3 class="rk-sheet-item-name">${item.title||'Food item'}</h3><p class="rk-sheet-item-meta">${item.restaurant||'RK Foodie'}</p><p class="rk-sheet-item-price">${money((Number(item.price)||0)*(Number(item.quantity)||1))}</p><button type="button" class="rk-sheet-remove" onclick='removeSavedCartItem(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-trash-can"></i> Remove</button></div>
@@ -2454,7 +2507,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     const item=foodItems.find(food=>String(food.id)===String(itemId));if(!item)return;
     const existing=cart.find(food=>String(food.id)===String(itemId));if(existing)existing.quantity=(Number(existing.quantity)||1)+1;else cart.push({...item,quantity:1});
     saveCart();if(typeof window.updateCartUI==='function')window.updateCartUI();renderSheet();
-    const notice=document.getElementById('foodDetailOrderNotice');if(notice){notice.innerHTML='<i class="fa-solid fa-circle-check"></i> ржЦрж╛ржмрж╛рж░ржЯрж┐ ржЖржкржирж╛рж░ рж╕рзЗржн ржХрж░рж╛ ржХрж╛рж░рзНржЯрзЗ ржпрзЛржЧ рж╣ржпрж╝рзЗржЫрзЗред';notice.classList.remove('hidden');}
+    const notice=document.getElementById('foodDetailOrderNotice');if(notice){notice.innerHTML='<i class="fa-solid fa-circle-check"></i> খাবারটি আপনার সেভ করা কার্টে যোগ হয়েছে।';notice.classList.remove('hidden');}
     const badge=document.getElementById('detailsCartBadge');if(badge)badge.textContent=totalItems();
   };
   window.orderFromFoodDetails=function(itemId){
@@ -2472,8 +2525,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   window.updateCartUI=function(){
     saveCart();syncBadges();
     const container=document.getElementById('cartItemsContainer'),footer=document.getElementById('cartFooter');if(!container||!footer)return;
-    if(!cart.length){container.innerHTML='<div class="text-center py-16 space-y-3"><div class="w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto text-2xl"><i class="fa-solid fa-basket-shopping"></i></div><p class="text-gray-500 font-medium text-sm">ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯ ржЦрж╛рж▓рж┐ рж░рзЯрзЗржЫрзЗ!</p><button onclick="toggleCart(false)" class="text-xs bg-navy text-white px-4 py-2 rounded-xl font-semibold">ржЦрж╛ржмрж╛рж░ ржжрзЗржЦрзБржи</button></div>';footer.classList.add('hidden');
-    }else{footer.classList.remove('hidden');container.innerHTML=cart.map(item=>`<article class="rk-cart-row bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><div class="rk-cart-row-main"><img class="rk-cart-item-thumb" src="${item.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food'}" alt="${String(item.title||'Food').replace(/"/g,'&quot;')}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="rk-cart-row-info"><h4 class="rk-cart-row-title text-xs font-bold text-gray-800">${item.title||'Food item'}</h4><p class="rk-cart-row-meta text-[11px] text-gray-400">${money(item.price)} ├Ч ${item.quantity}</p><p class="rk-cart-row-total text-xs font-extrabold text-navy mt-0.5">${money((Number(item.price)||0)*(Number(item.quantity)||1))}</p></div></div><div class="rk-cart-row-controls"><button type="button" class="rk-cart-remove-button" onclick='removeSavedCartItem(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-trash-can"></i> Remove</button><div class="rk-cart-quantity flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-gray-200"><button type="button" aria-label="Decrease quantity" onclick='updateQuantity(${JSON.stringify(String(item.id))},-1)' class="w-7 h-7 bg-white rounded-lg text-gray-700 font-bold text-xs shadow-sm flex items-center justify-center"><i class="fa-solid fa-minus"></i></button><span class="text-xs font-bold text-navy w-4 text-center">${item.quantity}</span><button type="button" aria-label="Increase quantity" onclick='updateQuantity(${JSON.stringify(String(item.id))},1)' class="w-7 h-7 bg-white rounded-lg text-gray-700 font-bold text-xs shadow-sm flex items-center justify-center"><i class="fa-solid fa-plus"></i></button></div></div></article>`).join('');}
+    if(!cart.length){container.innerHTML='<div class="text-center py-16 space-y-3"><div class="w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto text-2xl"><i class="fa-solid fa-basket-shopping"></i></div><p class="text-gray-500 font-medium text-sm">আপনার কার্ট খালি রয়েছে!</p><button onclick="toggleCart(false)" class="text-xs bg-navy text-white px-4 py-2 rounded-xl font-semibold">খাবার দেখুন</button></div>';footer.classList.add('hidden');
+    }else{footer.classList.remove('hidden');container.innerHTML=cart.map(item=>`<article class="rk-cart-row bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><div class="rk-cart-row-main"><img class="rk-cart-item-thumb" src="${item.image||'https://placehold.co/100x100/fff0e2/9a4d16?text=Food'}" alt="${String(item.title||'Food').replace(/"/g,'&quot;')}" onerror="this.src='https://placehold.co/100x100/fff0e2/9a4d16?text=Food'"><div class="rk-cart-row-info"><h4 class="rk-cart-row-title text-xs font-bold text-gray-800">${item.title||'Food item'}</h4><p class="rk-cart-row-meta text-[11px] text-gray-400">${money(item.price)} × ${item.quantity}</p><p class="rk-cart-row-total text-xs font-extrabold text-navy mt-0.5">${money((Number(item.price)||0)*(Number(item.quantity)||1))}</p></div></div><div class="rk-cart-row-controls"><button type="button" class="rk-cart-remove-button" onclick='removeSavedCartItem(${JSON.stringify(String(item.id))})'><i class="fa-solid fa-trash-can"></i> Remove</button><div class="rk-cart-quantity flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-gray-200"><button type="button" aria-label="Decrease quantity" onclick='updateQuantity(${JSON.stringify(String(item.id))},-1)' class="w-7 h-7 bg-white rounded-lg text-gray-700 font-bold text-xs shadow-sm flex items-center justify-center"><i class="fa-solid fa-minus"></i></button><span class="text-xs font-bold text-navy w-4 text-center">${item.quantity}</span><button type="button" aria-label="Increase quantity" onclick='updateQuantity(${JSON.stringify(String(item.id))},1)' class="w-7 h-7 bg-white rounded-lg text-gray-700 font-bold text-xs shadow-sm flex items-center justify-center"><i class="fa-solid fa-plus"></i></button></div></div></article>`).join('');}
     const total=totalPrice();const subtotal=document.getElementById('subtotalPrice'),grand=document.getElementById('grandTotalPrice'),fee=document.getElementById('rkCartDeliveryFee');
     if(subtotal)subtotal.textContent=money(total);if(fee)fee.textContent=money(DELIVERY_FEE);if(grand)grand.textContent=money(total+DELIVERY_FEE);renderSheet();
   };
@@ -2536,7 +2589,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 </style>
 <section id="rkLikedFoodsPanel" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="rkLikedFoodsTitle">
  <div class="rk-liked-shell">
-  <header class="rk-liked-header"><button type="button" onclick="closeLikedFoods()" class="site-menu-button" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button><div class="flex-1"><h2 id="rkLikedFoodsTitle" class="text-xl font-black text-slate-900"><i class="fa-solid fa-heart text-rose-600 mr-2"></i>ржЖржкржирж╛рж░ ржкржЫржирзНржжрзЗрж░ ржЦрж╛ржмрж╛рж░</h2><p class="text-xs text-slate-500 mt-1">рж▓рж╛ржЗржХ ржХрж░рж╛ ржЦрж╛ржмрж╛рж░ржЧрзБрж▓рзЛ ржПржЦрж╛ржирзЗ ржЬржорж╛ ржерж╛ржХржмрзЗ</p></div></header>
+  <header class="rk-liked-header"><button type="button" onclick="closeLikedFoods()" class="site-menu-button" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button><div class="flex-1"><h2 id="rkLikedFoodsTitle" class="text-xl font-black text-slate-900"><i class="fa-solid fa-heart text-rose-600 mr-2"></i>আপনার পছন্দের খাবার</h2><p class="text-xs text-slate-500 mt-1">লাইক করা খাবারগুলো এখানে জমা থাকবে</p></div></header>
   <div id="rkLikedFoodsList" class="rk-liked-grid"></div>
  </div>
 </section>
@@ -2555,7 +2608,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
      const id=controlId(btn);if(!id)return;const yes=liked.has(id);
      btn.classList.toggle('is-liked',yes);btn.setAttribute('aria-pressed',yes?'true':'false');
      let html;if(btn.classList.contains('rk-detail-like-button'))html=yes?'<i class="fa-solid fa-heart"></i> Liked':'<i class="fa-regular fa-heart"></i> Like';
-     else if(btn.dataset.rkLikeButton==='remove')html=yes?'<i class="fa-solid fa-heart"></i> рж╕рж░рж╛ржи':'<i class="fa-regular fa-heart"></i> Like';
+     else if(btn.dataset.rkLikeButton==='remove')html=yes?'<i class="fa-solid fa-heart"></i> সরান':'<i class="fa-regular fa-heart"></i> Like';
      else html=yes?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>';
      if(btn.innerHTML!==html)btn.innerHTML=html;
    });
@@ -2567,14 +2620,14 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
    syncHeartButtons();renderLiked();
    if(!exists){
      let target=sourceButton&&sourceButton.isConnected?sourceButton:likeControls().find(btn=>controlId(btn)===key&&btn.getClientRects().length);
-     if(target){target.classList.remove('rk-like-animate');void target.offsetWidth;target.classList.add('rk-like-animate');const burst=document.createElement('span');burst.className='rk-like-burst';burst.innerHTML='тЩе <span>тЬж</span><span>тЬж</span>';target.appendChild(burst);setTimeout(()=>{burst.remove();target.classList.remove('rk-like-animate')},950)}
-     const toast=document.createElement('div');toast.textContent='ЁЯТЭ ржкржЫржирзНржжрзЗрж░ рждрж╛рж▓рж┐ржХрж╛ржпрж╝ ржпрзЛржЧ рж╣ржпрж╝рзЗржЫрзЗ';toast.style.cssText='position:fixed;z-index:200000;left:50%;bottom:28px;transform:translateX(-50%);background:#881337;color:#fff;padding:11px 17px;border-radius:14px;font-size:13px;font-weight:700;box-shadow:0 8px 24px #0002';document.body.appendChild(toast);setTimeout(()=>toast.remove(),1800);
+     if(target){target.classList.remove('rk-like-animate');void target.offsetWidth;target.classList.add('rk-like-animate');const burst=document.createElement('span');burst.className='rk-like-burst';burst.innerHTML='♥ <span>✦</span><span>✦</span>';target.appendChild(burst);setTimeout(()=>{burst.remove();target.classList.remove('rk-like-animate')},950)}
+     const toast=document.createElement('div');toast.textContent='💝 পছন্দের তালিকায় যোগ হয়েছে';toast.style.cssText='position:fixed;z-index:200000;left:50%;bottom:28px;transform:translateX(-50%);background:#881337;color:#fff;padding:11px 17px;border-radius:14px;font-size:13px;font-weight:700;box-shadow:0 8px 24px #0002';document.body.appendChild(toast);setTimeout(()=>toast.remove(),1800);
    }
  };
  function renderLiked(){
    const box=document.getElementById('rkLikedFoodsList');if(!box)return;
    const items=getLikes().map(findFood).filter(Boolean);
-   box.innerHTML=items.length?items.map(item=>`<article class="rk-liked-card"><img src="${item.image||''}" alt=""><div class="flex-1 min-w-0"><h3 class="font-extrabold text-slate-900">${item.title||'Food'}</h3><p class="text-xs text-slate-500 mt-1">${item.restaurant||'RK Foodie'}</p><p class="text-lg font-black text-orange-600 mt-2">тВ╣${Number(item.price)||0}</p><div class="flex flex-wrap gap-2 mt-3"><button type="button" class="px-3 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold" onclick='closeLikedFoods();orderFromFoodDetails(${JSON.stringify(String(item.id))})'>Order now</button><button type="button" class="px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold" onclick='addFoodToSavedCart(${JSON.stringify(String(item.id))});closeLikedFoods()'><i class="fa-solid fa-cart-plus"></i> Cart</button><button type="button" data-rk-like-button="remove" data-food-id="${String(item.id).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}" class="rk-liked-remove-like px-3 py-2 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold" onclick='toggleFoodLike(this.dataset.foodId,this)'><i class="fa-solid fa-heart"></i> рж╕рж░рж╛ржи</button></div></div></article>`).join(''):'<div class="col-span-full text-center py-16 text-slate-500"><i class="fa-regular fa-heart text-4xl text-rose-200"></i><p class="font-bold mt-3">ржПржЦржиржУ ржХрзЛржирзЛ ржЦрж╛ржмрж╛рж░ рж▓рж╛ржЗржХ ржХрж░рзЗржиржирж┐</p><p class="text-sm mt-1">ржЦрж╛ржмрж╛рж░рзЗрж░ ржЫржмрж┐рж░ тЭдя╕П ржмрж╛ржЯржирзЗ ржЪрж╛ржк ржжрж┐ржиред</p></div>';
+   box.innerHTML=items.length?items.map(item=>`<article class="rk-liked-card"><img src="${item.image||''}" alt=""><div class="flex-1 min-w-0"><h3 class="font-extrabold text-slate-900">${item.title||'Food'}</h3><p class="text-xs text-slate-500 mt-1">${item.restaurant||'RK Foodie'}</p><p class="text-lg font-black text-orange-600 mt-2">₹${Number(item.price)||0}</p><div class="flex flex-wrap gap-2 mt-3"><button type="button" class="px-3 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold" onclick='closeLikedFoods();orderFromFoodDetails(${JSON.stringify(String(item.id))})'>Order now</button><button type="button" class="px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold" onclick='addFoodToSavedCart(${JSON.stringify(String(item.id))});closeLikedFoods()'><i class="fa-solid fa-cart-plus"></i> Cart</button><button type="button" data-rk-like-button="remove" data-food-id="${String(item.id).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}" class="rk-liked-remove-like px-3 py-2 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold" onclick='toggleFoodLike(this.dataset.foodId,this)'><i class="fa-solid fa-heart"></i> সরান</button></div></div></article>`).join(''):'<div class="col-span-full text-center py-16 text-slate-500"><i class="fa-regular fa-heart text-4xl text-rose-200"></i><p class="font-bold mt-3">এখনও কোনো খাবার লাইক করেননি</p><p class="text-sm mt-1">খাবারের ছবির ❤️ বাটনে চাপ দিন।</p></div>';
    syncHeartButtons();
  }
  window.openLikedFoods=function(){renderLiked();const panel=document.getElementById('rkLikedFoodsPanel');panel.classList.add('is-open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
@@ -2623,11 +2676,11 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
      else marker=L.marker(point,{draggable:true}).addTo(map);
      marker.off('dragend').on('dragend',()=>{
        const p=marker.getLatLng();saveCoords(p.lat,p.lng,'map-drag',null);
-       setStatus(`ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржкрж┐ржи ржЖржкржбрзЗржЯ рж╣ржпрж╝рзЗржЫрзЗ: ${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}`);
+       setStatus(`ডেলিভারি পিন আপডেট হয়েছে: ${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}`);
      });
      map.setView(point,16);
    }
-   setStatus(`рж▓рзЛржХрзЗрж╢ржи рж╕рзЗржЯ рж╣ржпрж╝рзЗржЫрзЗ: ${locationState.lat.toFixed(6)}, ${locationState.lng.toFixed(6)}${accuracy?` (GPS ржирж┐рж░рзНржнрзБрж▓рждрж╛ ржкрзНрж░рж╛ржпрж╝ ${Math.round(accuracy)} ржорж┐ржЯрж╛рж░)`:''}`);
+   setStatus(`লোকেশন সেট হয়েছে: ${locationState.lat.toFixed(6)}, ${locationState.lng.toFixed(6)}${accuracy?` (GPS নির্ভুলতা প্রায় ${Math.round(accuracy)} মিটার)`:''}`);
    return locationState;
  }
  window.rkSetCheckoutCoordinates=saveCoords;
@@ -2655,22 +2708,22 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
        }).addTo(map);
        map.on('click',event=>{
          saveCoords(event.latlng.lat,event.latlng.lng,'map-click',null);
-         setStatus(`ржорзНржпрж╛ржк ржерзЗржХрзЗ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж▓рзЛржХрзЗрж╢ржи рж╕рзЗржЯ рж╣ржпрж╝рзЗржЫрзЗ: ${event.latlng.lat.toFixed(6)}, ${event.latlng.lng.toFixed(6)}`);
+         setStatus(`ম্যাপ থেকে ডেলিভারি লোকেশন সেট হয়েছে: ${event.latlng.lat.toFixed(6)}, ${event.latlng.lng.toFixed(6)}`);
        });
        if(locationState.lat!==null)saveCoords(locationState.lat,locationState.lng,locationState.source,locationState.accuracy);
      }
      setTimeout(()=>map&&map.invalidateSize(),180);
-   }catch(error){setStatus('ржорзНржпрж╛ржк рж▓рзЛржб ржХрж░рж╛ ржпрж╛ржпрж╝ржирж┐ред ржЗржирзНржЯрж╛рж░ржирзЗржЯ рж╕ржВржпрзЛржЧ ржкрж░рзАржХрзНрж╖рж╛ ржХрж░рзЗ ржЖржмрж╛рж░ ржЪрзЗрж╖рзНржЯрж╛ ржХрж░рзБржиред');console.warn('RK Foodie checkout map:',error);}
+   }catch(error){setStatus('ম্যাপ লোড করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।');console.warn('RK Foodie checkout map:',error);}
  }
  window.fetchCurrentLocation=async function(){
    const btn=$('getCurrentLocationBtn');
-   if(!navigator.geolocation){setStatus('ржПржЗ ржмрзНрж░рж╛ржЙржЬрж╛рж░рзЗ GPS рж╕рж╛ржкрзЛрж░рзНржЯ ржирзЗржЗред ржорзНржпрж╛ржкрзЗ ржЯрзНржпрж╛ржк ржХрж░рзЗ рж▓рзЛржХрзЗрж╢ржи ржмрзЗржЫрзЗ ржирж┐ржиред');return;}
+   if(!navigator.geolocation){setStatus('এই ব্রাউজারে GPS সাপোর্ট নেই। ম্যাপে ট্যাপ করে লোকেশন বেছে নিন।');return;}
    if(!window.isSecureContext&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){
-     setStatus('GPS ржмрзНржпржмрж╣рж╛рж░рзЗрж░ ржЬржирзНржп ржУрзЯрзЗржмрж╕рж╛ржЗржЯржЯрж┐ HTTPS-ржП ржЦрзБрж▓рзБржиред');return;
+     setStatus('GPS ব্যবহারের জন্য ওয়েবসাইটটি HTTPS-এ খুলুন।');return;
    }
    const old=btn?btn.innerHTML:'';
-   if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i><span>GPS рж▓рзЛржХрзЗрж╢ржи ржирзЗржУржпрж╝рж╛ рж╣ржЪрзНржЫрзЗ...</span>';}
-   setStatus('ржЖржкржирж╛рж░ ржмрзНрж░рж╛ржЙржЬрж╛рж░рзЗрж░ GPS ржЕржирзБржорждрж┐рж░ ржЕржкрзЗржХрзНрж╖рж╛ржпрж╝тАж');
+   if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i><span>GPS লোকেশন নেওয়া হচ্ছে...</span>';}
+   setStatus('আপনার ব্রাউজারের GPS অনুমতির অপেক্ষায়…');
    try{
      const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{
        enableHighAccuracy:true,timeout:25000,maximumAge:0
@@ -2691,10 +2744,10 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
          if(addressBox&&text){addressBox.value=text;addressBox.dispatchEvent(new Event('input',{bubbles:true}));addressBox.dispatchEvent(new Event('change',{bubbles:true}));}
        }
      }catch(error){console.warn('RK Foodie reverse geocoding unavailable:',error);}
-     setStatus(`GPS рж▓рзЛржХрзЗрж╢ржи рж╕рзЗржн рж╣ржпрж╝рзЗржЫрзЗ: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}. ржкрзНрж░ржпрж╝рзЛржЬржирзЗ ржорзНржпрж╛ржкрзЗ ржкрж┐ржиржЯрж┐ ржЯрзЗржирзЗ ржарж┐ржХ ржХрж░рзБржиред`);
+     setStatus(`GPS লোকেশন সেভ হয়েছে: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}. প্রয়োজনে ম্যাপে পিনটি টেনে ঠিক করুন।`);
    }catch(error){
-     const messages={1:'рж▓рзЛржХрзЗрж╢ржи ржЕржирзБржорждрж┐ ржжрзЗржУржпрж╝рж╛ рж╣ржпрж╝ржирж┐ред ржмрзНрж░рж╛ржЙржЬрж╛рж░рзЗрж░ Location permission Allow ржХрж░рзБржиред',2:'GPS рж▓рзЛржХрзЗрж╢ржи ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐ред Location ржЪрж╛рж▓рзБ ржХрж░рзЗ ржЖржмрж╛рж░ ржЪрзЗрж╖рзНржЯрж╛ ржХрж░рзБржиред',3:'GPS ржкрзЗрждрзЗ рж╕ржоржпрж╝ рж╢рзЗрж╖ рж╣ржпрж╝рзЗржЫрзЗред ржЖржмрж╛рж░ ржЪрзЗрж╖рзНржЯрж╛ ржХрж░рзБржиред'};
-     setStatus(messages[error.code]||'GPS рж▓рзЛржХрзЗрж╢ржи ржирзЗржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐ред ржорзНржпрж╛ржкрзЗ ржЯрзНржпрж╛ржк ржХрж░рзЗ рж▓рзЛржХрзЗрж╢ржи рж╕рзЗржЯ ржХрж░рждрзЗ ржкрж╛рж░рзЗржиред');
+     const messages={1:'লোকেশন অনুমতি দেওয়া হয়নি। ব্রাউজারের Location permission Allow করুন।',2:'GPS লোকেশন পাওয়া যায়নি। Location চালু করে আবার চেষ্টা করুন।',3:'GPS পেতে সময় শেষ হয়েছে। আবার চেষ্টা করুন।'};
+     setStatus(messages[error.code]||'GPS লোকেশন নেওয়া যায়নি। ম্যাপে ট্যাপ করে লোকেশন সেট করতে পারেন।');
    }finally{if(btn){btn.disabled=false;btn.innerHTML=old;}}
  };
  window.rkEnsureCheckoutMap=initMap;
@@ -2741,32 +2794,32 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     <div class="rk-success-card">
         <div class="rk-success-header">
             <div class="rk-success-icon"><i class="fa-solid fa-check"></i></div>
-            <h2 style="font-size: 24px; font-weight: 900; margin: 0;">ржЕрж░рзНржбрж╛рж░ рж╕ржлрж▓ржнрж╛ржмрзЗ ржЧрзГрж╣рзАржд рж╣рзЯрзЗржЫрзЗ!</h2>
-            <p style="font-size: 13px; opacity: 0.9; margin-top: 5px;">ржЖржкржирж╛рж░ ржЦрж╛ржмрж╛рж░ ржкрзНрж░рж╕рзНрждрзБржд ржХрж░рж╛ рж╢рзБрж░рзБ рж╣рзЯрзЗржЫрзЗ</p>
+            <h2 style="font-size: 24px; font-weight: 900; margin: 0;">অর্ডার সফলভাবে গৃহীত হয়েছে!</h2>
+            <p style="font-size: 13px; opacity: 0.9; margin-top: 5px;">আপনার খাবার প্রস্তুত করা শুরু হয়েছে</p>
         </div>
         <div class="rk-success-body">
             <!-- Live Delivery Timer -->
             <div class="rk-timer-box">
-                <p style="font-size: 12px; font-weight: 700; color: #9a3412; margin-bottom: 4px;"><i class="fa-solid fa-clock mr-1"></i> ржЖржирзБржорж╛ржирж┐ржХ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж╕ржорзЯ</p>
-                <div class="rk-timer-digits" id="rkCountdownTimer">рзйрзж:рзжрзж ржорж┐ржирж┐ржЯ</div>
-                <p style="font-size: 11px; color: #c2410c; margin-top: 4px;">рж▓рж╛ржнржкрзБрж░ рж╢рж╣рж░рзЗрж░ ржоржзрзНржпрзЗ ржжрзНрж░рзБрждрждржо рж╕ржорзЯрзЗ ржкрзМржБржЫрзЗ ржжрзЗржУрзЯрж╛ рж╣ржмрзЗ</p>
+                <p style="font-size: 12px; font-weight: 700; color: #9a3412; margin-bottom: 4px;"><i class="fa-solid fa-clock mr-1"></i> আনুমানিক ডেলিভারি সময়</p>
+                <div class="rk-timer-digits" id="rkCountdownTimer">৩০:০০ মিনিট</div>
+                <p style="font-size: 11px; color: #c2410c; margin-top: 4px;">লাভপুর শহরের মধ্যে দ্রুততম সময়ে পৌঁছে দেওয়া হবে</p>
             </div>
 
             <div class="rk-info-group">
-                <h4 style="font-size: 13px; font-weight: 800; color: #1e293b; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;"><i class="fa-solid fa-receipt mr-1 text-orange-500"></i> ржЕрж░рзНржбрж╛рж░рзЗрж░ ржмрж┐ржмрж░ржг</h4>
-                <div class="rk-info-row"><span>ржЕрж░рзНржбрж╛рж░ ржиржорзНржмрж░:</span> <span id="succOrderId">#RK-12345</span></div>
-                <div class="rk-info-row"><span>ржЧрзНрж░рж╛рж╣ржХрзЗрж░ ржирж╛ржо:</span> <span id="succCustName">-</span></div>
-                <div class="rk-info-row"><span>ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░:</span> <span id="succCustPhone">-</span></div>
-                <div class="rk-info-row"><span>ржкрзЗржорзЗржирзНржЯ ржкржжрзНржзрждрж┐:</span> <span id="succPayment">Cash on Delivery</span></div>
-                <div class="rk-info-row"><span>ржорзЛржЯ ржорзВрж▓рзНржп:</span> <span id="succTotal" style="color: #ea580c; font-size: 15px;">тВ╣0</span></div>
+                <h4 style="font-size: 13px; font-weight: 800; color: #1e293b; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;"><i class="fa-solid fa-receipt mr-1 text-orange-500"></i> অর্ডারের বিবরণ</h4>
+                <div class="rk-info-row"><span>অর্ডার নম্বর:</span> <span id="succOrderId">#RK-12345</span></div>
+                <div class="rk-info-row"><span>গ্রাহকের নাম:</span> <span id="succCustName">-</span></div>
+                <div class="rk-info-row"><span>মোবাইল নম্বর:</span> <span id="succCustPhone">-</span></div>
+                <div class="rk-info-row"><span>পেমেন্ট পদ্ধতি:</span> <span id="succPayment">Cash on Delivery</span></div>
+                <div class="rk-info-row"><span>মোট মূল্য:</span> <span id="succTotal" style="color: #ea580c; font-size: 15px;">₹0</span></div>
             </div>
 
             <div class="rk-info-group">
-                <h4 style="font-size: 13px; font-weight: 800; color: #1e293b; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;"><i class="fa-solid fa-location-dot mr-1 text-orange-500"></i> ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛ ржУ рж▓рзНржпрж╛ржирзНржбржорж╛рж░рзНржХ</h4>
+                <h4 style="font-size: 13px; font-weight: 800; color: #1e293b; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;"><i class="fa-solid fa-location-dot mr-1 text-orange-500"></i> ডেলিভারি ঠিকানা ও ল্যান্ডমার্ক</h4>
                 <p id="succAddress" style="font-size: 12px; color: #334155; line-height: 1.6; margin: 0;"></p>
             </div>
 
-            <button type="button" onclick="closeSuccessModal()" style="width: 100%; background: #1b2b48; color: #fff; font-weight: 800; padding: 14px; border-radius: 14px; border: none; cursor: pointer; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">рж╣рзЛржо ржкрзЗржЬрзЗ ржлрж┐рж░рзЗ ржпрж╛ржи</button>
+            <button type="button" onclick="closeSuccessModal()" style="width: 100%; background: #1b2b48; color: #fff; font-weight: 800; padding: 14px; border-radius: 14px; border: none; cursor: pointer; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">হোম পেজে ফিরে যান</button>
         </div>
     </div>
 </div>
@@ -2783,14 +2836,14 @@ function startDeliveryTimer(durationInMinutes) {
         let minutes = parseInt(timer / 60, 10);
         let seconds = parseInt(timer % 60, 10);
 
-        minutes = minutes < 10 ? "рзж" + minutes : minutes;
-        seconds = seconds < 10 ? "рзж" + seconds : seconds;
+        minutes = minutes < 10 ? "০" + minutes : minutes;
+        seconds = seconds < 10 ? "০" + seconds : seconds;
 
-        if (display) display.textContent = minutes + ":" + seconds + " ржорж┐ржирж┐ржЯ";
+        if (display) display.textContent = minutes + ":" + seconds + " মিনিট";
 
         if (--timer < 0) {
             clearInterval(rkTimerInterval);
-            if (display) display.textContent = "ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржмрзЯ ржкрзМржБржЫрж╛ржирзЛрж░ ржХрж╛ржЫрж╛ржХрж╛ржЫрж┐!";
+            if (display) display.textContent = "ডেলিভারি বয় পৌঁছানোর কাছাকাছি!";
         }
     }, 1000);
 }
@@ -2800,7 +2853,7 @@ function showOrderSuccessModal(orderDetails) {
     document.getElementById('succCustName').textContent = orderDetails.customer_name;
     document.getElementById('succCustPhone').textContent = orderDetails.phone;
     document.getElementById('succPayment').textContent = orderDetails.payment_method;
-    document.getElementById('succTotal').textContent = 'тВ╣' + orderDetails.total;
+    document.getElementById('succTotal').textContent = '₹' + orderDetails.total;
     document.getElementById('succAddress').textContent = orderDetails.address;
 
     document.getElementById('rkOrderSuccessModal').classList.add('is-open');
@@ -2838,7 +2891,7 @@ function closeSuccessModal() {
  'use strict';
  const HISTORY_KEY='rkFoodieOrderHistoryV1';
  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const money=v=>'тВ╣'+(Number(v)||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+ const money=v=>'₹'+(Number(v)||0).toLocaleString('en-IN',{maximumFractionDigits:2});
  const readHistory=()=>{try{const v=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');return Array.isArray(v)?v:[]}catch(_){return[]}};
  const saveHistory=o=>{try{const rows=readHistory().filter(x=>x.order_number!==o.order_number);rows.unshift(o);localStorage.setItem(HISTORY_KEY,JSON.stringify(rows.slice(0,100)));return true}catch(e){console.warn('Order history could not be saved locally',e);return false}};
  function fullAddress(){
@@ -2848,11 +2901,11 @@ function closeSuccessModal() {
  // Customer-side slip controls removed; delivery slip is available in the Delivery Partner app only.
  window.openOrderHistory=function(){
    let panel=document.getElementById('rkOrderHistoryPanel');
-   if(!panel){panel=document.createElement('section');panel.id='rkOrderHistoryPanel';panel.style.cssText='position:fixed;inset:0;z-index:120000;background:#f8fafc;overflow:auto;font-family:Poppins,sans-serif';panel.innerHTML='<div style="max-width:900px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;padding:10px 0 18px;border-bottom:1px solid #e5e7eb"><button type="button" onclick="closeOrderHistory()" style="font-size:24px;padding:6px 12px">тЖР</button><div><h2 style="font-size:22px;font-weight:800">Your Ordered</h2><p style="color:#64748b;font-size:13px">ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░, ржарж┐ржХрж╛ржирж╛ ржУ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЖржкржбрзЗржЯ</p></div></header><div id="rkOrderHistoryItems" style="display:grid;gap:12px;padding:18px 0"></div></div>';document.body.appendChild(panel)}
+   if(!panel){panel=document.createElement('section');panel.id='rkOrderHistoryPanel';panel.style.cssText='position:fixed;inset:0;z-index:120000;background:#f8fafc;overflow:auto;font-family:Poppins,sans-serif';panel.innerHTML='<div style="max-width:900px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;padding:10px 0 18px;border-bottom:1px solid #e5e7eb"><button type="button" onclick="closeOrderHistory()" style="font-size:24px;padding:6px 12px">←</button><div><h2 style="font-size:22px;font-weight:800">Your Ordered</h2><p style="color:#64748b;font-size:13px">আপনার অর্ডার, ঠিকানা ও ডেলিভারি আপডেট</p></div></header><div id="rkOrderHistoryItems" style="display:grid;gap:12px;padding:18px 0"></div></div>';document.body.appendChild(panel)}
    const items=readHistory(),box=document.getElementById('rkOrderHistoryItems');
-   box.innerHTML=items.length?items.map(o=>{const eta=Number(o.estimated_delivery_at)||0;const itemRows=(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f1f5f9"><img src="${esc(i.image||'https://placehold.co/60x60')}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px"><span style="flex:1;min-width:0"><b>${esc(i.title)}</b><small style="display:block;color:#64748b">${Number(i.quantity)||1} ├Ч ${money(i.price)}</small></span><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');return `<article data-rk-order-card="${esc(o.order_number||o.id)}" style="border:1px solid #e2e8f0;border-radius:18px;padding:16px;background:white;box-shadow:0 5px 18px #0f172a08"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">${esc(o.order_number||o.id)}</strong><span data-rk-order-status="${esc(o.order_number||o.id)}" style="font-size:11px;padding:5px 9px;border-radius:99px;background:#fff7ed;color:#c2410c;font-weight:800">${esc(o.status||'pending').toUpperCase()}</span></div><p style="font-size:11px;color:#64748b;margin-top:4px">Placed: ${esc(new Date(o.created_at||Date.now()).toLocaleString())}</p><div style="margin-top:10px">${itemRows}</div><div style="margin-top:12px;padding:12px;border-radius:12px;background:#f8fafc;font-size:12px;line-height:1.7"><b>Delivery address</b><br>${esc(o.address)}<br><b>Delivery PIN:</b> <span data-rk-order-pin="${esc(o.order_number||o.id)}" style="font-size:20px;font-weight:900;letter-spacing:5px;color:#c2410c">${/^\d{4}$/.test(String(o.delivery_pin||''))?esc(o.delivery_pin):'Pending sync'}</span><br><b>Contact:</b> ${esc(o.phone)}<br><b>Payment:</b> ${esc(o.payment_method||'Cash on Delivery')}<br><b>Estimated arrival:</b> ${esc(o.estimated_delivery_text||'25тАУ40 minutes after order confirmation')} ${eta?`<br><b>Time remaining:</b> <span data-eta="${eta}" class="rk-history-countdown"></span>`:''}</div><div style="display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px"><strong style="font-size:18px">Total: ${money(o.total)}</strong></div></article>`}).join(''):'<div style="text-align:center;padding:55px 12px;color:#64748b">ржПржЦржиржУ ржХрзЛржирзЛ ржЕрж░рзНржбрж╛рж░ ржирзЗржЗред ржЦрж╛ржмрж╛рж░ ржЕрж░рзНржбрж╛рж░ ржХрж░рж▓рзЗ рж╕ржорзНржкрзВрж░рзНржг ржмрж┐ржмрж░ржг ржПржЦрж╛ржирзЗ ржжрзЗржЦрж╛ ржпрж╛ржмрзЗред</div>';
+   box.innerHTML=items.length?items.map(o=>{const eta=Number(o.estimated_delivery_at)||0;const itemRows=(o.items||[]).map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f1f5f9"><img src="${esc(i.image||'https://placehold.co/60x60')}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px"><span style="flex:1;min-width:0"><b>${esc(i.title)}</b><small style="display:block;color:#64748b">${Number(i.quantity)||1} × ${money(i.price)}</small></span><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');return `<article data-rk-order-card="${esc(o.order_number||o.id)}" style="border:1px solid #e2e8f0;border-radius:18px;padding:16px;background:white;box-shadow:0 5px 18px #0f172a08"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">${esc(o.order_number||o.id)}</strong><span data-rk-order-status="${esc(o.order_number||o.id)}" style="font-size:11px;padding:5px 9px;border-radius:99px;background:#fff7ed;color:#c2410c;font-weight:800">${esc(o.status||'pending').toUpperCase()}</span></div><p style="font-size:11px;color:#64748b;margin-top:4px">Placed: ${esc(new Date(o.created_at||Date.now()).toLocaleString())}</p><div style="margin-top:10px">${itemRows}</div><div style="margin-top:12px;padding:12px;border-radius:12px;background:#f8fafc;font-size:12px;line-height:1.7"><b>Delivery address</b><br>${esc(o.address)}<br><b>Delivery PIN:</b> <span data-rk-order-pin="${esc(o.order_number||o.id)}" style="font-size:20px;font-weight:900;letter-spacing:5px;color:#c2410c">${/^\d{4}$/.test(String(o.delivery_pin||''))?esc(o.delivery_pin):'Pending sync'}</span><br><b>Contact:</b> ${esc(o.phone)}<br><b>Payment:</b> ${esc(o.payment_method||'Cash on Delivery')}<br><b>Estimated arrival:</b> ${esc(o.estimated_delivery_text||'25–40 minutes after order confirmation')} ${eta?`<br><b>Time remaining:</b> <span data-eta="${eta}" class="rk-history-countdown"></span>`:''}</div><div style="display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px"><strong style="font-size:18px">Total: ${money(o.total)}</strong></div></article>`}).join(''):'<div style="text-align:center;padding:55px 12px;color:#64748b">এখনও কোনো অর্ডার নেই। খাবার অর্ডার করলে সম্পূর্ণ বিবরণ এখানে দেখা যাবে।</div>';
    panel.style.display='block';document.body.style.overflow='hidden';
-   const tick=()=>box.querySelectorAll('[data-eta]').forEach(el=>{let n=Math.max(0,Math.floor((Number(el.dataset.eta)-Date.now())/1000));el.textContent=n?`${Math.floor(n/60)} ржорж┐ржирж┐ржЯ ${n%60} рж╕рзЗржХрзЗржирзНржб`:'ржЖржирзБржорж╛ржирж┐ржХ рж╕ржоржпрж╝ рж╢рзЗрж╖ тАФ ржЖржкржбрзЗржЯрзЗрж░ ржЬржирзНржп ржжрзЛржХрж╛ржирзЗрж░ рж╕ржЩрзНржЧрзЗ ржпрзЛржЧрж╛ржпрзЛржЧ ржХрж░рзБржи';});tick();if(window.rkHistoryTimer)clearInterval(window.rkHistoryTimer);window.rkHistoryTimer=setInterval(()=>{if(!document.getElementById('rkOrderHistoryPanel')||document.getElementById('rkOrderHistoryPanel').style.display==='none'){clearInterval(window.rkHistoryTimer);return}tick()},1000);
+   const tick=()=>box.querySelectorAll('[data-eta]').forEach(el=>{let n=Math.max(0,Math.floor((Number(el.dataset.eta)-Date.now())/1000));el.textContent=n?`${Math.floor(n/60)} মিনিট ${n%60} সেকেন্ড`:'আনুমানিক সময় শেষ — আপডেটের জন্য দোকানের সঙ্গে যোগাযোগ করুন';});tick();if(window.rkHistoryTimer)clearInterval(window.rkHistoryTimer);window.rkHistoryTimer=setInterval(()=>{if(!document.getElementById('rkOrderHistoryPanel')||document.getElementById('rkOrderHistoryPanel').style.display==='none'){clearInterval(window.rkHistoryTimer);return}tick()},1000);
  };
  window.closeOrderHistory=function(){const p=document.getElementById('rkOrderHistoryPanel');if(p)p.style.display='none';document.body.style.overflow='';if(window.rkHistoryTimer)clearInterval(window.rkHistoryTimer)};
  window.showOrderSuccessModal=function(o){
@@ -2860,16 +2913,16 @@ function closeSuccessModal() {
    set('succOrderId',o.order_number);set('succCustName',o.customer_name);set('succCustPhone',o.phone);set('succPayment',o.payment_method);set('succTotal',money(o.total));set('succAddress',o.address);
    let pinNotice=document.getElementById('rkSuccessDeliveryPin');
    if(!pinNotice){pinNotice=document.createElement('div');pinNotice.id='rkSuccessDeliveryPin';pinNotice.style.cssText='margin:12px 0;padding:12px 14px;border:1px solid #fed7aa;border-radius:12px;background:#fff7ed;color:#9a3412;font-weight:800;text-align:center';const body=document.querySelector('#rkOrderSuccessModal .rk-success-body');if(body)body.prepend(pinNotice);}
-   if(pinNotice)pinNotice.textContent=`ЁЯФР ржЖржкржирж╛рж░ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ PIN: ${o.delivery_pin||'тАФ'} (ржЕрж░рзНржбрж╛рж░ рж╣рж╛рждрзЗ ржкрж╛ржУржпрж╝рж╛рж░ рж╕ржоржпрж╝ ржкрж╛рж░рзНржЯржирж╛рж░ржХрзЗ ржЬрж╛ржирж╛ржи)`;
+   if(pinNotice)pinNotice.textContent=`🔐 আপনার ডেলিভারি PIN: ${o.delivery_pin||'—'} (অর্ডার হাতে পাওয়ার সময় পার্টনারকে জানান)`;
    let body=document.querySelector('#rkOrderSuccessModal .rk-success-body');let items=document.getElementById('rkSuccessItems');if(!items&&body){items=document.createElement('div');items.id='rkSuccessItems';const info=body.querySelector('.rk-info-group');if(info)info.parentNode.insertBefore(items,info);else body.prepend(items)}
-   if(items)items.innerHTML=`<h4 style="font-size:13px;font-weight:800;color:#1e293b;margin:0 0 4px">ржЖржкржирж╛рж░ ржЕрж░рзНржбрж╛рж░</h4>`+(o.items||[]).map(i=>`<div class="rk-success-item"><img src="${esc(i.image||'https://placehold.co/80x80?text=Food')}" alt=""><div class="rk-si-name">${esc(i.title)}<div class="rk-si-sub">${Number(i.quantity)||1} ├Ч ${money(i.price)}</div></div><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');
+   if(items)items.innerHTML=`<h4 style="font-size:13px;font-weight:800;color:#1e293b;margin:0 0 4px">আপনার অর্ডার</h4>`+(o.items||[]).map(i=>`<div class="rk-success-item"><img src="${esc(i.image||'https://placehold.co/80x80?text=Food')}" alt=""><div class="rk-si-name">${esc(i.title)}<div class="rk-si-sub">${Number(i.quantity)||1} × ${money(i.price)}</div></div><b>${money((Number(i.price)||0)*(Number(i.quantity)||1))}</b></div>`).join('');
    const oldSync=document.getElementById('rkOrderSyncStatus');if(oldSync)oldSync.remove();
    let actions=document.getElementById('rkSuccessActions');if(!actions&&body){actions=document.createElement('div');actions.id='rkSuccessActions';actions.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px';const close=body.querySelector('button[onclick="closeSuccessModal()"]');if(close)close.before(actions);else body.appendChild(actions)}
    if(actions)actions.innerHTML=`<button class="rk-order-action primary" onclick="openOrderHistory()"><i class="fa-solid fa-receipt"></i> Your Ordered</button>`;
    let sync=document.getElementById('rkOrderSyncStatus');if(!sync&&body){sync=document.createElement('p');sync.id='rkOrderSyncStatus';sync.className='rk-sync-status';if(actions)actions.after(sync);else body.appendChild(sync)}
-   if(sync){sync.className='rk-sync-status';sync.textContent='ржЕрж░рзНржбрж╛рж░ржЯрж┐ ржПржЗ ржбрж┐ржнрж╛ржЗрж╕рзЗ рж╕рзЗржн рж╣ржпрж╝рзЗржЫрзЗ; рж╕рж╛рж░рзНржнрж╛рж░рзЗ рж╕рж┐ржЩрзНржХ рж╣ржЪрзНржЫрзЗтАж'}
+   if(sync){sync.className='rk-sync-status';sync.textContent='অর্ডারটি এই ডিভাইসে সেভ হয়েছে; সার্ভারে সিঙ্ক হচ্ছে…'}
    const modal=document.getElementById('rkOrderSuccessModal');modal.classList.add('is-open');document.body.style.overflow='hidden';
-   const eta=Number(o.estimated_delivery_at)||Date.now()+25*60000;const tick=()=>{const n=Math.max(0,Math.floor((eta-Date.now())/1000));set('rkCountdownTimer',n?`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')} ржорж┐ржирж┐ржЯ`:'ржЖржирзБржорж╛ржирж┐ржХ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж╕ржоржпрж╝ ржПрж╕рзЗ ржЧрзЗржЫрзЗ');};tick();if(window.rkTimerInterval)clearInterval(window.rkTimerInterval);window.rkTimerInterval=setInterval(()=>{if(!modal.classList.contains('is-open')){clearInterval(window.rkTimerInterval);return}tick()},1000);
+   const eta=Number(o.estimated_delivery_at)||Date.now()+25*60000;const tick=()=>{const n=Math.max(0,Math.floor((eta-Date.now())/1000));set('rkCountdownTimer',n?`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')} মিনিট`:'আনুমানিক ডেলিভারি সময় এসে গেছে');};tick();if(window.rkTimerInterval)clearInterval(window.rkTimerInterval);window.rkTimerInterval=setInterval(()=>{if(!modal.classList.contains('is-open')){clearInterval(window.rkTimerInterval);return}tick()},1000);
  };
  window.submitOrderViaWhatsApp=async function(){
    if(window.rkOrderSubmitting)return;
@@ -2881,14 +2934,14 @@ function closeSuccessModal() {
    const paymentMethod=document.querySelector('input[name="payment"]:checked')?.value||'Cash on Delivery';
    const digits=phone.replace(/\D/g,'');
    if(!name||!phone||digits.length<10||digits.length>15||!address){
-     alert(!name?'ржЕржирзБржЧрзНрж░рж╣ ржХрж░рзЗ ржЖржкржирж╛рж░ ржирж╛ржо рж▓рж┐ржЦрзБржиред':!phone||digits.length<10||digits.length>15?'рж╕ржарж┐ржХ ржорзЛржмрж╛ржЗрж▓ ржиржорзНржмрж░ рж▓рж┐ржЦрзБржи (рззрзжтАУрззрзлржЯрж┐ рж╕ржВржЦрзНржпрж╛)ред':'ржЕржирзБржЧрзНрж░рж╣ ржХрж░рзЗ рж╕ржорзНржкрзВрж░рзНржг ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛ рж▓рж┐ржЦрзБржиред');
+     alert(!name?'অনুগ্রহ করে আপনার নাম লিখুন।':!phone||digits.length<10||digits.length>15?'সঠিক মোবাইল নম্বর লিখুন (১০–১৫টি সংখ্যা)।':'অনুগ্রহ করে সম্পূর্ণ ডেলিভারি ঠিকানা লিখুন।');
      return;
    }
    const activeCart=(typeof cart!=='undefined'&&Array.isArray(cart))?cart:[];
-   if(!activeCart.length){alert('ржЖржкржирж╛рж░ ржХрж╛рж░рзНржЯ ржЦрж╛рж▓рж┐ рж░рзЯрзЗржЫрзЗ!');return}
+   if(!activeCart.length){alert('আপনার কার্ট খালি রয়েছে!');return}
    const client=window.RKFoodieSupabase;
    if(!client||typeof client.from!=='function'){
-     alert('Supabase рж╕ржВржпрзЛржЧ ржкрж╛ржУрзЯрж╛ ржпрж╛ржЪрзНржЫрзЗ ржирж╛ред ржЕрж░рзНржбрж╛рж░ ржирзЗржУрзЯрж╛ рж╣рзЯржирж┐ред ржЗржирзНржЯрж╛рж░ржирзЗржЯ рж╕ржВржпрзЛржЧ ржУ Supabase рж╕рзЗржЯрж┐ржВрж╕ ржкрж░рзАржХрзНрж╖рж╛ ржХрж░рзЗ ржЖржмрж╛рж░ ржЪрзЗрж╖рзНржЯрж╛ ржХрж░рзБржиред');
+     alert('Supabase সংযোগ পাওয়া যাচ্ছে না। অর্ডার নেওয়া হয়নি। ইন্টারনেট সংযোগ ও Supabase সেটিংস পরীক্ষা করে আবার চেষ্টা করুন।');
      return;
    }
 
@@ -2905,17 +2958,17 @@ function closeSuccessModal() {
    let customerLat=Number(window.RKCustomerLocation?.lat),customerLng=Number(window.RKCustomerLocation?.lng);
    const coordsValid=()=>Number.isFinite(customerLat)&&Number.isFinite(customerLng)&&customerLat>=-90&&customerLat<=90&&customerLng>=-180&&customerLng<=180&&(customerLat!==0||customerLng!==0);
    if(!coordsValid()){
-     if(!navigator.geolocation){if(waWindow)waWindow.close();alert('ржПржЗ ржмрзНрж░рж╛ржЙржЬрж╛рж░рзЗ GPS рж╕рж╛ржкрзЛрж░рзНржЯ ржирзЗржЗред GPS ржЪрж╛рж▓рзБ ржХрж░рзЗ HTTPS ржУрзЯрзЗржмрж╕рж╛ржЗржЯ ржерзЗржХрзЗ ржЖржмрж╛рж░ ржЪрзЗрж╖рзНржЯрж╛ ржХрж░рзБржиред');return;}
-     if(!window.isSecureContext&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){if(waWindow)waWindow.close();alert('GPS ржмрзНржпржмрж╣рж╛рж░рзЗрж░ ржЬржирзНржп ржУрзЯрзЗржмрж╕рж╛ржЗржЯржЯрж┐ HTTPS-ржП ржЦрзБрж▓рзБржиред');return;}
+     if(!navigator.geolocation){if(waWindow)waWindow.close();alert('এই ব্রাউজারে GPS সাপোর্ট নেই। GPS চালু করে HTTPS ওয়েবসাইট থেকে আবার চেষ্টা করুন।');return;}
+     if(!window.isSecureContext&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){if(waWindow)waWindow.close();alert('GPS ব্যবহারের জন্য ওয়েবসাইটটি HTTPS-এ খুলুন।');return;}
      try{
        const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:12000,maximumAge:60000}));
        customerLat=Number(position.coords.latitude);customerLng=Number(position.coords.longitude);
        if(!coordsValid())throw new Error('GPS coordinates are invalid');
        if(typeof window.rkSetCheckoutCoordinates==='function')window.rkSetCheckoutCoordinates(customerLat,customerLng,'gps',Number(position.coords.accuracy)||null);
        const gps=window.RKCustomerLocation||(window.RKCustomerLocation={});gps.lat=customerLat;gps.lng=customerLng;gps.source='gps';gps.accuracy=Number(position.coords.accuracy)||null;
-     }catch(gpsError){if(waWindow)waWindow.close();alert('ржЖржкржирж╛рж░ GPS рж▓рзЛржХрзЗрж╢ржи ржкрж╛ржУрзЯрж╛ ржпрж╛рзЯржирж┐ред Location permission Allow ржХрж░рзЗ ржЖржмрж╛рж░ ржЕрж░рзНржбрж╛рж░ ржХрж░рзБржиред');if(typeof window.toggleCart==='function')window.toggleCart(true);return;}
+     }catch(gpsError){if(waWindow)waWindow.close();alert('আপনার GPS লোকেশন পাওয়া যায়নি। Location permission Allow করে আবার অর্ডার করুন।');if(typeof window.toggleCart==='function')window.toggleCart(true);return;}
    }
-   if(!coordsValid()){if(waWindow)waWindow.close();alert('рж╕ржарж┐ржХ GPS рж▓рзЛржХрзЗрж╢ржи ржЫрж╛рзЬрж╛ ржЕрж░рзНржбрж╛рж░ ржХрж░рж╛ ржпрж╛ржмрзЗ ржирж╛ред');return;}
+   if(!coordsValid()){if(waWindow)waWindow.close();alert('সঠিক GPS লোকেশন ছাড়া অর্ডার করা যাবে না।');return;}
 
    window.rkOrderSubmitting=true;
    const submitButtons=[...document.querySelectorAll('[onclick*="submitOrderViaWhatsApp"]')];
@@ -2942,9 +2995,9 @@ function closeSuccessModal() {
      const historySaved=saveHistory(historyOrder);
      if(!historySaved)console.warn('RK Foodie: order is saved in Supabase, but local order history could not be saved.');
 
-     let message=`ЁЯЫТ *ржирждрзБржи ржлрзБржб ржЕрж░рзНржбрж╛рж░ - RK Foodie (рж▓рж╛ржнржкрзБрж░)*\nЁЯз╛ *ржЕрж░рзНржбрж╛рж░ ржиржорзНржмрж░:* ${orderNumber}\nЁЯСд *ржирж╛ржо:* ${name}\n*ржпрзЛржЧрж╛ржпрзЛржЧ ржиржорзНржмрж░:* ${phone}\nЁЯУН *ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛:* ${address}\nЁЯЧ║я╕П *GPS:* ${customerLat.toFixed(7)}, ${customerLng.toFixed(7)}\nЁЯТ│ *ржкрзЗржорзЗржирзНржЯ:* ${paymentMethod}\nтП▒я╕П *ржЖржирзБржорж╛ржирж┐ржХ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐:* ${historyOrder.estimated_delivery_text}\n------------------------------\nЁЯН╜я╕П *ржЕрж░рзНржбрж╛рж░рзЗрж░ рждрж╛рж▓рж┐ржХрж╛:*\n`;
-     cartItems.forEach((i,n)=>message+=`${n+1}. ${i.title} ├Ч ${i.quantity} тАФ ${money(i.price*i.quantity)}\n`);
-     message+=`------------------------------\nЁЯН▒ *ржЦрж╛ржмрж╛рж░рзЗрж░ ржжрж╛ржо:* ${money(foodSubtotal)}\nЁЯЫ╡ *ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЪрж╛рж░рзНржЬ:* ${money(deliveryFee)}\nЁЯТ░ *рж╕рж░рзНржмржорзЛржЯ:* ${money(grandTotal)}\nржзржирзНржпржмрж╛ржж! ржЕрж░рзНржбрж╛рж░ржЯрж┐ RK Foodie-рждрзЗ рж╕рзЗржн рж╣рзЯрзЗржЫрзЗред`;
+     let message=`🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর)*\n🧾 *অর্ডার নম্বর:* ${orderNumber}\n👤 *নাম:* ${name}\n*যোগাযোগ নম্বর:* ${phone}\n📍 *ডেলিভারি ঠিকানা:* ${address}\n🗺️ *GPS:* ${customerLat.toFixed(7)}, ${customerLng.toFixed(7)}\n💳 *পেমেন্ট:* ${paymentMethod}\n⏱️ *আনুমানিক ডেলিভারি:* ${historyOrder.estimated_delivery_text}\n------------------------------\n🍽️ *অর্ডারের তালিকা:*\n`;
+     cartItems.forEach((i,n)=>message+=`${n+1}. ${i.title} × ${i.quantity} — ${money(i.price*i.quantity)}\n`);
+     message+=`------------------------------\n🍱 *খাবারের দাম:* ${money(foodSubtotal)}\n🛵 *ডেলিভারি চার্জ:* ${money(deliveryFee)}\n💰 *সর্বমোট:* ${money(grandTotal)}\nধন্যবাদ! অর্ডারটি RK Foodie-তে সেভ হয়েছে।`;
      if(waWindow&&!waWindow.closed){try{waWindow.location.href=`https://wa.me/919907406500?text=${encodeURIComponent(message)}`;}catch(waError){console.warn('RK Foodie: order saved, but WhatsApp could not be opened.',waError);}}
      else {console.info('RK Foodie: order saved; WhatsApp popup was blocked or closed by the browser.');}
 
@@ -2954,11 +3007,11 @@ function closeSuccessModal() {
        window.showOrderSuccessModal(historyOrder);
      }
      console.info('RK Foodie order synced:',orderNumber);
-     if(!historySaved)alert('ржЕрж░рзНржбрж╛рж░ Supabase-ржП рж╕рзЗржн рж╣рзЯрзЗржЫрзЗред рждржмрзЗ ржПржЗ ржбрж┐ржнрж╛ржЗрж╕рзЗ Your Ordered рждрж╛рж▓рж┐ржХрж╛ рж╕рзЗржн рж╣рзЯржирж┐; ржЖржмрж╛рж░ ржкрзЗржЬ ржЦрзБрж▓рж▓рзЗ рж╕рж╛рж░рзНржнрж╛рж░ ржерзЗржХрзЗ ржЕрж░рзНржбрж╛рж░ ржжрзЗржЦрждрзЗ Admin Panel ржкрзНрж░рзЯрзЛржЬржи рж╣ржмрзЗред');
+     if(!historySaved)alert('অর্ডার Supabase-এ সেভ হয়েছে। তবে এই ডিভাইসে Your Ordered তালিকা সেভ হয়নি; আবার পেজ খুললে সার্ভার থেকে অর্ডার দেখতে Admin Panel প্রয়োজন হবে।');
    } catch(orderError) {
      if(waWindow){try{waWindow.close()}catch(_){}}
      console.error('RK Foodie order creation failed:',orderError);
-     alert('ржЕрж░рзНржбрж╛рж░ Supabase-ржП рж╕рзЗржн рж╣рзЯржирж┐, рждрж╛ржЗ ржЕрж░рзНржбрж╛рж░ ржХржиржлрж╛рж░рзНржо ржХрж░рж╛ рж╣рзЯржирж┐ ржПржмржВ WhatsApp-ржПржУ ржкрж╛ржарж╛ржирзЛ рж╣рзЯржирж┐ред ржЕржирзБржЧрзНрж░рж╣ ржХрж░рзЗ ржЖржмрж╛рж░ ржЪрзЗрж╖рзНржЯрж╛ ржХрж░рзБржиред\nржХрж╛рж░ржг: '+String(orderError?.message||orderError));
+     alert('অর্ডার Supabase-এ সেভ হয়নি, তাই অর্ডার কনফার্ম করা হয়নি এবং WhatsApp-এও পাঠানো হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।\nকারণ: '+String(orderError?.message||orderError));
    } finally {
      window.rkOrderSubmitting=false;
      submitButtons.forEach(button=>{button.disabled=false;button.style.opacity=''});
@@ -2972,7 +3025,7 @@ function closeSuccessModal() {
  'use strict';
  const KEY='rkFoodieOrderHistoryV1';
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const money=v=>'тВ╣'+(Number(v)||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+ const money=v=>'₹'+(Number(v)||0).toLocaleString('en-IN',{maximumFractionDigits:2});
  const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x:[]}catch(_){return[]}};
  let activeMap=null, activeMarkers=[], activeLine=null, pollTimer=null, mapCssPromise=null, mapJsPromise=null;
  const radians=n=>n*Math.PI/180;
@@ -2987,14 +3040,14 @@ function closeSuccessModal() {
  function trackingModal(){let m=document.getElementById('rkProductTrackingModal');if(!m){m=document.createElement('section');m.id='rkProductTrackingModal';m.style.cssText='position:fixed;inset:0;z-index:130000;background:#f8fafc;overflow:auto;font-family:Poppins,Arial,sans-serif';document.body.appendChild(m)}return m}
  window.rkOpenTrackedItem=async function(orderNo,index){
    stop();const o=read().find(x=>String(x.order_number)===String(orderNo));if(!o)return;const it=(o.items||[])[Number(index)]||{};const modal=trackingModal();
-   modal.innerHTML=`<div style="max-width:760px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;border-bottom:1px solid #e2e8f0;padding-bottom:14px"><button id="rkTrackClose" type="button" style="font-size:25px;padding:4px 12px">тЖР</button><div><b style="font-size:20px">Product Details</b><div style="font-size:12px;color:#64748b">Order ${esc(o.order_number)}</div></div></header><div style="display:grid;grid-template-columns:110px 1fr;gap:14px;padding:18px 0"><img src="${esc(it.image||'https://placehold.co/200x200')}" alt="" style="width:110px;height:110px;object-fit:cover;border-radius:14px"><div><h2 style="font-size:19px;font-weight:800">${esc(it.title||it.name||'Food item')}</h2><p style="color:#64748b;font-size:13px">Quantity: ${Number(it.quantity)||1}</p><p style="font-weight:800;color:#ea580c">${money(it.price)}</p><p style="font-size:12px;color:#64748b">Order total: ${money(o.total)}</p></div></div><section style="border:1px solid #dbe4ee;border-radius:16px;padding:15px"><div style="background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:14px;padding:16px;margin-bottom:14px;text-align:center"><div style="font-size:12px;font-weight:800;color:#9a3412;letter-spacing:.08em">YOUR DELIVERY PIN</div><div id="rkCustomerDeliveryPin" style="font-size:38px;line-height:1.2;font-weight:900;letter-spacing:10px;color:#9a3412;margin:7px 0">----</div><div style="font-size:11px;color:#9a3412">ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ рж╕ржорзНржкржирзНржи ржХрж░рж╛рж░ рж╕ржорзЯ ржкрж╛рж░рзНржЯржирж╛рж░ржХрзЗ ржПржЗ рзк-ржбрж┐ржЬрж┐ржЯ PIN ржжрж┐ржи</div></div><h3 style="font-size:18px;font-weight:800">Live Delivery Tracking</h3><p style="font-size:12px;color:#64748b;margin:5px 0 12px">ржорзНржпрж╛ржкрзЗ ржЖржкржирж╛рж░ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржарж┐ржХрж╛ржирж╛ ржУ ржкрж╛рж░рзНржЯржирж╛рж░рзЗрж░ рж╕рж░рзНржмрж╢рзЗрж╖ рж▓рж╛ржЗржн GPS ржЕржмрж╕рзНржерж╛ржи ржжрзЗржЦрж╛ ржпрж╛ржмрзЗред</p><div id="rkTrackStatus" role="status" style="font-size:12px;color:#475569;margin:12px 0">ржЕрж░рзНржбрж╛рж░рзЗрж░ рж▓рзЛржХрзЗрж╢ржи ржУ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЖржкржбрзЗржЯ рж▓рзЛржб рж╣ржЪрзНржЫрзЗтАж</div><div id="rkTrackMap" style="height:330px;border-radius:12px;overflow:hidden;background:#e5e7eb"></div><div class="rk-customer-map-legend"><span><i class="rk-customer-dot"></i> ржЖржкржирж╛рж░ рж▓рзЛржХрзЗрж╢ржи (Customer)</span><span><i class="rk-partner-dot"></i> ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржкрж╛рж░рзНржЯржирж╛рж░</span><span><i class="rk-route-line"></i> ржЖржкржирж╛рж░ ржХрж╛ржЫрзЗ ржЖрж╕рж╛рж░ рж░рж╛рж╕рзНрждрж╛</span></div><div id="rkTrackDistance" style="font-size:14px;font-weight:800;margin-top:12px">рж▓рзЛржХрзЗрж╢ржи ржкрж╛ржУржпрж╝рж╛ ржЧрзЗрж▓рзЗ ржжрзВрж░рждрзНржм ржУ ETA ржжрзЗржЦрж╛ржирзЛ рж╣ржмрзЗред</div><div id="rkTrackUpdated" style="font-size:11px;color:#64748b;margin-top:5px"></div></section><div style="margin-top:14px;padding:12px;background:#f8fafc;border-radius:12px;font-size:12px;line-height:1.8"><b>Delivery Address:</b><br>${esc(o.address||'тАФ')}<br><b>Order Status:</b> <span id="rkCustomerOrderStatus">${esc(String(o.status||'pending').replace(/_/g,' ').toUpperCase())}</span></div><p style="font-size:11px;color:#64748b;margin-top:12px">Map data ┬й OpenStreetMap contributors. Route estimate may vary with traffic and road conditions.</p></div>`;
+   modal.innerHTML=`<div style="max-width:760px;margin:auto;background:white;min-height:100%;padding:18px"><header style="display:flex;align-items:center;gap:12px;border-bottom:1px solid #e2e8f0;padding-bottom:14px"><button id="rkTrackClose" type="button" style="font-size:25px;padding:4px 12px">←</button><div><b style="font-size:20px">Product Details</b><div style="font-size:12px;color:#64748b">Order ${esc(o.order_number)}</div></div></header><div style="display:grid;grid-template-columns:110px 1fr;gap:14px;padding:18px 0"><img src="${esc(it.image||'https://placehold.co/200x200')}" alt="" style="width:110px;height:110px;object-fit:cover;border-radius:14px"><div><h2 style="font-size:19px;font-weight:800">${esc(it.title||it.name||'Food item')}</h2><p style="color:#64748b;font-size:13px">Quantity: ${Number(it.quantity)||1}</p><p style="font-weight:800;color:#ea580c">${money(it.price)}</p><p style="font-size:12px;color:#64748b">Order total: ${money(o.total)}</p></div></div><section style="border:1px solid #dbe4ee;border-radius:16px;padding:15px"><div style="background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:14px;padding:16px;margin-bottom:14px;text-align:center"><div style="font-size:12px;font-weight:800;color:#9a3412;letter-spacing:.08em">YOUR DELIVERY PIN</div><div id="rkCustomerDeliveryPin" style="font-size:38px;line-height:1.2;font-weight:900;letter-spacing:10px;color:#9a3412;margin:7px 0">----</div><div style="font-size:11px;color:#9a3412">ডেলিভারি সম্পন্ন করার সময় পার্টনারকে এই ৪-ডিজিট PIN দিন</div></div><h3 style="font-size:18px;font-weight:800">Live Delivery Tracking</h3><p style="font-size:12px;color:#64748b;margin:5px 0 12px">ম্যাপে আপনার ডেলিভারি ঠিকানা ও পার্টনারের সর্বশেষ লাইভ GPS অবস্থান দেখা যাবে।</p><div id="rkTrackStatus" role="status" style="font-size:12px;color:#475569;margin:12px 0">অর্ডারের লোকেশন ও ডেলিভারি আপডেট লোড হচ্ছে…</div><div id="rkTrackMap" style="height:330px;border-radius:12px;overflow:hidden;background:#e5e7eb"></div><div class="rk-customer-map-legend"><span><i class="rk-customer-dot"></i> আপনার লোকেশন (Customer)</span><span><i class="rk-partner-dot"></i> ডেলিভারি পার্টনার</span><span><i class="rk-route-line"></i> আপনার কাছে আসার রাস্তা</span></div><div id="rkTrackDistance" style="font-size:14px;font-weight:800;margin-top:12px">লোকেশন পাওয়া গেলে দূরত্ব ও ETA দেখানো হবে।</div><div id="rkTrackUpdated" style="font-size:11px;color:#64748b;margin-top:5px"></div></section><div style="margin-top:14px;padding:12px;background:#f8fafc;border-radius:12px;font-size:12px;line-height:1.8"><b>Delivery Address:</b><br>${esc(o.address||'—')}<br><b>Order Status:</b> <span id="rkCustomerOrderStatus">${esc(String(o.status||'pending').replace(/_/g,' ').toUpperCase())}</span></div><p style="font-size:11px;color:#64748b;margin-top:12px">Map data © OpenStreetMap contributors. Route estimate may vary with traffic and road conditions.</p></div>`;
    modal.style.display='block';document.body.style.overflow='hidden';
    const status=modal.querySelector('#rkTrackStatus'),distance=modal.querySelector('#rkTrackDistance'),updated=modal.querySelector('#rkTrackUpdated'),mapBox=modal.querySelector('#rkTrackMap'),pinBox=modal.querySelector('#rkCustomerDeliveryPin');
    let customer=null,driver=null,lastRouteAt=0,lastRouteDriver=null,routeBusy=false,routeCoords=null,customerMarker=null,driverMarker=null,snappedDriver=null;
    if(pinBox&&/^\d{4}$/.test(String(o.delivery_pin||'')))pinBox.textContent=String(o.delivery_pin);
    modal.querySelector('#rkTrackClose').onclick=()=>{stop();modal.style.display='none';document.body.style.overflow=''};
    const client=window.RKFoodieSupabase;
-   async function getTracking(){if(!client||!o.tracking_token){status.textContent='ржПржЗ ржЕрж░рзНржбрж╛рж░рзЗрж░ ржирж┐рж░рж╛ржкржж ржЯрзНрж░рзНржпрж╛ржХрж┐ржВ рждржерзНржп ржкрж╛ржУрзЯрж╛ ржпрж╛рзЯржирж┐ред';return}
+   async function getTracking(){if(!client||!o.tracking_token){status.textContent='এই অর্ডারের নিরাপদ ট্র্যাকিং তথ্য পাওয়া যায়নি।';return}
      try{
        const {data:customerOrder,error:customerError}=await client.rpc('get_customer_order_details',{p_order_number:o.order_number,p_tracking_token:o.tracking_token});
        if(!customerError&&customerOrder){
@@ -3006,10 +3059,10 @@ function closeSuccessModal() {
        if(error)throw error;
        if(data&&data.customer_lat!=null&&data.customer_lng!=null)customer={lat:Number(data.customer_lat),lng:Number(data.customer_lng)};
        if(data&&data.driver_lat!=null&&data.driver_lng!=null&&data.driver_active)driver={lat:Number(data.driver_lat),lng:Number(data.driver_lng)};else driver=null;
-       if(data&&data.updated_at)updated.textContent='рж╕рж░рзНржмрж╢рзЗрж╖ GPS ржЖржкржбрзЗржЯ: '+new Date(data.updated_at).toLocaleString('bn-IN');
+       if(data&&data.updated_at)updated.textContent='সর্বশেষ GPS আপডেট: '+new Date(data.updated_at).toLocaleString('bn-IN');
        await renderMap();
-       if(!driver)status.textContent='ржЕрж░рзНржбрж╛рж░рзЗрж░ ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржкрж┐ржи ржорзНржпрж╛ржкрзЗ ржжрзЗржЦрж╛ржирзЛ рж╣ржЪрзНржЫрзЗред ржкрж╛рж░рзНржЯржирж╛рж░ GPS ржЪрж╛рж▓рзБ ржХрж░рж▓рзЗ рждрж╛рж░ ржЕржмрж╕рзНржерж╛ржиржУ ржжрзЗржЦрж╛ ржпрж╛ржмрзЗред';else status.textContent='ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржкрж╛рж░рзНржЯржирж╛рж░рзЗрж░ GPS рж▓рж╛ржЗржн ржЪрж▓ржЫрзЗред';
-     }catch(error){status.textContent='рж▓рж╛ржЗржн ржЯрзНрж░рзНржпрж╛ржХрж┐ржВ ржЖржкржбрзЗржЯ ржкрж╛ржУрзЯрж╛ ржпрж╛рзЯржирж┐: '+String(error.message||error);console.warn('RK Foodie customer tracking:',error)}
+       if(!driver)status.textContent='অর্ডারের ডেলিভারি পিন ম্যাপে দেখানো হচ্ছে। পার্টনার GPS চালু করলে তার অবস্থানও দেখা যাবে।';else status.textContent='ডেলিভারি পার্টনারের GPS লাইভ চলছে।';
+     }catch(error){status.textContent='লাইভ ট্র্যাকিং আপডেট পাওয়া যায়নি: '+String(error.message||error);console.warn('RK Foodie customer tracking:',error)}
    }
    async function route(){if(!customer||!driver||routeBusy)return;const now=Date.now();if(lastRouteDriver&&km(lastRouteDriver,driver)<0.08&&now-lastRouteAt<20000)return;routeBusy=true;
      try{
@@ -3020,21 +3073,21 @@ function closeSuccessModal() {
        const result=await fetch(url).then(r=>{if(!r.ok)throw new Error('Route service unavailable');return r.json()});
        const r=result?.routes?.[0];if(!r||!r.geometry?.coordinates?.length)throw new Error('No road route found');
        routeCoords=r.geometry.coordinates.map(p=>[p[1],p[0]]);lastRouteAt=now;lastRouteDriver={...driver};
-       distance.textContent=`рж░рж╛рж╕рзНрждрж╛ ржжрж┐ржпрж╝рзЗ ржжрзВрж░рждрзНржм: ${(r.distance/1000).toFixed(2)} km ┬╖ ржЖржирзБржорж╛ржирж┐ржХ рж╕ржоржпрж╝: ${Math.max(1,Math.round(r.duration/60))} ржорж┐ржирж┐ржЯ`;
+       distance.textContent=`রাস্তা দিয়ে দূরত্ব: ${(r.distance/1000).toFixed(2)} km · আনুমানিক সময়: ${Math.max(1,Math.round(r.duration/60))} মিনিট`;
        if(activeLine)activeLine.setLatLngs(routeCoords);else activeLine=L.polyline(routeCoords,{color:'#2563eb',weight:6,opacity:.85}).addTo(activeMap);
        if(!activeMap._rkInitialFit){activeMap.fitBounds(activeLine.getBounds(),{padding:[35,35]});activeMap._rkInitialFit=true;}
-     }catch(e){distance.textContent='рж░рж╛рж╕рзНрждрж╛рж░ рж░рзБржЯ ржПржЦржи ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржЪрзНржЫрзЗ ржирж╛ред '+(customer&&driver?`рж╕рзЛржЬрж╛ ржжрзВрж░рждрзНржм: ${km(customer,driver).toFixed(2)} km`:'');console.warn('RK Foodie route:',e.message)}finally{routeBusy=false}
+     }catch(e){distance.textContent='রাস্তার রুট এখন পাওয়া যাচ্ছে না। '+(customer&&driver?`সোজা দূরত্ব: ${km(customer,driver).toFixed(2)} km`:'');console.warn('RK Foodie route:',e.message)}finally{routeBusy=false}
    }
-   async function renderMap(){if(!customer&&!driver)return;try{await ensureMap();if(!activeMap){const p=customer||driver;activeMap=L.map(mapBox).setView([p.lat,p.lng],14);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'┬й <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'}).addTo(activeMap)}
-     if(customer){const ci=L.divIcon({className:'',html:'<div class="rk-track-pin customer"><span>YOU</span></div>',iconSize:[32,38],iconAnchor:[16,34],popupAnchor:[0,-32]});if(!customerMarker)customerMarker=L.marker([customer.lat,customer.lng],{icon:ci}).addTo(activeMap).bindPopup('<b>ржЖржкржирж╛рж░ ржЕржмрж╕рзНржерж╛ржи</b><br>Customer');else customerMarker.setLatLng([customer.lat,customer.lng])}
-     if(driver){const dp=snappedDriver||driver;const di=L.divIcon({className:'',html:'<div class="rk-track-pin partner"><span>DP</span></div>',iconSize:[32,38],iconAnchor:[16,34],popupAnchor:[0,-32]});if(!driverMarker)driverMarker=L.marker([dp.lat,dp.lng],{icon:di}).addTo(activeMap).bindPopup('<b>ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржкрж╛рж░рзНржЯржирж╛рж░</b><br>Live location');else driverMarker.setLatLng([dp.lat,dp.lng])}else if(driverMarker){activeMap.removeLayer(driverMarker);driverMarker=null;snappedDriver=null}
-     if(!customer||!driver){const p=customer||driver;activeMap.setView([p.lat,p.lng],15);distance.textContent='ржжрзБржЗржЯрж┐ рж▓рзЛржХрзЗрж╢ржи ржкрж╛ржУржпрж╝рж╛ ржЧрзЗрж▓рзЗ рж░рж╛рж╕рзНрждрж╛рж░ ржжрзВрж░рждрзНржм ржУ ETA ржжрзЗржЦрж╛ржмрзЗред'}else await route();
+   async function renderMap(){if(!customer&&!driver)return;try{await ensureMap();if(!activeMap){const p=customer||driver;activeMap=L.map(mapBox).setView([p.lat,p.lng],14);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'}).addTo(activeMap)}
+     if(customer){const ci=L.divIcon({className:'',html:'<div class="rk-track-pin customer"><span>YOU</span></div>',iconSize:[32,38],iconAnchor:[16,34],popupAnchor:[0,-32]});if(!customerMarker)customerMarker=L.marker([customer.lat,customer.lng],{icon:ci}).addTo(activeMap).bindPopup('<b>আপনার অবস্থান</b><br>Customer');else customerMarker.setLatLng([customer.lat,customer.lng])}
+     if(driver){const dp=snappedDriver||driver;const di=L.divIcon({className:'',html:'<div class="rk-track-pin partner"><span>DP</span></div>',iconSize:[32,38],iconAnchor:[16,34],popupAnchor:[0,-32]});if(!driverMarker)driverMarker=L.marker([dp.lat,dp.lng],{icon:di}).addTo(activeMap).bindPopup('<b>ডেলিভারি পার্টনার</b><br>Live location');else driverMarker.setLatLng([dp.lat,dp.lng])}else if(driverMarker){activeMap.removeLayer(driverMarker);driverMarker=null;snappedDriver=null}
+     if(!customer||!driver){const p=customer||driver;activeMap.setView([p.lat,p.lng],15);distance.textContent='দুইটি লোকেশন পাওয়া গেলে রাস্তার দূরত্ব ও ETA দেখাবে।'}else await route();
      setTimeout(()=>activeMap&&activeMap.invalidateSize(),150);
-   }catch(e){status.textContent='ржорзНржпрж╛ржк рж▓рзЛржб рж╣ржпрж╝ржирж┐: '+e.message}}
+   }catch(e){status.textContent='ম্যাপ লোড হয়নি: '+e.message}}
    if(o.tracking_token){getTracking();pollTimer=setInterval(getTracking,10000)}
  };
  const originalOpen=window.openOrderHistory;
- window.openOrderHistory=function(){if(typeof originalOpen==='function')originalOpen();const box=document.getElementById('rkOrderHistoryItems');if(!box)return;box.querySelectorAll('article').forEach((card,cardIndex)=>{const order=read()[cardIndex];if(!order)return;card.querySelectorAll('img').forEach((img,itemIndex)=>{img.style.cursor='pointer';img.title='ржкржгрзНржпрзЗрж░ ржмрж┐рж╕рзНрждрж╛рж░рж┐ржд ржУ рж▓рж╛ржЗржн ржбрзЗрж▓рж┐ржнрж╛рж░рж┐ ржЯрзНрж░рзНржпрж╛ржХрж┐ржВ';img.onclick=()=>window.rkOpenTrackedItem(order.order_number,itemIndex)})})};
+ window.openOrderHistory=function(){if(typeof originalOpen==='function')originalOpen();const box=document.getElementById('rkOrderHistoryItems');if(!box)return;box.querySelectorAll('article').forEach((card,cardIndex)=>{const order=read()[cardIndex];if(!order)return;card.querySelectorAll('img').forEach((img,itemIndex)=>{img.style.cursor='pointer';img.title='পণ্যের বিস্তারিত ও লাইভ ডেলিভারি ট্র্যাকিং';img.onclick=()=>window.rkOpenTrackedItem(order.order_number,itemIndex)})})};
  window.addEventListener('pagehide',stop);
 })();
 </script>
@@ -3170,7 +3223,7 @@ body:not(.site-dark) #rkFinalCheckout .rk-final-card,
 body:not(.site-dark) #rkOrderHistoryPanel,
 body:not(.site-dark) #rkOrderHistoryPanel>div{color:#1e293b;}
 
-/* RK Foodie professional dark theme v2 тАФ applies to the complete page and dynamically opened screens. */
+/* RK Foodie professional dark theme v2 — applies to the complete page and dynamically opened screens. */
 html.site-dark-root, html[data-theme="dark"] { color-scheme:dark!important; background:#080f1b!important; }
 body.site-dark, body[data-theme="dark"] {
   --rk-bg:#080f1b; --rk-surface:#111c2c; --rk-surface-2:#172338;
@@ -3632,7 +3685,7 @@ body.site-dark .shadow-sm,body.site-dark .shadow-md,body.site-dark .shadow-lg{bo
     PushNotifications.register();
 
     PushNotifications.addListener('pushNotificationReceived', (notification) => {
-      alert('ржирждрзБржи ржирзЛржЯрж┐ржлрж┐ржХрзЗрж╢ржи: ' + notification.title);
+      alert('নতুন নোটিফিকেশন: ' + notification.title);
     });
   }
 
