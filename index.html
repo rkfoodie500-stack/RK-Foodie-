@@ -634,6 +634,8 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
             <div class="rk-grid"><div class="rk-field"><label for="rkLandmark">Landmark</label><input id="rkLandmark" maxlength="120" placeholder="Near school / market"/></div><div class="rk-field"><label for="rkCity">City / town</label><input id="rkCity" required maxlength="100" placeholder="City or town"/></div></div>
             <div class="rk-grid"><div class="rk-field"><label for="rkState">State</label><input id="rkState" required maxlength="100" value="West Bengal"/></div><div class="rk-field"><label for="rkPincode">PIN code</label><input id="rkPincode" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit PIN"/></div></div>
             <button class="rk-btn rk-primary rk-wide" id="rkSaveProfile" type="submit">Save profile & address</button>
+            <button class="rk-btn rk-secondary rk-wide" id="rkSkipProfile" type="button" style="margin-top:9px">Skip for now</button>
+            <p class="rk-muted" style="font-size:11px;text-align:center;margin:8px 0 0">You can add your delivery address later from Settings.</p>
           </form>
           <div id="rkAccountPane" hidden>
             <div class="rk-profile-top"><img id="rkAccountAvatar" class="rk-avatar" alt="Your profile photo" src="https://placehold.co/160x160/fff0e2/9a4d16?text=Photo"/><div><div class="rk-pill">Customer profile</div><h3 id="rkAccountName" style="font-size:20px;font-weight:800;margin:7px 0 3px">Welcome!</h3><p class="rk-muted" id="rkAccountPhone"></p></div></div>
@@ -1864,83 +1866,116 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 (function () {
   'use strict';
   const $ = id => document.getElementById(id);
-  const STORAGE_KEY = 'rkFoodieGuestProfileV1';
+  const LEGACY_GUEST_KEY = 'rkFoodieGuestProfileV1';
+  const PROFILE_KEY_PREFIX = 'rkFoodieProfileV2:';
   const gate = $('rkCustomerGate');
   const form = $('rkProfileForm');
+  const googleButton = $('rkGoogleSignIn');
+  const authClient = () => window.RKFoodieSupabase && window.RKFoodieSupabase.auth;
   let avatarData = '';
+  let currentUser = null;
+  let profile = {};
+  let profileLoadGeneration = 0;
+  let nativeGoogleSignInPending = false;
 
-  const readProfile = () => {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; }
-    catch (_) { return {}; }
-  };
-  let profile = readProfile();
-
-  const fullAddress = p => [
-    p.address_line,
-    p.landmark ? 'Landmark: ' + p.landmark : '',
-    p.city, p.state, p.pincode
-  ].filter(Boolean).join(', ');
-
+  function profileStorageKey(userId = currentUser && currentUser.id) {
+    return userId ? PROFILE_KEY_PREFIX + userId : LEGACY_GUEST_KEY;
+  }
+  function readProfile(userId = currentUser && currentUser.id) {
+    try {
+      const raw = localStorage.getItem(profileStorageKey(userId));
+      return raw ? (JSON.parse(raw) || {}) : {};
+    } catch (_) { return {}; }
+  }
+  function writeProfile(value, userId = currentUser && currentUser.id) {
+    try { localStorage.setItem(profileStorageKey(userId), JSON.stringify(value || {})); return true; }
+    catch (_) { return false; }
+  }
+  function fullAddress(p) {
+    return [p.address_line, p.landmark ? 'Landmark: ' + p.landmark : '', p.city, p.state, p.pincode]
+      .filter(Boolean).join(', ');
+  }
+  function googleIdentity(user) {
+    const meta = user && user.user_metadata ? user.user_metadata : {};
+    return {
+      full_name: String(meta.full_name || meta.name || meta.user_name || '').trim(),
+      email: String((user && user.email) || '').trim(),
+      avatar_url: String(meta.avatar_url || meta.picture || '').trim()
+    };
+  }
+  function showGateMessage(message, isOk = false) {
+    const alertBox = $('rkGateAlert');
+    if (!alertBox) return;
+    alertBox.textContent = message;
+    alertBox.classList.toggle('ok', !!isOk);
+    alertBox.style.display = 'block';
+  }
   function updateProfileCards() {
-    profile = readProfile();
-    const name = profile.full_name || profile.receiver_name || 'Guest checkout';
-    const email = profile.email || 'No email added';
-    const phone = profile.phone || 'Phone number not saved';
-    const address = fullAddress(profile) || 'Add your delivery address in your profile or at checkout.';
-    const avatar = profile.avatar_url || 'https://placehold.co/96x96/fff0e2/9a4d16?text=Photo';
+    const p = profile || {};
+    const identity = currentUser ? googleIdentity(currentUser) : {};
+    const name = p.full_name || identity.full_name || 'Guest checkout';
+    const email = (currentUser && currentUser.email) || p.email || 'No email added';
+    const phone = p.phone || 'Phone number not saved';
+    const address = fullAddress(p) || 'Add your delivery address in your profile or at checkout.';
+    const avatar = p.avatar_url || identity.avatar_url || 'https://placehold.co/96x96/fff0e2/9a4d16?text=Photo';
     const setText = (id, value) => { const el = $(id); if (el) el.textContent = value; };
-    ['rkSettingsAvatar', 'rkOrderProfileAvatar'].forEach(id => { const el = $(id); if (el) el.src = avatar; });
+    ['rkSettingsAvatar', 'rkOrderProfileAvatar', 'rkAccountAvatar'].forEach(id => { const el = $(id); if (el) el.src = avatar; });
     setText('rkSettingsProfileName', name);
     setText('rkSettingsProfileEmail', email);
     setText('rkSettingsProfilePhone', phone);
-    setText('rkSettingsProfileAddress', fullAddress(profile) || 'No saved address yet. Add one using Edit profile / address.');
-    setText('rkSettingsProfileStatus', profile.full_name && profile.address_line ? 'Profile saved' : 'Guest mode');
+    setText('rkSettingsProfileAddress', fullAddress(p) || 'No saved address yet. Add one using Edit profile / address.');
+    setText('rkSettingsProfileStatus', currentUser ? (p.address_line ? 'Profile saved' : 'Google account connected') : 'Guest mode');
     setText('rkOrderProfileName', name);
     setText('rkOrderProfilePhone', phone);
-    setText('rkOrderProfileAddress', fullAddress(profile) || 'Add your name, phone number and address before ordering.');
+    setText('rkOrderProfileAddress', address);
+    setText('rkAccountName', name);
+    setText('rkAccountPhone', email);
+    const savedAddress = $('rkSavedAddress');
+    if (savedAddress) savedAddress.textContent = fullAddress(p) || 'No delivery address added yet.';
     const action = $('rkSettingsProfileAction');
-    if (action) action.textContent = profile.full_name ? 'Edit profile' : 'Create profile';
+    if (action) action.textContent = p.full_name || currentUser ? 'Edit profile' : 'Create profile';
   }
-
   function syncCheckoutDetails() {
-    profile = readProfile();
-    if ($('custName') && profile.full_name) $('custName').value = profile.full_name;
-    if ($('custPhone') && profile.phone) $('custPhone').value = profile.phone;
-    const address = fullAddress(profile);
+    const p = profile || {};
+    if ($('custName') && p.full_name) $('custName').value = p.full_name;
+    if ($('custPhone') && p.phone) $('custPhone').value = p.phone;
+    const address = fullAddress(p);
     if ($('custAddress') && address) $('custAddress').value = address;
     updateProfileCards();
   }
-
   function fillProfileForm() {
-    profile = readProfile();
-    $('rkFullName').value = profile.full_name || '';
-    $('rkEmail').value = profile.email || '';
-    $('rkAddressTitle').value = profile.title || 'Home';
-    $('rkRecipient').value = profile.receiver_name || profile.full_name || '';
-    $('rkAddressPhone').value = profile.phone || '';
-    $('rkAddressLine').value = profile.address_line || '';
-    $('rkLandmark').value = profile.landmark || '';
-    $('rkCity').value = profile.city || '';
-    $('rkState').value = profile.state || 'West Bengal';
-    $('rkPincode').value = profile.pincode || '';
-    avatarData = profile.avatar_url || '';
+    const p = profile || {};
+    const identity = currentUser ? googleIdentity(currentUser) : {};
+    if ($('rkFullName')) $('rkFullName').value = p.full_name || identity.full_name || '';
+    if ($('rkEmail')) {
+      $('rkEmail').value = (currentUser && currentUser.email) || p.email || '';
+      $('rkEmail').readOnly = !!currentUser;
+      $('rkEmail').title = currentUser ? 'This email comes from your signed-in Google account.' : '';
+    }
+    if ($('rkAddressTitle')) $('rkAddressTitle').value = p.title || 'Home';
+    if ($('rkRecipient')) $('rkRecipient').value = p.receiver_name || p.full_name || identity.full_name || '';
+    if ($('rkAddressPhone')) $('rkAddressPhone').value = p.phone || '';
+    if ($('rkAddressLine')) $('rkAddressLine').value = p.address_line || '';
+    if ($('rkLandmark')) $('rkLandmark').value = p.landmark || '';
+    if ($('rkCity')) $('rkCity').value = p.city || '';
+    if ($('rkState')) $('rkState').value = p.state || 'West Bengal';
+    if ($('rkPincode')) $('rkPincode').value = p.pincode || '';
+    avatarData = p.avatar_url || identity.avatar_url || '';
     if ($('rkAvatarPreview')) $('rkAvatarPreview').src = avatarData || 'https://placehold.co/160x160/fff0e2/9a4d16?text=Photo';
   }
-
   function openProfileEditor() {
     if (!gate || !form) return;
     fillProfileForm();
     $('rkLoginPane').hidden = true;
     $('rkAccountPane').hidden = true;
     form.hidden = false;
-    $('rkGateTitle').textContent = profile.full_name ? 'Edit your profile' : 'Create your profile';
-    $('rkGateDescription').textContent = 'Your profile and delivery address are saved on this device. No Google login required.';
-    $('rkGateEyebrow').textContent = 'Customer profile';
+    $('rkGateTitle').textContent = profile.full_name ? 'Edit your profile' : 'Complete your profile';
+    $('rkGateDescription').textContent = 'Add your delivery details now, or skip and add them later from Settings.';
+    $('rkGateEyebrow').textContent = 'Your RK Foodie profile';
     const alert = $('rkGateAlert');
     if (alert) { alert.style.display = 'none'; alert.textContent = ''; }
     gate.hidden = false;
     document.body.style.overflow = 'hidden';
-    // The account gate is its own scroll container; reset it when opening the editor.
     gate.scrollTop = 0;
     requestAnimationFrame(() => {
       gate.scrollTop = 0;
@@ -1950,52 +1985,74 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       }
     });
   }
-
   function enterWebsite() {
     if (gate) gate.hidden = true;
     document.body.style.overflow = '';
-    $('rkLoginPane').hidden = false;
-    form.hidden = true;
-    $('rkAccountPane').hidden = true;
+    if ($('rkLoginPane')) $('rkLoginPane').hidden = false;
+    if (form) form.hidden = true;
+    if ($('rkAccountPane')) $('rkAccountPane').hidden = true;
     updateProfileCards();
     syncCheckoutDetails();
-  }
-
-  const googleButton = $('rkGoogleSignIn');
-  const authClient = () => window.RKFoodieSupabase && window.RKFoodieSupabase.auth;
-  function showGateMessage(message, isOk = false) {
-    const alertBox = $('rkGateAlert');
-    if (!alertBox) return;
-    alertBox.textContent = message;
-    alertBox.classList.toggle('ok', !!isOk);
-    alertBox.style.display = 'block';
   }
   function showCustomerGate() {
     if (gate) gate.hidden = false;
     document.body.style.overflow = 'hidden';
-    $('rkLoginPane').hidden = false;
+    if ($('rkLoginPane')) $('rkLoginPane').hidden = false;
     if (form) form.hidden = true;
-    $('rkAccountPane').hidden = true;
+    if ($('rkAccountPane')) $('rkAccountPane').hidden = true;
   }
-  let nativeGoogleSignInPending = false;
+  async function loadProfileForUser(user) {
+    if (!user || !user.id) throw new Error('Google account information is missing.');
+    const generation = ++profileLoadGeneration;
+    currentUser = user;
+    const identity = googleIdentity(user);
+    const local = readProfile(user.id);
+    profile = { ...identity, ...local, email: identity.email || local.email || '', full_name: local.full_name || identity.full_name, avatar_url: local.avatar_url || identity.avatar_url };
+    updateProfileCards();
+    const client = window.RKFoodieSupabase;
+    if (client && typeof client.from === 'function') {
+      try {
+        const { data, error } = await client.from('customer_profiles').select('*').eq('id', user.id).maybeSingle();
+        if (generation !== profileLoadGeneration) return;
+        if (error) {
+          console.warn('RK Foodie profile cloud read failed. Run supabase/customer_profiles.sql and check RLS:', error.message);
+        } else if (data) {
+          profile = { ...profile, ...data, email: identity.email || data.email || '', full_name: data.full_name || identity.full_name, avatar_url: data.avatar_url || identity.avatar_url };
+          writeProfile(profile, user.id);
+        }
+      } catch (error) {
+        // A profile-table/network problem must never block a valid Google login.
+        console.warn("RK Foodie profile cloud read unavailable; continuing with this account's own cache:", error);
+      }
+    }
+    if (generation !== profileLoadGeneration) return;
+    updateProfileCards();
+    syncCheckoutDetails();
+  }
+  async function activateUser(user) {
+    await loadProfileForUser(user);
+    if (currentUser && user && currentUser.id === user.id) {
+      if (profile && (profile.address_line || profile.setup_skipped)) enterWebsite();
+      else openProfileEditor();
+    }
+  }
+
   async function startGoogleSignIn() {
     const auth = authClient();
-    if (!auth || typeof auth.signInWithIdToken !== 'function') {
-      showGateMessage('Google sign-in চালু করতে Supabase client এবং Google provider সেটআপ প্রয়োজন।');
+    if (!auth || typeof auth.signInWithOAuth !== 'function' || typeof auth.signInWithIdToken !== 'function') {
+      showGateMessage('Supabase client is not ready. Check the Supabase URL, publishable key and Google provider settings.');
       return;
     }
-    googleButton.disabled = true;
-    googleButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Connecting to Google…';
+    if (googleButton) {
+      googleButton.disabled = true;
+      googleButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Connecting to Google…';
+    }
     try {
-      // In the Android app, Credential Manager opens the native Google account chooser.
-      // It returns an ID token to this page; no browser OAuth redirect is used.
       if (window.RKAndroidGoogleAuth && typeof window.RKAndroidGoogleAuth.signInWithGoogle === 'function') {
         nativeGoogleSignInPending = true;
         window.RKAndroidGoogleAuth.signInWithGoogle();
         return;
       }
-      // Normal website fallback: Supabase OAuth opens the provider flow in a browser.
-      if (typeof auth.signInWithOAuth !== 'function') throw new Error('Google OAuth is unavailable.');
       const { error } = await auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: window.location.origin + window.location.pathname }
@@ -2003,26 +2060,33 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       if (error) throw error;
     } catch (error) {
       console.error('RK Foodie Google sign-in failed:', error);
-      showGateMessage('Google login চালু হয়নি। Supabase Google provider এবং Android-এর Web Client ID পরীক্ষা করুন।');
+      showGateMessage('Google login failed. Check the Google provider, OAuth Client ID/Secret and Supabase redirect URL.');
       nativeGoogleSignInPending = false;
-      googleButton.disabled = false;
-      googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
+      if (googleButton) {
+        googleButton.disabled = false;
+        googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
+      }
     }
   }
+  if (googleButton) {
+    googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
+    googleButton.addEventListener('click', startGoogleSignIn);
+  }
 
-  // Called only by the trusted Android app bridge after Credential Manager returns.
+  // Android Credential Manager returns a Google ID token to this trusted WebView callback.
   window.onRKNativeGoogleIdToken = async function(idToken, nonce) {
     try {
       if (!idToken) throw new Error('Google did not return an ID token.');
       const auth = authClient();
       const { data, error } = await auth.signInWithIdToken({ provider: 'google', token: idToken, nonce: nonce || undefined });
       if (error) throw error;
-      if (!data || !data.session) throw new Error('Supabase did not create a login session.');
+      const user = (data && data.user) || (data && data.session && data.session.user);
+      if (!user) throw new Error('Supabase did not return the authenticated user.');
       nativeGoogleSignInPending = false;
-      enterWebsite();
+      await activateUser(user);
     } catch (error) {
       console.error('RK Foodie native Google sign-in failed:', error);
-      showGateMessage('Google login সম্পন্ন হয়নি। Supabase Google provider / Web Client ID মিলিয়ে দেখুন।');
+      showGateMessage('Google login could not be completed. Verify the Web Client ID and Supabase Google provider.');
       nativeGoogleSignInPending = false;
       if (googleButton) {
         googleButton.disabled = false;
@@ -2032,16 +2096,13 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   };
   window.onRKNativeGoogleSignInError = function(message) {
     nativeGoogleSignInPending = false;
-    showGateMessage(message || 'Google sign-in বাতিল হয়েছে বা সম্পন্ন হয়নি।');
+    showGateMessage(message || 'Google sign-in was cancelled or could not be completed.');
     if (googleButton) {
       googleButton.disabled = false;
       googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
     }
   };
-  if (googleButton) {
-    googleButton.innerHTML = '<i class="fa-brands fa-google" aria-hidden="true"></i> Continue to RK Foodie';
-    googleButton.addEventListener('click', startGoogleSignIn);
-  }
+
   const previewButton = $('rkPreviewSite');
   if (previewButton) previewButton.addEventListener('click', enterWebsite);
   const enterButton = $('rkEnterSite');
@@ -2052,12 +2113,55 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   if (settingsAction) settingsAction.addEventListener('click', openProfileEditor);
   const orderEdit = $('rkOrderEditProfile');
   if (orderEdit) orderEdit.addEventListener('click', openProfileEditor);
+  const skipProfile = $('rkSkipProfile');
+  if (skipProfile) skipProfile.addEventListener('click', async () => {
+    // Persist only the Google identity + skip flag. Never copy unsaved form values
+    // or replace an address already saved for this account.
+    if (skipProfile) { skipProfile.disabled = true; skipProfile.textContent = 'Opening food menu…'; }
+    if (currentUser && currentUser.id) {
+      const identity = googleIdentity(currentUser);
+      const minimal = {
+        ...profile,
+        full_name: profile.full_name || identity.full_name,
+        email: identity.email,
+        avatar_url: profile.avatar_url || identity.avatar_url,
+        setup_skipped: true
+      };
+      profile = minimal;
+      writeProfile(profile, currentUser.id);
+      const client = window.RKFoodieSupabase;
+      if (client && typeof client.from === 'function') {
+        try {
+          const payload = {
+            id: currentUser.id,
+            full_name: minimal.full_name || '', email: minimal.email || '',
+            title: minimal.title || 'Home', receiver_name: minimal.receiver_name || '',
+            phone: minimal.phone || '', address_line: minimal.address_line || '',
+            landmark: minimal.landmark || '', city: minimal.city || '',
+            state: minimal.state || '', pincode: minimal.pincode || '',
+            avatar_url: minimal.avatar_url || '', setup_skipped: true,
+            updated_at: new Date().toISOString()
+          };
+          const { error } = await client.from('customer_profiles').upsert(payload, { onConflict: 'id' });
+          if (error) console.warn('RK Foodie: skip state kept locally; cloud sync needs customer_profiles SQL/RLS:', error.message);
+        } catch (error) {
+          console.warn('RK Foodie: skip state kept locally; cloud profile sync unavailable:', error);
+        }
+      }
+    }
+    enterWebsite();
+    if (skipProfile) { skipProfile.disabled = false; skipProfile.textContent = 'Skip for now'; }
+  });
+
   async function signOutGoogle() {
     const auth = authClient();
     if (auth && typeof auth.signOut === 'function') {
       const { error } = await auth.signOut();
-      if (error) { console.error('RK Foodie sign-out failed:', error); alert('Sign out করা যায়নি। আবার চেষ্টা করুন।'); return; }
+      if (error) { console.error('RK Foodie sign-out failed:', error); alert('Sign out failed. Please try again.'); return; }
     }
+    profileLoadGeneration++;
+    currentUser = null;
+    profile = {};
     showCustomerGate();
   }
   const signOut = $('rkSettingsSignOut');
@@ -2079,11 +2183,15 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     reader.readAsDataURL(file);
   });
 
-  if (form) form.addEventListener('submit', event => {
+  if (form) form.addEventListener('submit', async event => {
     event.preventDefault();
+    if (!currentUser || !currentUser.id) {
+      showGateMessage('Please sign in with Google before saving your profile.');
+      return;
+    }
     const saved = {
       full_name: $('rkFullName').value.trim(),
-      email: $('rkEmail').value.trim(),
+      email: currentUser.email || '',
       title: $('rkAddressTitle').value,
       receiver_name: $('rkRecipient').value.trim(),
       phone: $('rkAddressPhone').value.trim(),
@@ -2092,33 +2200,49 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       city: $('rkCity').value.trim(),
       state: $('rkState').value.trim(),
       pincode: $('rkPincode').value.trim(),
-      avatar_url: avatarData
+      avatar_url: avatarData || googleIdentity(currentUser).avatar_url || ''
     };
     if (!saved.full_name || !saved.receiver_name || !saved.phone || !saved.address_line || !saved.city || !saved.state || !/^[0-9]{6}$/.test(saved.pincode)) {
-      alert('Please complete your name, receiver name, mobile number, full address, city/town, state and 6-digit PIN code.');
+      showGateMessage('Please complete your name, receiver name, mobile number, full address, city/town, state and 6-digit PIN code.');
       return;
     }
+    const client = window.RKFoodieSupabase;
+    if (!client || typeof client.from !== 'function') {
+      showGateMessage('Supabase is not connected. Your profile was not synced. Please check the connection.');
+      return;
+    }
+    const saveButton = $('rkSaveProfile');
+    if (saveButton) { saveButton.disabled = true; saveButton.textContent = 'Saving securely…'; }
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
-      profile = saved;
+      const payload = { id: currentUser.id, ...saved, setup_skipped: false, updated_at: new Date().toISOString() };
+      const { data, error } = await client.from('customer_profiles').upsert(payload, { onConflict: 'id' }).select('*').single();
+      if (error) throw error;
+      profile = { ...saved, ...(data || {}), email: currentUser.email || saved.email };
+      if (!writeProfile(profile, currentUser.id)) console.warn('RK Foodie: cloud profile saved, but local profile cache could not be updated.');
+      updateProfileCards();
       syncCheckoutDetails();
-      if (gate) gate.hidden = true;
-      document.body.style.overflow = '';
-      alert('Your profile and delivery address have been saved on this device.');
+      enterWebsite();
+      alert('Your profile and delivery address have been saved to your Google account.');
     } catch (error) {
-      alert('Could not save the profile in this browser. Please try a smaller profile photo or check browser storage settings.');
+      console.error('RK Foodie profile save failed:', error);
+      // Keep a local draft for recovery, but never claim that it was saved to the cloud.
+      writeProfile(saved, currentUser.id);
+      showGateMessage('Could not save to Supabase. Check that customer_profiles SQL is installed and RLS is enabled. Your details are kept as a local draft.');
+    } finally {
+      if (saveButton) { saveButton.disabled = false; saveButton.textContent = 'Save profile & address'; }
     }
   });
 
-  // Checkout fields remain available for guests, and saved details are pre-filled.
+  // Checkout edits are cached under the currently signed-in Google user, never shared across Gmail accounts.
   ['custName', 'custPhone', 'custAddress'].forEach(id => {
     const field = $(id);
     if (field) field.addEventListener('change', () => {
-      const p = readProfile();
+      const p = { ...(profile || {}) };
       if (id === 'custName') p.full_name = field.value.trim();
       if (id === 'custPhone') p.phone = field.value.trim();
       if (id === 'custAddress') { p.address_line = field.value.trim(); p.landmark = ''; p.city = ''; p.state = ''; p.pincode = ''; }
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (_) {}
+      profile = p;
+      writeProfile(p);
       updateProfileCards();
     });
   });
@@ -2126,25 +2250,38 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   updateProfileCards();
   fillProfileForm();
 
-  // Restore the Supabase session on every app open. Supabase persists the session
-  // in local storage, so an authenticated customer goes straight to the food menu.
+  // Restore the real Supabase session and subscribe to account switches/sign-outs.
   (async function restoreGoogleSession() {
     const auth = authClient();
     if (!auth || typeof auth.getSession !== 'function') {
       showCustomerGate();
       return;
     }
+    if (typeof auth.onAuthStateChange === 'function') {
+      auth.onAuthStateChange((_event, session) => {
+        // Defer Supabase calls out of the auth callback to avoid holding its internal lock.
+        setTimeout(async () => {
+          try {
+            if (session && session.user) await activateUser(session.user);
+            else {
+              profileLoadGeneration++;
+              currentUser = null;
+              profile = {};
+              updateProfileCards();
+              showCustomerGate();
+            }
+          } catch (error) {
+            console.error('RK Foodie auth state profile sync failed:', error);
+            showCustomerGate();
+          }
+        }, 0);
+      });
+    }
     try {
       const { data, error } = await auth.getSession();
       if (error) throw error;
-      if (data && data.session) enterWebsite();
+      if (data && data.session && data.session.user) await activateUser(data.session.user);
       else showCustomerGate();
-      if (typeof auth.onAuthStateChange === 'function') {
-        auth.onAuthStateChange((_event, session) => {
-          if (session) enterWebsite();
-          else showCustomerGate();
-        });
-      }
     } catch (error) {
       console.error('RK Foodie session restore failed:', error);
       showCustomerGate();
