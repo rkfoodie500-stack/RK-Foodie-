@@ -3104,30 +3104,33 @@ function closeSuccessModal() {
      return;
    }
 
-   // Reserve a branded progress tab instead of showing a blank about:blank page.
-   // It redirects to WhatsApp only after the database confirms the order.
+   // On Android, use the native WhatsApp bridge instead of creating an
+   // about:blank popup (WebView does not reliably support window.open tabs).
+   // Keep the existing browser popup flow for normal desktop/mobile browsers.
    let waWindow=null;
-   try{
-     waWindow=window.open('about:blank','_blank');
-     if(waWindow&&!waWindow.closed){ /* Keep this tab blank until WhatsApp opens after a successful save. */ }
-   }catch(_){waWindow=null}
+   const hasNativeWhatsApp=!!(window.RKAndroidWhatsApp &&
+     typeof window.RKAndroidWhatsApp.openWhatsApp==='function');
+   if(!hasNativeWhatsApp){
+     try{ waWindow=window.open('about:blank','_blank'); }
+     catch(_){ waWindow=null; }
+   }
 
    // Reuse the location selected in checkout to avoid another slow GPS wait.
    // If no location exists, request a GPS fix with a shorter timeout.
    let customerLat=Number(window.RKCustomerLocation?.lat),customerLng=Number(window.RKCustomerLocation?.lng);
    const coordsValid=()=>Number.isFinite(customerLat)&&Number.isFinite(customerLng)&&customerLat>=-90&&customerLat<=90&&customerLng>=-180&&customerLng<=180&&(customerLat!==0||customerLng!==0);
    if(!coordsValid()){
-     if(!navigator.geolocation){if(waWindow)waWindow.close();alert('এই ব্রাউজারে GPS সাপোর্ট নেই। GPS চালু করে HTTPS ওয়েবসাইট থেকে আবার চেষ্টা করুন।');return;}
-     if(!window.isSecureContext&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){if(waWindow)waWindow.close();alert('GPS ব্যবহারের জন্য ওয়েবসাইটটি HTTPS-এ খুলুন।');return;}
+     if(!navigator.geolocation){alert('এই ব্রাউজারে GPS সাপোর্ট নেই। GPS চালু করে HTTPS ওয়েবসাইট থেকে আবার চেষ্টা করুন।');return;}
+     if(!window.isSecureContext&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){alert('GPS ব্যবহারের জন্য ওয়েবসাইটটি HTTPS-এ খুলুন।');return;}
      try{
        const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:12000,maximumAge:60000}));
        customerLat=Number(position.coords.latitude);customerLng=Number(position.coords.longitude);
        if(!coordsValid())throw new Error('GPS coordinates are invalid');
        if(typeof window.rkSetCheckoutCoordinates==='function')window.rkSetCheckoutCoordinates(customerLat,customerLng,'gps',Number(position.coords.accuracy)||null);
        const gps=window.RKCustomerLocation||(window.RKCustomerLocation={});gps.lat=customerLat;gps.lng=customerLng;gps.source='gps';gps.accuracy=Number(position.coords.accuracy)||null;
-     }catch(gpsError){if(waWindow)waWindow.close();alert('আপনার GPS লোকেশন পাওয়া যায়নি। Location permission Allow করে আবার অর্ডার করুন।');if(typeof window.toggleCart==='function')window.toggleCart(true);return;}
+     }catch(gpsError){alert('আপনার GPS লোকেশন পাওয়া যায়নি। Location permission Allow করে আবার অর্ডার করুন।');if(typeof window.toggleCart==='function')window.toggleCart(true);return;}
    }
-   if(!coordsValid()){if(waWindow)waWindow.close();alert('সঠিক GPS লোকেশন ছাড়া অর্ডার করা যাবে না।');return;}
+   if(!coordsValid()){alert('সঠিক GPS লোকেশন ছাড়া অর্ডার করা যাবে না।');return;}
 
    window.rkOrderSubmitting=true;
    const submitButtons=[...document.querySelectorAll('[onclick*="submitOrderViaWhatsApp"]')];
@@ -3157,8 +3160,20 @@ function closeSuccessModal() {
      let message=`🛒 *নতুন ফুড অর্ডার - RK Foodie (লাভপুর)*\n🧾 *অর্ডার নম্বর:* ${orderNumber}\n👤 *নাম:* ${name}\n*যোগাযোগ নম্বর:* ${phone}\n📍 *ডেলিভারি ঠিকানা:* ${address}\n🗺️ *GPS:* ${customerLat.toFixed(7)}, ${customerLng.toFixed(7)}\n💳 *পেমেন্ট:* ${paymentMethod}\n⏱️ *আনুমানিক ডেলিভারি:* ${historyOrder.estimated_delivery_text}\n------------------------------\n🍽️ *অর্ডারের তালিকা:*\n`;
      cartItems.forEach((i,n)=>message+=`${n+1}. ${i.title} × ${i.quantity} — ${money(i.price*i.quantity)}\n`);
      message+=`------------------------------\n🍱 *খাবারের দাম:* ${money(foodSubtotal)}\n🛵 *ডেলিভারি চার্জ:* ${money(deliveryFee)}\n💰 *সর্বমোট:* ${money(grandTotal)}\nধন্যবাদ! অর্ডারটি RK Foodie-তে সেভ হয়েছে।`;
-     if(waWindow&&!waWindow.closed){try{waWindow.location.href=`https://wa.me/919907406500?text=${encodeURIComponent(message)}`;}catch(waError){console.warn('RK Foodie: order saved, but WhatsApp could not be opened.',waError);}}
-     else {console.info('RK Foodie: order saved; WhatsApp popup was blocked or closed by the browser.');}
+     const whatsappUrl=`https://wa.me/919907406500?text=${encodeURIComponent(message)}`;
+     if(hasNativeWhatsApp){
+       try{ window.RKAndroidWhatsApp.openWhatsApp(whatsappUrl); }
+       catch(waError){
+         console.warn('RK Foodie: order saved, but Android could not open WhatsApp.',waError);
+         alert('আপনার অর্ডার সেভ হয়েছে, কিন্তু WhatsApp খোলা যায়নি। WhatsApp ইনস্টল আছে কি না এবং ইন্টারনেট সংযোগ পরীক্ষা করুন।');
+       }
+     }else if(waWindow&&!waWindow.closed){
+       try{ waWindow.location.href=whatsappUrl; }
+       catch(waError){ console.warn('RK Foodie: order saved, but WhatsApp could not be opened.',waError); }
+     }else{
+       console.info('RK Foodie: order saved; WhatsApp popup was blocked or closed by the browser.');
+       alert('অর্ডার সেভ হয়েছে। WhatsApp খুলতে পপ-আপ অনুমতি দিন অথবা WhatsApp লিংকটি আবার খুলুন।');
+     }
 
      if(typeof window.rkPlayOrderConfirmationAnimation==='function'){
        window.rkPlayOrderConfirmationAnimation(historyOrder);
