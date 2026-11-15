@@ -40,8 +40,12 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
+        <!-- Custom Safe Area Styling for App Status & Navigation Bar -->
+        <!-- Custom Safe Area & General Styling -->
+            <style>
         body {
+            padding-top: env(safe-area-inset-top, 24px);
+            padding-bottom: env(safe-area-inset-bottom, 24px);
             font-family: 'Poppins', sans-serif;
             background-color: #f8fafc;
             -webkit-tap-highlight-color: transparent;
@@ -55,7 +59,9 @@
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
-        }
+    
+
+        
         .drawer-open {
             transform: translateX(0%);
         }
@@ -98,7 +104,7 @@
         body.site-dark .border-gray-100, body.site-dark .border-gray-200 { border-color:#374151 !important; }
         @media(max-width:480px) { #siteSettingsDrawer { width:82vw; min-width:0; } }
 
-
+            
 
 /* RK Foodie accessibility patch: consistent dark theme and readable prices */
 body.site-dark { background:#080f1b !important; color:#e8edf5 !important; color-scheme:dark; }
