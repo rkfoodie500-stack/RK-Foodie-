@@ -3867,5 +3867,40 @@ body.site-dark .shadow-sm,body.site-dark .shadow-md,body.site-dark .shadow-lg{bo
     registerPush();
   });
 </script>
+
+<!-- RK Foodie offline fallback: register the service worker and open the game when offline. -->
+<script id="rk-offline-fallback">
+(() => {
+  'use strict';
+
+  const offlinePage = new URL('./offline%20intro.html', window.location.href);
+
+  // A Service Worker requires HTTPS (GitHub Pages / Cloudflare Pages are HTTPS).
+  if ('serviceWorker' in navigator &&
+      (window.location.protocol === 'https:' ||
+       window.location.hostname === 'localhost' ||
+       window.location.hostname === '127.0.0.1')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
+        .catch(error => console.warn('RK Foodie offline service worker:', error));
+    }, { once: true });
+  }
+
+  function openOfflineGame() {
+    let currentPath = window.location.pathname;
+    try { currentPath = decodeURIComponent(currentPath); } catch (_) {}
+    if (!currentPath.toLowerCase().endsWith('/offline intro.html')) {
+      window.location.replace(offlinePage.href);
+    }
+  }
+
+  // Handles an app opened while the device already has no connection.
+  if (!navigator.onLine) openOfflineGame();
+
+  // Handles a connection dropping while the main website is open.
+  window.addEventListener('offline', openOfflineGame);
+})();
+</script>
+
 </body>
 </html>
