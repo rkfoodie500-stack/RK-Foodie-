@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>No Internet Connection • 3D Offline Runner</title>
+    <style>
+        /* Reset & 100% Offline Studio Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        :root {
+            --bg-white: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --red-main: #ef4444;
+            --red-dark: #dc2626;
+            --red-soft: #fef2f2;
+            --green-main: #10b981;
+            --green-bright: #22c55e;
+            --green-dark: #15803d;
+            --green-soft: #ecfdf5;
+            --surface-pill: #f8fafc;
+            --border-light: #e2e8f0;
+        }
+
+        html, body {
+            width: 100%;
+            min-width: 100%;
+            height: 100%;
+            min-height: 100%;
+            margin: 0;
+            background: #b9e8f6;
+            color: var(--text-dark);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+        body { position: fixed; inset: 0; }
+
+        /* Top Status Bar & English Messaging */
+        .header-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: max(12px, env(safe-area-inset-top)) 20px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            z-index: 20;
+            background: linear-gradient(180deg, rgba(240,250,255,.92) 0%, rgba(240,250,255,.70) 72%, transparent 100%);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .top-bar {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--red-soft);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: var(--red-dark);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .status-pill.online {
+            background: var(--green-soft);
+            border-color: rgba(16, 185, 129, 0.35);
+            color: var(--green-dark);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.16);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.4;
+            animation: pulseRing 1.5s infinite ease-out;
+        }
+
+        .score-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--green-soft);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--green-dark);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.06);
+        }
+
+        .score-pill span.muted {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .headline {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.3px;
+            line-height: 1.2;
+        }
+
+        .headline span.red-accent {
+            color: var(--red-main);
+        }
+
+        .subtext {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            line-height: 1.45;
+            max-width: 340px;
+            font-weight: 500;
+        }
+
+        /* Main 3D Interactive Stage */
+        .game-stage {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+            cursor: pointer;
+        }
+
+        canvas#scene3d {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Compact 3D Floating Card for Start / Game Over */
+        .game-card {
+            position: absolute;
+            top: 58%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            border-radius: 22px;
+            padding: 18px 26px;
+            text-align: center;
+            box-shadow: 0 20px 38px -12px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+            z-index: 15;
+            min-width: 240px;
+            transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .game-card.hidden {
+            opacity: 0;
+            transform: translate(-50%, -44%) scale(0.92);
+            pointer-events: none;
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 10.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            margin-bottom: 8px;
+        }
+
+        .card-tag.crash {
+            background: var(--red-soft);
+            color: var(--red-dark);
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .card-sub {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .start-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 8px 18px -4px rgba(22, 163, 74, 0.42);
+            transition: transform 0.14s ease;
+        }
+
+        .start-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Footer Controls */
+        .footer-section {
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: min(100%, 520px);
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 24px 24px max(14px, env(safe-area-inset-bottom));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            z-index: 20;
+            background: linear-gradient(0deg, rgba(240,250,255,.94) 0%, rgba(240,250,255,.72) 70%, transparent 100%);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .hint-line {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .retry-btn {
+            width: 100%;
+            height: 48px;
+            border-radius: 15px;
+            border: none;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            font-size: 14.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            box-shadow: 0 10px 20px -6px rgba(15, 23, 42, 0.28);
+            transition: transform 0.15s ease, background 0.3s ease;
+        }
+
+        .retry-btn:active {
+            transform: scale(0.97);
+        }
+
+        .retry-btn.online {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 10px 22px -6px rgba(16, 185, 129, 0.45);
+        }
+
+        .retry-btn.spinning svg {
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Reconnecting Full-Screen Smooth Curtain */
+        .reconnect-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.96);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .reconnect-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .check-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--green-soft);
+            color: var(--green-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            box-shadow: 0 12px 26px rgba(16, 185, 129, 0.22);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 84px;
+            left: 50%;
+            transform: translateX(-50%) translateY(14px);
+            background: rgba(15, 23, 42, 0.92);
+            color: #ffffff;
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s ease;
+            z-index: 60;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(0.85); opacity: 0.65; }
+            100% { transform: scale(2.4); opacity: 0; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .header-section { padding-left: 12px; padding-right: 12px; }
+            .top-bar { margin-bottom: 7px; }
+            .status-pill, .score-pill { padding: 5px 8px; font-size: 9px; gap: 5px; }
+            .score-pill { flex-wrap: wrap; justify-content: center; max-width: 66vw; }
+            .headline { font-size: clamp(17px, 5vw, 22px); }
+            .subtext { font-size: 11px; max-width: 290px; margin-top: 3px; }
+            .footer-section { padding-left: 16px; padding-right: 16px; }
+            .retry-btn { height: 44px; }
+            .game-card { top: 55%; min-width: 220px; padding: 15px 20px; }
+        }
+        @media (max-height: 520px) and (orientation: landscape) {
+            .header-section { padding: 7px 16px 12px; }
+            .top-bar { margin-bottom: 3px; }
+            .headline { font-size: 17px; }
+            .subtext { display: none; }
+            .footer-section { width: 250px; padding: 12px 12px 8px; }
+            .hint-line { font-size: 10px; }
+            .retry-btn { height: 36px; }
+            .game-card { top: 57%; padding: 10px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header: Red Offline Status + Green Score Counter + English Text -->
+    <header class="header-section">
+        <div class="top-bar">
+            <div class="status-pill" id="statusPill">
+                <span class="pulse-dot"></span>
+                <span id="statusText">NO WI-FI • OFFLINE</span>
+            </div>
+            <div class="score-pill">
+                <span class="muted">BEST: <strong id="bestScoreEl" style="color:#0f172a;">0000</strong></span>
+                <span style="color:#cbd5e1;">|</span>
+                <span>SCORE: <strong id="scoreEl">0000</strong></span>
+                <span style="color:#cbd5e1;">|</span>
+                <span style="color:#b7791f;">🪙 COINS: <strong id="coinCountEl" style="color:#92400e;">000</strong></span>
+            </div>
+        </div>
+        <h1 class="headline" id="headlineEl">No <span class="red-accent">Internet</span> Connection</h1>
+        <p class="subtext" id="subtextEl">
+            Please turn on Mobile Data or Wi-Fi to continue. Play while you wait!
+        </p>
+    </header>
+
+    <!-- Main 3D Canvas Stage -->
+    <main class="game-stage" id="gameStage">
+        <canvas id="scene3d"></canvas>
+
+        <!-- Start / Game Over Overlay Card -->
+        <div class="game-card" id="gameCard">
+            <div class="card-tag" id="cardTag">3D CYBER-DINO</div>
+            <div class="card-title" id="cardTitle">Tap Anywhere to Jump</div>
+            <div class="card-sub" id="cardSub">Leap over the red signal obstacles!</div>
+            <button class="start-btn" id="startBtn" type="button">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span id="startBtnText">Start Running</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- Bottom Controls -->
+    <footer class="footer-section">
+        <div class="hint-line">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+            </svg>
+            <span>Tap screen or press Space to jump</span>
+        </div>
+
+        <button class="retry-btn" id="retryBtn" type="button">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            <span id="retryBtnText">Retry Connection</span>
+        </button>
+    </footer>
+
+    <!-- Smooth Transition Curtain When Internet Returns -->
+    <div class="reconnect-overlay" id="reconnectOverlay">
+        <div class="check-circle">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <h2 style="font-size:20px; font-weight:800; color:#0f172a;">Connected!</h2>
+        <p style="font-size:13.5px; color:#64748b; margin-top:4px;">Opening website...</p>
+    </div>
+
+    <div class="toast" id="toastEl">Still offline. Please check your Wi-Fi or Mobile Data.</div>
+
+    <script>
+        /**
+         * ============================================================================
+         * ANDROID WEBVIEW CONFIGURATION (IMPORTANT):
+         * Replace LIVE_APP_URL below with your actual website URL so that when
+         * offline.html is loaded via WebView.loadUrl("file:///android_asset/offline.html"),
+         * restoring the internet navigates cleanly to your website with ZERO reload loops!
+         * ============================================================================
+         */
+        const LIVE_APP_URL = (window.location.protocol === 'http:' || window.location.protocol === 'https:')
+            ? new URL('./index.html', window.location.href).href
+            : 'https://ba27296f.rk-foodie.pages.dev/';
+
+        (function () {
+            const canvas = document.getElementById('scene3d');
+            const ctx = canvas.getContext('2d');
+            const gameStage = document.getElementById('gameStage');
+
+            // UI Elements
+            const statusPill = document.getElementById('statusPill');
+            const statusText = document.getElementById('statusText');
+            const scoreEl = document.getElementById('scoreEl');
+            const bestScoreEl = document.getElementById('bestScoreEl');
+            const coinCountEl = document.getElementById('coinCountEl');
+            const gameCard = document.getElementById('gameCard');
+            const cardTag = document.getElementById('cardTag');
+            const cardTitle = document.getElementById('cardTitle');
+            const cardSub = document.getElementById('cardSub');
+            const startBtn = document.getElementById('startBtn');
+            const startBtnText = document.getElementById('startBtnText');
+            const retryBtn = document.getElementById('retryBtn');
+            const retryBtnText = document.getElementById('retryBtnText');
+            const reconnectOverlay = document.getElementById('reconnectOverlay');
+            const toastEl = document.getElementById('toastEl');
+
+            let W = 0, H = 0;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            // Safe LocalStorage High Score
+            let bestScore = 0;
+            try {
+                bestScore = parseInt(localStorage.getItem('cyber_dino_3d_best') || '0', 10) || 0;
+            } catch (e) {
+                bestScore = 0;
+            }
+            bestScoreEl.textContent = String(bestScore).padStart(4, '0');
+
+            // Stable State Flags
+            let animFrameId = null;
+            let pollIntervalId = null;
+            let isRedirecting = false;
+            let isManualChecking = false;
+
+            let gameState = 'IDLE'; // 'IDLE', 'PLAYING', 'GAMEOVER'
+            let score = 0;
+            let coinCount = 0;
+            let coinSpawnTimer = 68;
+            let audioCtx = null;
+            let gameSpeed = 5.6;
+            let frameCount = 0;
+            let trackScroll = 0;
+
+            // 3D Camera Angles (3/4 Isometric-Perspective)
+            const CAM = {
+                yaw: -0.34,
+                pitch: 0.25,
+                fov: 720
+            };
+
+            // Unique Emerald & Lime 3D Cyber-Dino State
+            const dino = {
+                x: -78,
+                y: 0,
+                z: 0,
+                vy: 0,
+                gravity: 0.54,
+                jumpForce: 16.2,
+                isGrounded: true,
+                squashX: 1,
+                squashY: 1,
+                runCycle: 0
+            };
+
+            let obstacles = [];
+            let coins = [];
+            let particles = [];
+            let spawnTimer = 0;
+
+            function resizeCanvas() {
+                const rect = gameStage.getBoundingClientRect();
+                W = rect.width;
+                H = rect.height;
+                canvas.width = W * dpr;
+                canvas.height = H * dpr;
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            // 3D World (X, Y[up+], Z) -> 2D Screen Projection
+            function project3D(wx, wy, wz) {
+                const cosY = Math.cos(CAM.yaw);
+                const sinY = Math.sin(CAM.yaw);
+                const x1 = wx * cosY - wz * sinY;
+                const z1 = wz * cosY + wx * sinY;
+
+                const cosP = Math.cos(CAM.pitch);
+                const sinP = Math.sin(CAM.pitch);
+                const y2 = (-wy) * cosP - z1 * sinP;
+                const z2 = z1 * cosP + (-wy) * sinP;
+
+                const scale = CAM.fov / (CAM.fov + z2 + 340);
+                const centerX = W * 0.52;
+                const centerY = H * 0.77;
+
+                return {
+                    x: centerX + x1 * scale * 1.16,
+                    y: centerY + y2 * scale * 1.16,
+                    z: z2,
+                    scale: scale
+                };
+            }
+
+            // Draw Shaded 3D Cuboid Box
+            function draw3DBox(cx, cy, cz, w, h, d, pal) {
+                const hw = w / 2, hh = h / 2, hd = d / 2;
+                const p = [
+                    project3D(cx - hw, cy + hh, cz - hd),
+                    project3D(cx + hw, cy + hh, cz - hd),
+                    project3D(cx + hw, cy + hh, cz + hd),
+                    project3D(cx - hw, cy + hh, cz + hd),
+                    project3D(cx - hw, cy - hh, cz - hd),
+                    project3D(cx + hw, cy - hh, cz - hd),
+                    project3D(cx + hw, cy - hh, cz + hd),
+                    project3D(cx - hw, cy - hh, cz + hd)
+                ];
+
+                // Right Face
+                ctx.beginPath();
+                ctx.moveTo(p[1].x, p[1].y);
+                ctx.lineTo(p[2].x, p[2].y);
+                ctx.lineTo(p[6].x, p[6].y);
+                ctx.lineTo(p[5].x, p[5].y);
+                ctx.closePath();
+                ctx.fillStyle = pal.right;
+                ctx.fill();
+
+                // Front Face
+                ctx.beginPath();
+                ctx.moveTo(p[3].x, p[3].y);
+                ctx.lineTo(p[2].x, p[2].y);
+                ctx.lineTo(p[6].x, p[6].y);
+                ctx.lineTo(p[7].x, p[7].y);
+                ctx.closePath();
+                ctx.fillStyle = pal.front;
+                ctx.fill();
+
+                // Top Face
+                ctx.beginPath();
+                ctx.moveTo(p[0].x, p[0].y);
+                ctx.lineTo(p[1].x, p[1].y);
+                ctx.lineTo(p[2].x, p[2].y);
+                ctx.lineTo(p[3].x, p[3].y);
+                ctx.closePath();
+                ctx.fillStyle = pal.top;
+                ctx.fill();
+            }
+
+            // Draw Glossy 3D Sphere
+            function draw3DSphere(wx, wy, wz, radius, cLight, cMid, cDark, glow) {
+                const p = project3D(wx, wy, wz);
+                const r = radius * p.scale;
+                if (r <= 0.5) return;
+
+                if (glow) {
+                    const g = ctx.createRadialGradient(p.x, p.y, r * 0.2, p.x, p.y, r * 2.2);
+                    g.addColorStop(0, glow);
+                    g.addColorStop(1, 'rgba(255,255,255,0)');
+                    ctx.fillStyle = g;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, r * 2.2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                const grad = ctx.createRadialGradient(p.x - r * 0.3, p.y - r * 0.3, r * 0.1, p.x, p.y, r);
+                grad.addColorStop(0, cLight);
+                grad.addColorStop(0.55, cMid);
+                grad.addColorStop(1, cDark);
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+                ctx.fillStyle = grad;
+                ctx.fill();
+            }
+
+            // Draw 3D Cylindrical Tube with Specular Shading
+            function draw3DTube(p1, p2, r, cLight, cBase, cDark) {
+                const a = project3D(p1.x, p1.y, p1.z);
+                const b = project3D(p2.x, p2.y, p2.z);
+                const ra = r * a.scale;
+                const rb = r * b.scale;
+
+                const dx = b.x - a.x;
+                const dy = b.y - a.y;
+                const len = Math.hypot(dx, dy);
+                if (len < 0.2) return;
+
+                const nx = -dy / len;
+                const ny = dx / len;
+
+                const grad = ctx.createLinearGradient(a.x + nx * ra, a.y + ny * ra, a.x - nx * ra, a.y - ny * ra);
+                grad.addColorStop(0, cLight);
+                grad.addColorStop(0.5, cBase);
+                grad.addColorStop(1, cDark);
+
+                ctx.beginPath();
+                ctx.moveTo(a.x + nx * ra, a.y + ny * ra);
+                ctx.lineTo(b.x + nx * rb, b.y + ny * rb);
+                ctx.lineTo(b.x - nx * rb, b.y - ny * rb);
+                ctx.lineTo(a.x - nx * ra, a.y - ny * ra);
+                ctx.closePath();
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(a.x, a.y, ra, 0, Math.PI * 2);
+                ctx.fillStyle = cBase;
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, rb, 0, Math.PI * 2);
+                ctx.fillStyle = cLight;
+                ctx.fill();
+            }
+
+            // =========================================================================
+            // 1. ALL-RED 3D DISCONNECTED WI-FI ICON WITH BOLD 3D RED DIAGONAL SLASH (\)
+            // =========================================================================
+            function draw3DRedWifi() {
+                const bob = Math.sin(frameCount * 0.045) * 4.5;
+                const tilt = Math.sin(frameCount * 0.03) * 0.06;
+                const wx = 0;
+                const wy = 152 + bob;
+                const wz = -15;
+
+                // Soft red ambient floor shadow directly below floating Wi-Fi
+                const shadowP = project3D(wx, 104, wz);
+                ctx.save();
+                ctx.beginPath();
+                ctx.ellipse(shadowP.x, shadowP.y, 32 * shadowP.scale, 7 * shadowP.scale, 0, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.09)';
+                ctx.fill();
+                ctx.restore();
+
+                // 3D Extruded Back Depth Layer (Dark Crimson for real 3D thickness)
+                const depthZ = wz - 6;
+                draw3DSphere(wx, wy, depthZ, 5.8, '#b91c1c', '#991b1b', '#7f1d1d', null);
+
+                const arcs = [
+                    { r: 17, thick: 3.3 },
+                    { r: 29, thick: 3.3 },
+                    { r: 41, thick: 3.3 }
+                ];
+
+                arcs.forEach((arc) => {
+                    const segs = 14;
+                    const startA = Math.PI * 0.25 + tilt;
+                    const endA = Math.PI * 0.75 + tilt;
+
+                    for (let s = 0; s < segs; s++) {
+                        const a1 = startA + (endA - startA) * (s / segs);
+                        const a2 = startA + (endA - startA) * ((s + 1) / segs);
+
+                        // Back 3D Extrusion
+                        draw3DTube(
+                            { x: wx + Math.cos(a1) * arc.r, y: wy + Math.sin(a1) * arc.r, z: depthZ },
+                            { x: wx + Math.cos(a2) * arc.r, y: wy + Math.sin(a2) * arc.r, z: depthZ },
+                            arc.thick, '#b91c1c', '#991b1b', '#7f1d1d'
+                        );
+
+                        // Front Glossy Red Arcs (All arcs vibrant Red!)
+                        draw3DTube(
+                            { x: wx + Math.cos(a1) * arc.r, y: wy + Math.sin(a1) * arc.r, z: wz },
+                            { x: wx + Math.cos(a2) * arc.r, y: wy + Math.sin(a2) * arc.r, z: wz },
+                            arc.thick, '#fca5a5', '#ef4444', '#dc2626'
+                        );
+                    }
+                });
+
+                // Front Red Center Dot with Pulsing Red Glow
+                draw3DSphere(wx, wy, wz + 1, 6.2, '#fecaca', '#ef4444', '#b91c1c', 'rgba(239, 68, 68, 0.32)');
+
+                // Bold 3D Red Diagonal Slash (\) Cutting Across the Wi-Fi Symbol
+                const slashZ = wz + 11;
+                const pStart = { x: wx - 30, y: wy + 41, z: slashZ };
+                const pEnd   = { x: wx + 30, y: wy - 7,  z: slashZ };
+
+                // White subtle halo behind slash so it pops cleanly over the red arcs
+                draw3DTube(
+                    { x: pStart.x, y: pStart.y, z: slashZ - 2 },
+                    { x: pEnd.x,   y: pEnd.y,   z: slashZ - 2 },
+                    5.2, '#ffffff', '#ffffff', '#f1f5f9'
+                );
+
+                // 3D Red Slash Bar
+                draw3DTube(
+                    pStart,
+                    pEnd,
+                    3.5, '#fecaca', '#dc2626', '#991b1b'
+                );
+            }
+
+            // =========================================================================
+            // 2. VIBRANT LUSH GREEN 3D RUNNING TRACK / ROAD
+            // =========================================================================
+            function drawPineTree(x, z, size = 1) {
+                // Natural evergreen trunk and layered pine branches in the distance.
+                draw3DBox(x, 17 * size, z, 5 * size, 34 * size, 5 * size, {
+                    top: '#9a6a3e', front: '#80502d', right: '#603b25'
+                });
+                const greens = [
+                    { y: 27, w: 23, h: 24, d: 19, c: ['#4ade80', '#16834b', '#11643d'] },
+                    { y: 40, w: 19, h: 22, d: 16, c: ['#65d98b', '#16834b', '#0f6b40'] },
+                    { y: 52, w: 14, h: 19, d: 13, c: ['#86efac', '#198754', '#145c3a'] }
+                ];
+                greens.forEach(layer => {
+                    draw3DBox(x, layer.y * size, z, layer.w * size, layer.h * size, layer.d * size, {
+                        top: layer.c[0], front: layer.c[1], right: layer.c[2]
+                    });
+                });
+            }
+
+            function drawScenicBackground() {
+                const sky = ctx.createLinearGradient(0, 0, 0, H);
+                sky.addColorStop(0, '#72c9ef');
+                sky.addColorStop(0.48, '#c9ecf3');
+                sky.addColorStop(1, '#b5dc9b');
+                ctx.fillStyle = sky;
+                ctx.fillRect(0, 0, W, H);
+
+                // Slowly changing cloud bands and distant mountain silhouettes.
+                const farShift = (trackScroll * 0.10) % (W * 1.2);
+                ctx.fillStyle = '#e9f8f4';
+                for (let i = -1; i < 4; i++) {
+                    const cx = i * W * 0.43 - farShift * 0.18;
+                    const cy = H * (0.17 + (i % 2) * 0.055);
+                    ctx.globalAlpha = 0.46;
+                    ctx.beginPath();
+                    ctx.ellipse(cx, cy, W * 0.09, H * 0.025, 0, 0, Math.PI * 2);
+                    ctx.ellipse(cx + W * 0.045, cy - H * 0.012, W * 0.07, H * 0.03, 0, 0, Math.PI * 2);
+                    ctx.ellipse(cx + W * 0.09, cy, W * 0.08, H * 0.022, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+
+                // Distant green mountain range, continuously sliding past.
+                const mountainShift = (trackScroll * 0.16) % (W * 1.4);
+                for (let layer = 0; layer < 2; layer++) {
+                    const baseY = H * (0.59 + layer * 0.065);
+                    const step = W * (layer === 0 ? 0.34 : 0.27);
+                    const shift = mountainShift * (layer === 0 ? 0.55 : 0.9);
+                    ctx.fillStyle = layer === 0 ? '#78b98c' : '#559a70';
+                    ctx.beginPath();
+                    ctx.moveTo(-step, H);
+                    for (let i = -2; i < 8; i++) {
+                        const x = i * step - shift;
+                        const peak = baseY - H * (0.10 + ((i * 7 + layer * 3) % 4) * 0.025);
+                        ctx.lineTo(x, baseY);
+                        ctx.lineTo(x + step * 0.48, peak);
+                        ctx.lineTo(x + step, baseY);
+                    }
+                    ctx.lineTo(W + step, H);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+
+                // Occasional rocky mountains with visible stone faces and snow-free rugged peaks.
+                const rockSpacing = Math.max(260, W * 0.72);
+                const rockShift = (trackScroll * 0.22) % rockSpacing;
+                for (let i = -2; i < Math.ceil(W / rockSpacing) + 3; i++) {
+                    const x = i * rockSpacing - rockShift + W * 0.25;
+                    const y = H * (0.50 + ((i + 8) % 3) * 0.025);
+                    const peakH = H * (0.16 + ((i + 5) % 2) * 0.045);
+                    ctx.fillStyle = '#8b9693';
+                    ctx.beginPath();
+                    ctx.moveTo(x - W * 0.13, y + peakH * 0.45);
+                    ctx.lineTo(x - W * 0.045, y - peakH * 0.30);
+                    ctx.lineTo(x + W * 0.005, y - peakH);
+                    ctx.lineTo(x + W * 0.065, y - peakH * 0.22);
+                    ctx.lineTo(x + W * 0.14, y + peakH * 0.45);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.fillStyle = '#687674';
+                    ctx.beginPath();
+                    ctx.moveTo(x + W * 0.005, y - peakH);
+                    ctx.lineTo(x + W * 0.065, y - peakH * 0.22);
+                    ctx.lineTo(x + W * 0.14, y + peakH * 0.45);
+                    ctx.lineTo(x + W * 0.015, y + peakH * 0.30);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Rock strata highlights.
+                    ctx.strokeStyle = 'rgba(230,238,229,.42)';
+                    ctx.lineWidth = Math.max(1, W * 0.0018);
+                    ctx.beginPath();
+                    ctx.moveTo(x - W * 0.075, y + peakH * 0.05);
+                    ctx.lineTo(x - W * 0.015, y + peakH * 0.12);
+                    ctx.lineTo(x + W * 0.035, y + peakH * 0.04);
+                    ctx.stroke();
+                }
+
+                // Evergreen trees in changing, staggered rows beside the road.
+                const spacing = Math.max(62, Math.min(100, W * 0.11));
+                const nearScroll = (trackScroll * 0.72) % spacing;
+                const farScroll = (trackScroll * 0.42) % (spacing * 1.35);
+                for (let i = -2; i < Math.ceil(W / spacing) + 3; i++) {
+                    const x = i * spacing - nearScroll - W * 0.5;
+                    const depth = (i % 3 === 0) ? 1.05 : 0.84;
+                    drawPineTree(x, -128, depth);
+                    drawPineTree(x + spacing * 0.34, 128, depth * 0.92);
+                }
+                for (let i = -2; i < Math.ceil(W / (spacing * 1.35)) + 3; i++) {
+                    const x = i * spacing * 1.35 - farScroll - W * 0.5;
+                    drawPineTree(x, -184, 0.68);
+                    drawPineTree(x + spacing * 0.5, 184, 0.64);
+                }
+
+                // Low grassy banks make the roadside feel continuous and scenic.
+                const grass = ctx.createLinearGradient(0, H * 0.60, 0, H);
+                grass.addColorStop(0, 'rgba(89,170,91,0)');
+                grass.addColorStop(1, 'rgba(53,132,65,.28)');
+                ctx.fillStyle = grass;
+                ctx.fillRect(0, H * 0.58, W, H * 0.42);
+            }
+
+            // Wide, polished green running road that scales with the screen.
+            function draw3DGreenTrack() {
+                const roadScale = Math.max(1, W / 360);
+                const trackLen = Math.max(650, (W / 0.58) * 1.55);
+                const trackW = Math.max(126, Math.min(190, H * 0.23));
+                const trackH = 14;
+
+                const sLeft = project3D(-trackLen / 2, -23, 0);
+                const sRight = project3D(trackLen / 2, -23, 0);
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(sLeft.x, sLeft.y);
+                ctx.lineTo(sRight.x, sRight.y);
+                ctx.lineWidth = 52 * sLeft.scale;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = 'rgba(20, 83, 45, 0.22)';
+                ctx.stroke();
+                ctx.restore();
+
+                draw3DBox(0, -trackH / 2, 0, trackLen, trackH, trackW, {
+                    top: '#278b48',
+                    front: '#176b39',
+                    right: '#10552f'
+                });
+
+                // Bright edge lines and road shoulders.
+                [-1, 1].forEach(side => {
+                    draw3DBox(0, 1.5, side * (trackW / 2 - 3), trackLen, 3, 6, {
+                        top: '#b7f7c7', front: '#48bd70', right: '#23884a'
+                    });
+                });
+
+                // Dashed central lane markers.
+                const spacing = 48 * roadScale;
+                const offset = trackScroll % spacing;
+                for (let x = -trackLen / 2 + 24 - offset; x < trackLen / 2; x += spacing) {
+                    draw3DBox(x, 0.8, 0, 23 * roadScale, 1.5, 4.5, {
+                        top: '#f8fff8', front: '#d9fbe2', right: '#a7e8b7'
+                    });
+                }
+            }
+
+            // =========================================================================
+            // 3. UNIQUE STYLISH 3D EMERALD & LIME CYBER-DINO
+            // =========================================================================
+            function draw3DUniqueDino() {
+                const dx = dino.x;
+                const dy = dino.y;
+                const dz = dino.z;
+
+                // Dynamic Ground Shadow on the Green Track
+                const shadowScale = Math.max(0.35, 1 - dy / 145);
+                const sp = project3D(dx, 1.2, dz);
+                ctx.save();
+                ctx.beginPath();
+                ctx.ellipse(
+                    sp.x, sp.y,
+                    23 * sp.scale * shadowScale,
+                    9.5 * sp.scale * shadowScale,
+                    0, 0, Math.PI * 2
+                );
+                ctx.fillStyle = `rgba(6, 78, 59, ${0.26 * shadowScale})`;
+                ctx.fill();
+                ctx.restore();
+
+                const sx = dino.squashX;
+                const sy = dino.squashY;
+
+                // Sleek Emerald, Mint & Neon-Lime 3D Palette
+                const bodyPal  = { top: '#34d399', front: '#10b981', right: '#059669' };
+                const darkPal  = { top: '#10b981', front: '#047857', right: '#065f46' };
+                const bellyPal = { top: '#ecfdf5', front: '#d1fae5', right: '#a7f3d0' };
+                const spikePal = { top: '#d9f99d', front: '#a3e635', right: '#65a30d' };
+                const clawPal  = { top: '#ffffff', front: '#f1f5f9', right: '#cbd5e1' };
+
+                // Articulated Running Legs
+                const legSwing = dino.isGrounded && gameState === 'PLAYING'
+                    ? Math.sin(dino.runCycle) * 7.5
+                    : (dino.isGrounded ? 0 : 6);
+
+                // Back Left Leg + Foot
+                const leftLegY = 6 * sy + Math.max(0, -legSwing * 0.45);
+                draw3DBox(dx - 3 - legSwing * 0.65, leftLegY, dz - 7.5, 7 * sx, 12 * sy, 6, darkPal);
+                draw3DBox(dx - 1 - legSwing * 0.65, leftLegY - 5 * sy, dz - 7.5, 9 * sx, 3.5 * sy, 6.5, clawPal);
+
+                // Segmented Swinging 3D Tail with Lime Tip
+                const tailWave = Math.sin(dino.runCycle * 0.55) * 2.2;
+                draw3DBox(dx - 18 * sx, (16 + tailWave * 0.6) * sy, dz, 14 * sx, 10 * sy, 11 * sx, bodyPal);
+                draw3DBox(dx - 28 * sx, (20 + tailWave * 1.1) * sy, dz, 10 * sx, 7 * sy, 7.5 * sx, darkPal);
+                draw3DBox(dx - 35 * sx, (23 + tailWave * 1.5) * sy, dz, 6 * sx, 4.5 * sy, 5 * sx, spikePal);
+
+                // Sculpted Torso + Mint Chest Plate
+                draw3DBox(dx, 20 * sy, dz, 24 * sx, 22 * sy, 18 * sx, bodyPal);
+                draw3DBox(dx + 8.5 * sx, 18 * sy, dz, 9 * sx, 15 * sy, 14.5 * sx, bellyPal);
+
+                // Neon-Lime 3D Dorsal Ridge Spikes (Back & Tail)
+                draw3DBox(dx - 15 * sx, 26 * sy, dz, 4.5 * sx, 5 * sy, 4.5, spikePal);
+                draw3DBox(dx - 9 * sx,  32.5 * sy, dz, 5 * sx, 6 * sy, 5, spikePal);
+                draw3DBox(dx - 2 * sx,  34.5 * sy, dz, 5.5 * sx, 7 * sy, 5.5, spikePal);
+
+                // Front Right Leg + Foot
+                const rightLegY = 6 * sy + Math.max(0, legSwing * 0.45);
+                draw3DBox(dx + 2 + legSwing * 0.65, rightLegY, dz + 7.5, 7 * sx, 12 * sy, 6, bodyPal);
+                draw3DBox(dx + 4 + legSwing * 0.65, rightLegY - 5 * sy, dz + 7.5, 9 * sx, 3.5 * sy, 6.5, clawPal);
+
+                // Tiny 3D Cyber Arms with White Claws
+                draw3DBox(dx + 13 * sx, 21 * sy, dz + 8.5, 7 * sx, 4 * sy, 4, darkPal);
+                draw3DBox(dx + 16.5 * sx, 19.5 * sy, dz + 8.5, 2.5 * sx, 3 * sy, 3.5, clawPal);
+
+                // Sleek 3D Head + Crown Crest
+                const headBob = dino.isGrounded && gameState === 'PLAYING' ? Math.abs(Math.cos(dino.runCycle)) * 1.8 : 0;
+                const hy = (37.5 + headBob) * sy;
+
+                draw3DBox(dx + 8 * sx, hy, dz, 22 * sx, 16 * sy, 18.5 * sx, bodyPal);
+                // Crown Spike on Head
+                draw3DBox(dx + 2 * sx, hy + 9.5 * sy, dz, 7 * sx, 4 * sy, 6, spikePal);
+
+                // Upper & Lower Snout
+                draw3DBox(dx + 18 * sx, hy + 1 * sy, dz, 10 * sx, 9 * sy, 15 * sx, bodyPal);
+                draw3DBox(dx + 17.5 * sx, hy - 4.5 * sy, dz, 9 * sx, 4.5 * sy, 13.5 * sx, bellyPal);
+
+                // Cute White Tooth Detail
+                draw3DBox(dx + 20 * sx, hy - 2.5 * sy, dz + 6.5 * sx, 2.5, 2.5, 1.5, clawPal);
+
+                // Futuristic Glossy Visor Eye
+                draw3DBox(dx + 11.5 * sx, hy + 2.2 * sy, dz + 9.5 * sx, 6.5, 5.5, 1.5, {
+                    top: '#0f172a', front: '#0f172a', right: '#020617'
+                });
+                // Glowing Cyan/White Eye Highlight
+                draw3DBox(dx + 13 * sx, hy + 3.2 * sy, dz + 10.3 * sx, 2.5, 2.5, 1, {
+                    top: '#ffffff', front: '#a5f3fc', right: '#67e8f9'
+                });
+            }
+
+            function playCoinSound() {
+                try {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContextClass) return;
+                    if (!audioCtx) audioCtx = new AudioContextClass();
+                    if (audioCtx.state === 'suspended') audioCtx.resume();
+                    const now = audioCtx.currentTime;
+                    [880, 1175].forEach((frequency, index) => {
+                        const oscillator = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        oscillator.type = 'sine';
+                        oscillator.frequency.setValueAtTime(frequency, now + index * 0.075);
+                        gain.gain.setValueAtTime(0.0001, now + index * 0.075);
+                        gain.gain.exponentialRampToValueAtTime(0.12, now + index * 0.075 + 0.012);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + index * 0.075 + 0.22);
+                        oscillator.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        oscillator.start(now + index * 0.075);
+                        oscillator.stop(now + index * 0.075 + 0.24);
+                    });
+                } catch (e) {}
+            }
+
+            function spawnCoinLine() {
+                const count = 3 + Math.floor(Math.random() * 3);
+                const height = 35 + Math.random() * 24;
+                for (let i = 0; i < count; i++) {
+                    coins.push({
+                        x: 255 + i * 27,
+                        y: height + Math.sin(i * 0.7) * 5,
+                        z: 0,
+                        spin: Math.random() * Math.PI * 2,
+                        collected: false
+                    });
+                }
+            }
+
+            function draw3DCoins() {
+                coins.forEach(coin => {
+                    const p = project3D(coin.x, coin.y, coin.z);
+                    const spin = Math.abs(Math.cos(coin.spin));
+                    const rx = Math.max(1.8, 9.5 * p.scale * (0.16 + spin * 0.84));
+                    const ry = 12.5 * p.scale;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.shadowColor = 'rgba(255, 190, 35, .65)';
+                    ctx.shadowBlur = 10 * p.scale;
+                    const grad = ctx.createLinearGradient(-rx, -ry, rx, ry);
+                    grad.addColorStop(0, '#fff4a8');
+                    grad.addColorStop(0.42, '#fbbf24');
+                    grad.addColorStop(1, '#b45309');
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                    ctx.lineWidth = Math.max(1, 2 * p.scale);
+                    ctx.strokeStyle = '#fff0a3';
+                    ctx.stroke();
+
+                    // Small dark extrusion and raised RK lettering.
+                    ctx.shadowBlur = 0;
+                    ctx.font = `900 ${Math.max(6, 8.5 * p.scale)}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = '#7c3f08';
+                    ctx.fillText('RK', 0.8 * p.scale, 1.3 * p.scale);
+                    ctx.fillStyle = '#fff8cf';
+                    ctx.fillText('RK', 0, 0);
+                    ctx.restore();
+                });
+            }
+
+            // =========================================================================
+            // 4. RED 3D OBSTACLES ALONG THE GREEN TRACK
+            // =========================================================================
+            function spawnObstacle() {
+                const types = ['ROUTER', 'DOUBLE_PYLON', 'SIGNAL_TOWER'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                obstacles.push({
+                    x: 245,
+                    type: type
+                });
+            }
+
+            function draw3DObstacles() {
+                const redPal   = { top: '#f87171', front: '#ef4444', right: '#dc2626' };
+                const darkRed  = { top: '#ef4444', front: '#b91c1c', right: '#991b1b' };
+                const slatePal = { top: '#475569', front: '#334155', right: '#1e293b' };
+
+                obstacles.forEach(obs => {
+                    // Shadow on Green Track
+                    const sp = project3D(obs.x, 1.2, 0);
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.ellipse(sp.x, sp.y, 18 * sp.scale, 8 * sp.scale, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(6, 78, 59, 0.25)';
+                    ctx.fill();
+                    ctx.restore();
+
+                    if (obs.type === 'ROUTER') {
+                        // 3D Red No-Signal Router Cube + Antennas
+                        draw3DBox(obs.x, 11, 0, 22, 22, 22, redPal);
+                        draw3DBox(obs.x - 5, 27, -5, 3, 12, 3, slatePal);
+                        draw3DBox(obs.x + 5, 27, 5, 3, 12, 3, slatePal);
+                        // White Cross (X) Emblem
+                        draw3DBox(obs.x, 11, 11.4, 11, 3, 1, { top: '#fff', front: '#fff', right: '#fff' });
+                        draw3DBox(obs.x, 11, 11.4, 3, 11, 1, { top: '#fff', front: '#fff', right: '#fff' });
+                    } else if (obs.type === 'DOUBLE_PYLON') {
+                        // Twin 3D Red Signal Blocks
+                        draw3DBox(obs.x - 9, 10, 0, 14, 20, 18, redPal);
+                        draw3DBox(obs.x + 9, 13, 0, 14, 26, 18, darkRed);
+                    } else {
+                        // Tall 3D Signal Tower with Glowing Red Beacon
+                        draw3DBox(obs.x, 15, 0, 16, 30, 16, slatePal);
+                        draw3DSphere(obs.x, 35, 0, 6.8, '#fecaca', '#ef4444', '#991b1b', 'rgba(239, 68, 68, 0.35)');
+                    }
+                });
+            }
+
+            // =========================================================================
+            // 5. GREEN & WHITE DUST PARTICLES
+            // =========================================================================
+            function spawnParticles(x, y, count, color) {
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: x + (Math.random() - 0.5) * 12,
+                        y: y + Math.random() * 5,
+                        z: (Math.random() - 0.5) * 14,
+                        vx: -1.6 - Math.random() * 2.4,
+                        vy: 1.1 + Math.random() * 2.4,
+                        life: 1.0,
+                        size: 2.6 + Math.random() * 2.4,
+                        color: color
+                    });
+                }
+            }
+
+            function updateAndDrawParticles() {
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy -= 0.13;
+                    p.life -= 0.048;
+                    if (p.life <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+                    const proj = project3D(p.x, p.y, p.z);
+                    ctx.beginPath();
+                    ctx.arc(proj.x, proj.y, p.size * proj.scale * p.life, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                }
+            }
+
+            // =========================================================================
+            // GAMEPLAY CONTROLS & LOOP
+            // =========================================================================
+            function jumpDino() {
+                if (isRedirecting) return;
+                if (gameState === 'IDLE' || gameState === 'GAMEOVER') {
+                    startGame();
+                }
+                if (dino.isGrounded) {
+                    dino.vy = dino.jumpForce;
+                    dino.isGrounded = false;
+                    dino.squashX = 0.80;
+                    dino.squashY = 1.24;
+                    spawnParticles(dino.x, 2, 8, 'rgba(163, 230, 53, 0.75)');
+                }
+            }
+
+            function startGame() {
+                gameState = 'PLAYING';
+                score = 0;
+                gameSpeed = 5.6;
+                obstacles = [];
+                coins = [];
+                coinCount = 0;
+                coinCountEl.textContent = '000';
+                coinSpawnTimer = 58;
+                spawnTimer = 95;
+                dino.y = 0;
+                dino.vy = 0;
+                dino.isGrounded = true;
+                scoreEl.textContent = '0000';
+                gameCard.classList.add('hidden');
+            }
+
+            function triggerGameOver() {
+                gameState = 'GAMEOVER';
+                spawnParticles(dino.x + 10, dino.y + 16, 16, 'rgba(239, 68, 68, 0.7)');
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestScoreEl.textContent = String(bestScore).padStart(4, '0');
+                    try {
+                        localStorage.setItem('cyber_dino_3d_best', String(bestScore));
+                    } catch (e) {}
+                }
+
+                cardTag.textContent = 'SIGNAL CRASH!';
+                cardTag.classList.add('crash');
+                cardTitle.textContent = `Score: ${score}`;
+                cardSub.textContent = 'Tap the screen to JUMP • Press Play to run again';
+                startBtnText.textContent = 'Play Again';
+                gameCard.classList.remove('hidden');
+            }
+
+            function updatePhysics() {
+                frameCount++;
+                dino.squashX += (1 - dino.squashX) * 0.18;
+                dino.squashY += (1 - dino.squashY) * 0.18;
+
+                if (gameState === 'PLAYING') {
+                    trackScroll += gameSpeed * 1.08;
+                    dino.runCycle += 0.35;
+
+                    if (!dino.isGrounded) {
+                        dino.y += dino.vy;
+                        dino.vy -= dino.gravity;
+                        if (dino.y <= 0) {
+                            dino.y = 0;
+                            dino.vy = 0;
+                            dino.isGrounded = true;
+                            dino.squashX = 1.25;
+                            dino.squashY = 0.76;
+                            spawnParticles(dino.x, 1.5, 6, 'rgba(134, 239, 172, 0.75)');
+                        }
+                    } else if (frameCount % 7 === 0) {
+                        spawnParticles(dino.x - 8, 1.5, 1, 'rgba(187, 247, 208, 0.65)');
+                    }
+
+                    if (frameCount % 5 === 0) {
+                        score++;
+                        scoreEl.textContent = String(score).padStart(4, '0');
+                        if (score % 100 === 0 && gameSpeed < 10.8) {
+                            gameSpeed += 0.35;
+                        }
+                    }
+
+                    spawnTimer--;
+                    if (spawnTimer <= 0) {
+                        spawnObstacle();
+                        spawnTimer = Math.max(112, Math.round(138 - gameSpeed * 1.8 + Math.random() * 42));
+                    }
+
+                    coinSpawnTimer--;
+                    if (coinSpawnTimer <= 0) {
+                        spawnCoinLine();
+                        coinSpawnTimer = 112 + Math.floor(Math.random() * 48);
+                    }
+
+                    for (let i = coins.length - 1; i >= 0; i--) {
+                        const coin = coins[i];
+                        coin.x -= gameSpeed;
+                        coin.spin += 0.045; // slow, continuous coin rotation
+                        const closeEnough = Math.abs(coin.x - dino.x) < 19;
+                        const jumpHeightMatches = Math.abs((dino.y + 30) - coin.y) < 37;
+                        if (closeEnough && jumpHeightMatches) {
+                            coins.splice(i, 1);
+                            coinCount++;
+                            coinCountEl.textContent = String(coinCount).padStart(3, '0');
+                            spawnParticles(coin.x, coin.y, 10, '#fbbf24');
+                            playCoinSound();
+                            continue;
+                        }
+                        if (coin.x < -260) coins.splice(i, 1);
+                    }
+
+                    for (let i = obstacles.length - 1; i >= 0; i--) {
+                        const obs = obstacles[i];
+                        obs.x -= gameSpeed;
+
+                        const obsHalfW = obs.type === 'DOUBLE_PYLON' ? 14 : 9;
+                        const obsHeight = obs.type === 'SIGNAL_TOWER' ? 28 : 20;
+
+                        if (
+                            Math.abs(obs.x - dino.x) < (obsHalfW + 9) &&
+                            dino.y < (obsHeight - 2)
+                        ) {
+                            triggerGameOver();
+                            break;
+                        }
+
+                        if (obs.x < -250) {
+                            obstacles.splice(i, 1);
+                        }
+                    }
+                } else if (gameState === 'IDLE') {
+                    trackScroll += 1.6;
+                }
+            }
+
+            function renderLoop() {
+                if (isRedirecting) return;
+
+                updatePhysics();
+                ctx.clearRect(0, 0, W, H);
+
+                drawScenicBackground();
+                draw3DRedWifi();
+                draw3DGreenTrack();
+                updateAndDrawParticles();
+                draw3DCoins();
+                draw3DObstacles();
+                draw3DUniqueDino();
+
+                animFrameId = requestAnimationFrame(renderLoop);
+            }
+
+            // Instant Zero-Delay Mobile Touch & Pointer Controls
+            gameStage.addEventListener('pointerdown', (e) => {
+                if (e.target.closest('button')) return;
+                e.preventDefault();
+                jumpDino();
+            });
+
+            startBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                startGame();
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'Space' || e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    jumpDino();
+                }
+            });
+
+            // =========================================================================
+            // STABLE, ZERO-LOOP CONNECTIVITY DETECTION & INSTANT WEBSITE REDIRECT
+            // =========================================================================
+            let toastTimer = null;
+            function showToast(msg) {
+                toastEl.textContent = msg;
+                toastEl.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2400);
+            }
+
+            function handleConnectionRestored() {
+                if (isRedirecting) return;
+                isRedirecting = true;
+
+                // Stop 3D game loop & polling immediately
+                if (animFrameId) cancelAnimationFrame(animFrameId);
+                if (pollIntervalId) clearInterval(pollIntervalId);
+
+                // Update UI to Connected State
+                statusPill.classList.add('online');
+                statusText.textContent = 'ONLINE • CONNECTED';
+                retryBtn.classList.remove('spinning');
+                retryBtn.classList.add('online');
+                retryBtnText.textContent = 'Opening Website...';
+                reconnectOverlay.classList.add('active');
+
+                // Return to the live RK Foodie website after a verified connection.
+                // Do not use history.back(): the Service Worker may have shown this game
+                // as the fallback response for the home-page URL.
+                setTimeout(() => {
+                    try {
+                        window.location.replace(LIVE_APP_URL);
+                    } catch (err) {
+                        window.location.href = LIVE_APP_URL;
+                    }
+                }, 350);
+            }
+
+            // Lightweight real internet verification (never loops or flickers when offline)
+            function checkInternetReachability(isManual) {
+                if (isRedirecting) return;
+
+                if (isManual && !isManualChecking) {
+                    isManualChecking = true;
+                    retryBtn.classList.add('spinning');
+                    retryBtnText.textContent = 'Checking Connection...';
+                }
+
+                // Use a lightweight 204 endpoint with cache busting
+                const probeUrl = 'https://clients3.google.com/generate_204?t=' + Date.now();
+
+                fetch(probeUrl, { mode: 'no-cors', cache: 'no-store' })
+                    .then(() => {
+                        // Fetch resolved -> genuine internet access is available!
+                        handleConnectionRestored();
+                    })
+                    .catch(() => {
+                        // Still offline -> remain calmly in the 3D game with zero flicker
+                        if (isManual) {
+                            setTimeout(() => {
+                                isManualChecking = false;
+                                retryBtn.classList.remove('spinning');
+                                retryBtnText.textContent = 'Retry Connection';
+                                showToast('Still offline. Please turn on Wi-Fi or Mobile Data.');
+                            }, 450);
+                        }
+                    });
+            }
+
+            retryBtn.addEventListener('click', () => checkInternetReachability(true));
+
+            // Listen for OS/WebView 'online' event for instant transition
+            window.addEventListener('online', () => checkInternetReachability(false));
+
+            window.onload = function () {
+                renderLoop();
+
+                // Only poll automatically when running inside Android WebView / local file
+                // (Prevents unwanted auto-redirect if you are previewing this file online in a desktop editor)
+                const isOfflineAsset = window.location.protocol === 'file:' || !navigator.onLine;
+                if (isOfflineAsset) {
+                    pollIntervalId = setInterval(() => {
+                        if (!isRedirecting) {
+                            checkInternetReachability(false);
+                        }
+                    }, 3000);
+                }
+            };
+        })();
+    </script>
+</body>
+</html>
