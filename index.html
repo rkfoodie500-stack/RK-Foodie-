@@ -654,7 +654,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 <style id="rk-responsive-login-art">
   /* Desktop/laptop: retain the original two-column login design and native Google button. */
   @media (min-width: 761px) {
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-login-art-wrap {
+    #rkCustomerGate.rk-login-active .rk-login-art-wrap {
       position:static;
       display:block;
       width:100%;
@@ -662,10 +662,10 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       margin:0;
       line-height:normal;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-login-full-art {
+    #rkCustomerGate.rk-login-active .rk-login-full-art {
       display:none !important;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn {
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn {
       position:relative !important;
       left:auto !important;
       top:auto !important;
@@ -684,15 +684,15 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       opacity:1 !important;
       cursor:pointer;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn .fa-google,
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn .rk-login-button-accessible-text {
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn .fa-google,
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn .rk-login-button-accessible-text {
       display:inline !important;
     }
   }
 
   /* Mobile/app: show the complete supplied portrait artwork with a real Google button hit-area. */
   @media (max-width: 760px) {
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) {
+    #rkCustomerGate.rk-login-active {
       display:flex;
       align-items:flex-start;
       justify-content:center;
@@ -700,7 +700,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       overflow-x:hidden;
       background:#f8f7f2;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-shell {
+    #rkCustomerGate.rk-login-active .rk-shell {
       width:100%;
       max-width:694px;
       min-height:0;
@@ -710,7 +710,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       align-items:flex-start;
       justify-content:center;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-panel {
+    #rkCustomerGate.rk-login-active .rk-panel {
       display:block;
       position:relative;
       width:100%;
@@ -724,19 +724,19 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       box-shadow:none;
       background:transparent;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-brand,
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-hero,
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-content > :not(#rkLoginPane) {
+    #rkCustomerGate.rk-login-active .rk-brand,
+    #rkCustomerGate.rk-login-active .rk-hero,
+    #rkCustomerGate.rk-login-active .rk-content > :not(#rkLoginPane) {
       display:none !important;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-content {
+    #rkCustomerGate.rk-login-active .rk-content {
       display:block;
       width:100%;
       max-width:none;
       padding:0;
       margin:0;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-login-art-wrap {
+    #rkCustomerGate.rk-login-active .rk-login-art-wrap {
       position:relative;
       display:block;
       width:100%;
@@ -744,16 +744,21 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       margin:0 auto;
       line-height:0;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) .rk-login-full-art {
+    #rkCustomerGate.rk-login-active .rk-login-full-art {
       display:block !important;
       width:100%;
       height:auto;
       max-width:100%;
       object-fit:contain;
+      pointer-events:none !important;
+      -webkit-user-select:none;
+      user-select:none;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn {
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn {
       position:absolute !important;
-      z-index:3;
+      z-index:999 !important;
+      pointer-events:auto !important;
+      display:block !important;
       left:10.8% !important;
       top:60.2% !important;
       width:78.4% !important;
@@ -771,18 +776,18 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       opacity:1 !important;
       cursor:pointer;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn:hover,
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn:active {
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn:hover,
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn:active {
       transform:none;
       border:0 !important;
       background:transparent !important;
       box-shadow:none !important;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn .fa-google,
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn .rk-login-button-accessible-text {
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn .fa-google,
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn .rk-login-button-accessible-text {
       display:none !important;
     }
-    #rkCustomerGate:has(#rkLoginPane:not([hidden])) #rkGoogleSignIn:focus-visible {
+    #rkCustomerGate.rk-login-active #rkGoogleSignIn:focus-visible {
       outline:3px solid #4285f4;
       outline-offset:3px;
     }
@@ -2286,6 +2291,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
   }
   function openProfileEditor() {
     if (!gate || !form) return;
+    gate.classList.remove('rk-login-active');
     fillProfileForm();
     $('rkLoginPane').hidden = true;
     $('rkAccountPane').hidden = true;
@@ -2307,7 +2313,10 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     });
   }
   function enterWebsite() {
-    if (gate) gate.hidden = true;
+    if (gate) {
+      gate.classList.remove('rk-login-active');
+      gate.hidden = true;
+    }
     document.body.style.overflow = '';
     if ($('rkLoginPane')) $('rkLoginPane').hidden = false;
     if (form) form.hidden = true;
@@ -2323,7 +2332,10 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     }
   }
   function showCustomerGate() {
-    if (gate) gate.hidden = false;
+    if (gate) {
+      gate.classList.add('rk-login-active');
+      gate.hidden = false;
+    }
     document.body.style.overflow = 'hidden';
     if ($('rkLoginPane')) $('rkLoginPane').hidden = false;
     if (form) form.hidden = true;
