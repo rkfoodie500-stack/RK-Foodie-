@@ -787,10 +787,23 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       outline-offset:3px;
     }
   }
+  /* Startup session-check cover: prevents the login gate flashing for saved sessions. */
+  #rkStartupCover{position:fixed;inset:0;z-index:100001;display:flex;align-items:center;justify-content:center;background:#f7f8fb;color:#172033;}
+  #rkStartupCover[hidden]{display:none!important}
+  #rkStartupCover .rk-startup-card{text-align:center;padding:28px 24px;}
+  #rkStartupCover .rk-startup-logo{width:76px;height:76px;object-fit:contain;margin:0 auto 14px;}
+  #rkStartupCover .rk-startup-title{font:800 23px/1.2 'Poppins',sans-serif;letter-spacing:-.03em;}
+  #rkStartupCover .rk-startup-sub{font:500 13px/1.5 'Poppins',sans-serif;color:#718096;margin-top:7px;}
+  #rkStartupCover .rk-startup-spinner{width:25px;height:25px;border:3px solid #ff6b0022;border-top-color:#ff6b00;border-radius:50%;margin:22px auto 0;animation:rkStartupSpin .75s linear infinite;}
+  @keyframes rkStartupSpin{to{transform:rotate(360deg)}}
 </style>
+
 
 </head>
 <body class="bg-gray-50 text-slate-800 antialiased pb-20 md:pb-6">
+  <div id="rkStartupCover" role="status" aria-live="polite">
+    <div class="rk-startup-card"><img class="rk-startup-logo" src="assets/image-1.webp" alt="RK Foodie"><div class="rk-startup-title">RK Foodie</div><div class="rk-startup-sub">Checking your account…</div><div class="rk-startup-spinner" aria-hidden="true"></div></div>
+  </div>
 
     <!-- RK Foodie Customer Login Gate. Google sign-in only. -->
     <section id="rkCustomerGate" aria-label="RK Foodie customer account">
@@ -2306,7 +2319,12 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
       }
     });
   }
+  function hideStartupCover() {
+    const cover = $('rkStartupCover');
+    if (cover) cover.hidden = true;
+  }
   function enterWebsite() {
+    hideStartupCover();
     if (gate) gate.hidden = true;
     document.body.style.overflow = '';
     if ($('rkLoginPane')) $('rkLoginPane').hidden = false;
@@ -2323,6 +2341,7 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     }
   }
   function showCustomerGate() {
+    hideStartupCover();
     if (gate) gate.hidden = false;
     document.body.style.overflow = 'hidden';
     if ($('rkLoginPane')) $('rkLoginPane').hidden = false;
@@ -2583,8 +2602,11 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
 
   // Restore the real Supabase session and subscribe to account switches/sign-outs.
   (async function restoreGoogleSession() {
+    // If session restoration stalls, show the login gate instead of leaving the cover indefinitely.
+    const startupFallback = setTimeout(() => showCustomerGate(), 12000);
     const auth = authClient();
     if (!auth || typeof auth.getSession !== 'function') {
+      clearTimeout(startupFallback);
       showCustomerGate();
       return;
     }
@@ -2610,10 +2632,12 @@ body.site-dark .text-emerald-600.bg-emerald-50 { color:#86efac !important; backg
     }
     try {
       const { data, error } = await auth.getSession();
+      clearTimeout(startupFallback);
       if (error) throw error;
       if (data && data.session && data.session.user) await activateUser(data.session.user);
       else showCustomerGate();
     } catch (error) {
+      clearTimeout(startupFallback);
       console.error('RK Foodie session restore failed:', error);
       showCustomerGate();
     }
